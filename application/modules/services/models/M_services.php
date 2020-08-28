@@ -1,8 +1,9 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class M_services extends CI_Model {
+class M_services extends CI_Model
+{
 
     public function getTgl()
     {
@@ -33,13 +34,13 @@ class M_services extends CI_Model {
                 "validasi !=" => "2",
                 "covid !=" => "1"
             );
-        } elseif($id == "lulus") {
+        } elseif ($id == "lulus") {
             $where = array(
                 "kondisi" => "1",
                 "validasi" => "1",
                 "covid" => "2"
             );
-        } elseif($id == "proses") {
+        } elseif ($id == "proses") {
             $where = array(
                 "kondisi" => "1",
                 "validasi !=" => "2",
@@ -53,7 +54,7 @@ class M_services extends CI_Model {
             );
             $this->db->like('valid_at', $tgl, 'after');
         }
-        
+
         $data = $this->db->get_where("tb_laporan", $where)->num_rows();
 
         return number_format($data, 0, ",", ".");
@@ -94,27 +95,27 @@ class M_services extends CI_Model {
                 "covid" => "0",
                 "st" => "1"
             );
-        } elseif($id == "komulatif") {
+        } elseif ($id == "komulatif") {
             $where = array(
                 "kondisi" => "2",
                 "validasi !=" => "2",
                 "covid !=" => "1"
             );
-        } elseif($id == "lama") {
+        } elseif ($id == "lama") {
             $this->db->not_like('valid_at', date("Y-m-d"));
             $where = array(
                 "kondisi" => "2",
                 "validasi !=" => "2",
                 "covid" => "0"
             );
-        } elseif($id == "baru") {
+        } elseif ($id == "baru") {
             $this->db->like('valid_at', date("Y-m-d"));
             $where = array(
                 "kondisi" => "2",
                 "validasi !=" => "2",
                 "covid" => "0"
             );
-        } elseif($id == "meninggal") {
+        } elseif ($id == "meninggal") {
             $where = array(
                 "kondisi" => "2",
                 "validasi !=" => "2",
@@ -122,11 +123,10 @@ class M_services extends CI_Model {
                 "st" => "2"
             );
         }
-        
+
         $data = $this->db->get_where("tb_laporan", $where)->num_rows();
 
         return number_format($data, 0, ",", ".");
-        
     }
 
     public function getPDPrawat()
@@ -206,6 +206,15 @@ class M_services extends CI_Model {
         return $data;
     }
 
+    public function getKecamatan2()
+    {
+        // $this->db->where(['kode !='=> '0']);
+        $this->db->order_by("id_kecamatan", "ASC");
+        $data = $this->db->get("tb_kecamatan_1")->result();
+
+        return $data;
+    }
+
     public function getKelurahan()
     {
         // $this->db->where(['kode_kec !='=> '0']);
@@ -215,12 +224,62 @@ class M_services extends CI_Model {
         return $data;
     }
 
+    public function getKelurahanById($id)
+    {
+        $this->db->where(['kode_kec' => $id]);
+        $this->db->order_by("id_kelurahan", "ASC");
+        $data = $this->db->get("tb_kelurahan")->result();
+
+        return $data;
+    }
+
+    public function getKelurahanById2($id)
+    {
+        $this->db->where(['kode_kec' => $id]);
+        $this->db->order_by("id_kelurahan", "ASC");
+        $data = $this->db->get("tb_kelurahan_1")->result();
+
+        return $data;
+    }
+
+    public function getPPByIdKec($id)
+    {
+        $this->db->where(['id_kecamatan' => $id]);
+        $data = $this->db->get("pelaku_perjalanan")->num_rows();
+
+        return $data;
+    }
+
+    public function getPPByIdKel($id)
+    {
+        $this->db->where(['id_kelurahan' => $id]);
+        $data = $this->db->get("pelaku_perjalanan")->num_rows();
+
+        return $data;
+    }
+
+    public function getLuarDaerah()
+    {
+        $this->db->where(['kode' => '0']);
+        $data = $this->db->get("tb_kecamatan")->row();
+
+        return $data;
+    }
+
+    public function getLuarDaerah2()
+    {
+        $this->db->where(['kode' => '0']);
+        $data = $this->db->get("tb_kecamatan_1")->row();
+
+        return $data;
+    }
+
     public function cekPasien()
     {
-        $sblm = mktime(0, 0, 0, date('n'), date('j')-14, date('Y'));
+        $sblm = mktime(0, 0, 0, date('n'), date('j') - 14, date('Y'));
 
         $tgl = date("Y-m-d", $sblm);
-        
+
         $data = array(
             "covid" => "2"
         );
@@ -234,14 +293,14 @@ class M_services extends CI_Model {
         $this->db->update("tb_laporan", $data, $where);
     }
 
-    
+
     public function getHarian($tgl)
     {
         $data = $this->db->query("SELECT SUM(jumlah_odp) as jumlah_odp, SUM(jumlah_pdp) as jumlah_pdp, SUM(jumlah_covid) as jumlah_covid FROM tb_harian WHERE tanggal <= '$tgl'")->row();
 
         return $data;
     }
-    
+
     public function getKecamatanBy($id)
     {
         $data = $this->db->get_where("tb_kecamatan", ["id_kecamatan" => $id])->row();
@@ -265,19 +324,33 @@ class M_services extends CI_Model {
             $hsl['update_at'] = date("Y-m-d H:i");
             $hsl['data'] = 0;
         }
-        
+
         return $hsl;
     }
 
-    public function search($title){
+    public function getUpdate2()
+    {
+        $data = $this->db->query("SELECT * FROM tb_update_1 ORDER BY update_at DESC LIMIT 1");
+        if ($data->num_rows() != 0) {
+            $hsl['data'] = $data->row();
+        } else {
+            $hsl['update_at'] = date("Y-m-d H:i");
+            $hsl['data'] = 0;
+        }
+
+        return $hsl;
+    }
+
+    public function search($title)
+    {
         $this->db->where(["kode_kecamatan" => "3320"]);
-        $this->db->like('nama_faskes', $title , 'both');
+        $this->db->like('nama_faskes', $title, 'both');
         $this->db->order_by('nama_faskes', 'ASC');
         $this->db->limit(5);
         return $this->db->get('tb_faskes')->result();
     }
 
-    
+
     public function getODP2($id, $id_f)
     {
         if ($id == "baru") {
@@ -303,14 +376,14 @@ class M_services extends CI_Model {
                 "covid !=" => "1",
                 "created_by" => $id_f
             );
-        } elseif($id == "lulus") {
+        } elseif ($id == "lulus") {
             $where = array(
                 "kondisi" => "1",
                 "validasi" => "1",
                 "covid" => "2",
                 "created_by" => $id_f
             );
-        } elseif($id == "proses") {
+        } elseif ($id == "proses") {
             $where = array(
                 "kondisi" => "1",
                 "validasi !=" => "2",
@@ -318,13 +391,13 @@ class M_services extends CI_Model {
                 "created_by" => $id_f
             );
         }
-        
+
         $data = $this->db->get_where("tb_laporan", $where)->num_rows();
 
         return number_format($data, 0, ",", ".");
     }
 
-    
+
     public function getPDP2($id, $id_f)
     {
         if ($id == "ranap") {
@@ -364,14 +437,14 @@ class M_services extends CI_Model {
                 "st" => "1",
                 "created_by" => $id_f
             );
-        } elseif($id == "komulatif") {
+        } elseif ($id == "komulatif") {
             $where = array(
                 "kondisi" => "2",
                 "validasi !=" => "2",
                 "covid !=" => "1",
                 "created_by" => $id_f
             );
-        } elseif($id == "lama") {
+        } elseif ($id == "lama") {
             $this->db->not_like('valid_at', date("Y-m-d"));
             $where = array(
                 "kondisi" => "2",
@@ -379,7 +452,7 @@ class M_services extends CI_Model {
                 "covid" => "0",
                 "created_by" => $id_f
             );
-        } elseif($id == "baru") {
+        } elseif ($id == "baru") {
             $this->db->like('valid_at', date("Y-m-d"));
             $where = array(
                 "kondisi" => "2",
@@ -387,7 +460,7 @@ class M_services extends CI_Model {
                 "covid" => "0",
                 "created_by" => $id_f
             );
-        } elseif($id == "meninggal") {
+        } elseif ($id == "meninggal") {
             $where = array(
                 "kondisi" => "2",
                 "validasi !=" => "2",
@@ -396,11 +469,10 @@ class M_services extends CI_Model {
                 "created_by" => $id_f
             );
         }
-        
+
         $data = $this->db->get_where("tb_laporan", $where)->num_rows();
 
         return number_format($data, 0, ",", ".");
-        
     }
 
     public function getCovidAll2($id_f)
@@ -473,7 +545,7 @@ class M_services extends CI_Model {
     }
     public function getFaskes()
     {
-        $data = $this->db->get_where("tb_faskes", ["kode_kecamatan"=>"3320"])->result();
+        $data = $this->db->get_where("tb_faskes", ["kode_kecamatan" => "3320"])->result();
 
         return $data;
     }
@@ -486,7 +558,19 @@ class M_services extends CI_Model {
         } else {
             $data = $this->db->query("SELECT * FROM tb_update WHERE update_at LIKE '$tgl%' ORDER BY update_at DESC LIMIT 1")->row();
         }
-        
+
+        return $data;
+    }
+
+    public function getUpdateHarian2($tgl)
+    {
+        $cek = $this->db->query("SELECT * FROM tb_update_1 WHERE update_at LIKE '$tgl%' ORDER BY update_at DESC LIMIT 1")->num_rows();
+        if ($cek == 0) {
+            $data = $this->db->query("SELECT * FROM tb_update_1 WHERE update_at LIKE '$tgl%' ORDER BY update_at DESC LIMIT 1")->num_rows();
+        } else {
+            $data = $this->db->query("SELECT * FROM tb_update_1 WHERE update_at LIKE '$tgl%' ORDER BY update_at DESC LIMIT 1")->row();
+        }
+
         return $data;
     }
 
@@ -523,7 +607,7 @@ class M_services extends CI_Model {
         return $data;
     }
 
-    
+
     public function getPP($tgl)
     {
         $transmisi = $this->db->query("SELECT * FROM pelaku_perjalanan WHERE tgl_kedatangan >= '$tgl' AND id_transmisi_lokal NOT IN ('29', '30')")->num_rows();
@@ -544,21 +628,6 @@ class M_services extends CI_Model {
         $this->db->join("tb_kelurahan", "tb_laporan.id_kelurahan = tb_kelurahan.id_kelurahan");
         $this->db->where(['validasi' => '1']);
         $this->db->where(['tb_laporan.id_kecamatan' => $id_kec]);
-        $this->db->like("nama", $search);
-        $data = $this->db->get()->result();
-
-        return $data;
-    }
-    public function get_pasien_otg()
-    {
-        $search = $_GET['search'];
-        $id_kec = $_GET['id_kecamatan'];
-
-        $this->db->from('tb_otg');
-        $this->db->join("tb_kecamatan", "tb_otg.id_kecamatan = tb_kecamatan.id_kecamatan");
-        $this->db->join("tb_kelurahan", "tb_otg.id_kelurahan = tb_kelurahan.id_kelurahan");
-        $this->db->where(['validasi' => '1']);
-        $this->db->where(['tb_otg.id_kecamatan' => $id_kec]);
         $this->db->like("nama", $search);
         $data = $this->db->get()->result();
 
@@ -598,6 +667,23 @@ class M_services extends CI_Model {
         return $data;
     }
 
+    public function get_rdt($id)
+    {
+        $data = $this->db->get_where("tb_rdt", ["id_laporan" => $id])->result();
+        return $data;
+    }
+
+    public function get_penyakit()
+    {
+        $search = $_GET['search'];
+
+        $this->db->from('tb_penyakit');
+        $this->db->like("diag", $search);
+        $this->db->or_like("kdiag", $search);
+        $data = $this->db->get()->result();
+
+        return $data;
+    }
 }
 
 /* End of file M_home.php */

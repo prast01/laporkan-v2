@@ -41,7 +41,7 @@
                                                         <th>Keterangan</th>
                                                         <th>Sumber</th>
                                                         <th>Status</th>
-                                                        <th>BPJS</th>
+                                                        <th>Nakes</th>
                                                     </tr>
                                                 </thead>
                                                 <?php
@@ -77,7 +77,15 @@
                                                             }
                                                         ?>
                                                     </td>
-                                                    <td><?php echo $key->bpjs; ?></td>
+                                                    <td>
+                                                        <?php
+                                                            if ($key->nakes == '1') {
+                                                                echo "NAKES";
+                                                            } else {
+                                                                echo "NON NAKES";
+                                                            }
+                                                        ?>
+                                                    </td>
                                                 </tr>
                                                 <?php
                                                         $no++;

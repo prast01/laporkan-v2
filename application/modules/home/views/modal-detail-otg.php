@@ -83,22 +83,22 @@
 													</div>
 												</div>
 												<div class="form-group row">
-													<label for="inputEmail3" class="col-sm-2 col-form-label">Hasil RDT<br><small>(Diisi jika melakukan RDT)</small></label>
+													<!-- <label for="inputEmail3" class="col-sm-2 col-form-label">Hasil RDT<br><small>(Diisi jika melakukan RDT)</small></label>
 													<div class="col-sm-4">
 														<select name="rdt" class="form-control select2" style="width: 100%">
 															<option <?php if($otg->rdt == "0"){ echo "selected"; } ?> value="0" disabled>Pilih</option>
 															<option <?php if($otg->rdt == "1"){ echo "selected"; } ?> value="1">Raktif</option>
 															<option <?php if($otg->rdt == "2"){ echo "selected"; } ?> value="2">Non Raktif</option>
 														</select>
-													</div>
-													<label for="inputEmail3" class="col-sm-2 col-form-label">Dilakukan SWAB?</label>
+													</div> -->
+													<!-- <label for="inputEmail3" class="col-sm-2 col-form-label">Dilakukan SWAB?</label>
 													<div class="col-sm-4">
 														<select name="swab" class="form-control select2" style="width: 100%">
 															<option <?php if($otg->swab == "0"){ echo "selected"; } ?> value="0" disabled>Pilih</option>
 															<option <?php if($otg->swab == "1"){ echo "selected"; } ?> value="1">SWAB</option>
 															<option <?php if($otg->swab == "2"){ echo "selected"; } ?> value="2">TIDAK SWAB</option>
 														</select>
-													</div>
+													</div> -->
 												</div>
 												<div class="form-group row">
 													<label for="inputEmail3" class="col-sm-2 col-form-label">Keterangan Lain</label>
@@ -108,9 +108,9 @@
 													<label for="inputEmail3" class="col-sm-2 col-form-label">Apakah Tenaga Kesehatan?</label>
 													<div class="col-sm-4">
 														<select name="nakes" class="form-control select2" style="width: 100%" required>
-															<option <?php if($otg->nakes == "0"){ echo "selected"; } ?> value="0" disabled>Pilih</option>
-															<option <?php if($otg->nakes == "1"){ echo "selected"; } ?> value="1">NAKES</option>
-															<option <?php if($otg->nakes == "2"){ echo "selected"; } ?> value="2">BUKAN NAKES</option>
+															<option <?php if($otg->nakes == ""){ echo "selected"; } ?> value="" disabled>Pilih</option>
+															<option <?php if($otg->nakes == "NAKES"){ echo "selected"; } ?> value="NAKES">NAKES</option>
+															<option <?php if($otg->nakes == "0"){ echo "selected"; } ?> value="0">BUKAN NAKES</option>
 														</select>
 													</div>
 												</div>

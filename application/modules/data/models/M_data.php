@@ -1,10 +1,11 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class M_data extends CI_Model {
+class M_data extends CI_Model
+{
 
-    
+
     public function getODP($kondisi, $id)
     {
         $this->db->select("*");
@@ -119,6 +120,9 @@ class M_data extends CI_Model {
         $this->db->join("tb_kecamatan", "tb_laporan.id_kecamatan = tb_kecamatan.id_kecamatan");
         $this->db->join("tb_kelurahan", "tb_laporan.id_kelurahan = tb_kelurahan.id_kelurahan");
 
+        $this->db->where(['kondisi' => '2']);
+        $this->db->where(['covid' => '1']);
+
         if ($kondisi == "ranap") {
             $this->db->where(['st' => '0']);
             if ($id != 'all') {
@@ -127,7 +131,6 @@ class M_data extends CI_Model {
                 } else {
                     $this->db->where(['rujuk' => '1']);
                 }
-                
             }
         }
 
@@ -138,11 +141,7 @@ class M_data extends CI_Model {
             $this->db->where(['st' => '2']);
         }
 
-        $this->db->where(['kondisi' => '2']);
-        $this->db->where(['covid' => '1']);
-        $this->db->order_by("st", "DESC");
-        $this->db->order_by("validasi", "ASC");
-        $this->db->order_by("created_at", "DESC");
+        $this->db->order_by("valid_at", "DESC");
 
         $data = $this->db->get()->result();
 
@@ -170,7 +169,18 @@ class M_data extends CI_Model {
         } else {
             $data = $this->db->query("SELECT * FROM tb_user WHERE level_user='3' AND nama_user LIKE 'PKM%'")->result();
         }
-        
+
+        return $data;
+    }
+
+    public function get_penyakit($kondisi)
+    {
+        if ($kondisi == "covid") {
+            $data = $this->db->query("SELECT * FROM v_penyakit_covid LIMIT 10")->result();
+        } else {
+            $data = $this->db->query("SELECT * FROM v_penyakit_non_covid LIMIT 10")->result();
+        }
+
         return $data;
     }
 }

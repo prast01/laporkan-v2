@@ -75,22 +75,22 @@
 													</div>
 												</div>
 												<div class="form-group row">
-													<label for="inputEmail3" class="col-sm-2 col-form-label">Hasil RDT<br><small>(Diisi jika melakukan RDT)</small></label>
+													<!-- <label for="inputEmail3" class="col-sm-2 col-form-label">Hasil RDT<br><small>(Diisi jika melakukan RDT)</small></label>
 													<div class="col-sm-4">
 														<select name="rdt" class="form-control select2" style="width: 100%" required>
 															<option selected disabled value="0">Pilih</option>
 															<option value="1">Reaktif</option>
 															<option value="2">Non Reaktif</option>
 														</select>
-													</div>
-													<label for="inputEmail3" class="col-sm-2 col-form-label">Apakah Dilakukan SWAB?</label>
+													</div> -->
+													<!-- <label for="inputEmail3" class="col-sm-2 col-form-label">Apakah Dilakukan SWAB?</label>
 													<div class="col-sm-4">
 														<select name="swab" class="form-control select2" style="width: 100%" required>
 															<option selected disabled value="0">Pilih</option>
 															<option value="1">SWAB</option>
 															<option value="2">TIDAK SWAB</option>
 														</select>
-													</div>
+													</div> -->
 												</div>
 												<div class="form-group row">
 													<label for="inputEmail3" class="col-sm-2 col-form-label">Keterangan Lain</label>
@@ -100,9 +100,9 @@
 													<label for="inputEmail3" class="col-sm-2 col-form-label">Apakah Tenaga Kesehatan?</label>
 													<div class="col-sm-4">
 														<select name="nakes" class="form-control select2" style="width: 100%" required>
-															<option selected disabled value="0">Pilih</option>
-															<option value="1">NAKES</option>
-															<option value="2">BUKAN NAKES</option>
+															<option selected disabled value="">Pilih</option>
+															<option value="NAKES">NAKES</option>
+															<option value="0">BUKAN NAKES</option>
 														</select>
 													</div>
 												</div>

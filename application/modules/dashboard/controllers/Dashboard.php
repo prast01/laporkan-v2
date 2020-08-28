@@ -33,6 +33,8 @@ class Dashboard extends MY_Controller {
                 redirect('../data','refresh');
             } elseif($data['level'] == '6') {
                 redirect('../pp','refresh');
+            } elseif($data['level'] == '7') {
+                redirect('../tempatKarantina','refresh');
             }
         } else {
           redirect('../','refresh');

@@ -54,7 +54,7 @@ class ServicesMobile extends MY_Controller {
                 "sehat" => $a->pdp_sembuh,
                 "komulatif" => $a->pdp_all,
                 "pdp_meninggal" => $a->pdp_meninggal,
-                "rawat" => $a->rawat,
+                "rawat" => $a->rawat + $a->rajal,
                 "sembuh" => $a->sembuh,
                 "meninggal" => $a->meninggal,
                 "komulatif" => $a->covid_all,
@@ -128,6 +128,20 @@ class ServicesMobile extends MY_Controller {
         echo json_encode($data);
     }
 
+    public function tes()
+    {
+        $data = array();
+        for ($i=0; $i < 10 ; $i++) { 
+            $data['surat'][$i]['id_surat'] = $i;
+            $data['surat'][$i]['tgl_surat'] = $i;
+            $data['surat'][$i]['penerima'] = $i;
+            $data['surat'][$i]['alamat'] = $i;
+            $data['surat'][$i]['no_hp'] = $i;
+            $data['surat'][$i]['jenis'] = $i;
+        }
+
+        echo json_encode($data);
+    }
 }
 
 /* End of file Services.php */

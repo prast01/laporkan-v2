@@ -1,14 +1,14 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Data extends MY_Controller {
+class Data extends MY_Controller
+{
 
     public function __construct()
     {
         parent::__construct();
         $this->load->model("M_data");
-  
     }
     public function index()
     {
@@ -152,11 +152,46 @@ class Data extends MY_Controller {
         } elseif ($kondisi == "meninggal") {
             $data['nama_lap'] = "MENINGGAL";
             $data['laporan'] = $model->getCovid("meninggal", $d);
+        } elseif ($kondisi == "semua") {
+            $data['nama_lap'] = "Keseluruhan";
+            $data['laporan'] = $model->getCovid("semua", $d);
         }
-        $this->template('covid', $data);
-        // var_dump($data['laporan']);
+
+        if ($kondisi == "semua") {
+            $this->template('covid2', $data);
+        } else {
+            $this->template('covid', $data);
+        }
     }
 
+    public function penyakit($kondisi)
+    {
+        $model = $this->M_data;
+        $data['id_user'] = $this->session->userdata("id_user");
+        $data['level'] = $this->session->userdata("level");
+        $data['kecamatan'] = $model->getKecamatan();
+        $data['rs'] = $model->getFaskes("RS");
+        $data['pkm'] = $model->getFaskes("PKM");
+        foreach ($data['kecamatan'] as $key) {
+            $kel = $model->getKelurahan($key->kode);
+            $no = 0;
+            foreach ($kel as $key2) {
+                $data['kel'][$key->kode][$no] = array(
+                    "id_kel" => $key2->id_kelurahan,
+                    "nama_kel" => $key2->nama_kelurahan
+                );
+                $no++;
+            }
+        }
+
+        if ($kondisi == "covid") {
+            $data['nama_lap'] = "PASIEN TERKONFIRMASI POSITIF";
+        } else {
+            $data['nama_lap'] = "PASIEN SUSPEK (ODP dan PDP)";
+        }
+        $data['laporan'] = $model->get_penyakit($kondisi);
+        $this->template("penyakit", $data);
+    }
 }
 
 /* End of file Data.php */

@@ -1,31 +1,32 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class M_home extends CI_Model {
+class M_home extends CI_Model
+{
 
     public function getPelapor()
     {
-        $data = $this->db->get_where("tb_user", ["level_user"=> "3"]);
+        $data = $this->db->get_where("tb_user", ["level_user" => "3"]);
 
         return $data;
     }
 
     public function getPelapor2()
     {
-        $data = $this->db->get_where("tb_faskes", ["kode_kecamatan"=>"3320"]);
+        $data = $this->db->get_where("tb_faskes", ["kode_kecamatan" => "3320"]);
 
         return $data;
     }
 
     public function getPelaporBy($id)
     {
-        $data = $this->db->get_where("tb_user", ["id_user"=> $id]);
+        $data = $this->db->get_where("tb_user", ["id_user" => $id]);
 
         return $data;
     }
     public function getLaporanBy($id)
     {
-        
+
         $this->db->select("*");
         $this->db->from("tb_laporan");
         $this->db->join("tb_kecamatan", "tb_laporan.id_kecamatan = tb_kecamatan.id_kecamatan");
@@ -40,7 +41,7 @@ class M_home extends CI_Model {
     {
         $id_user = $this->session->userdata("id_user");
         $level = $this->session->userdata("level");
-        $bl = (isset($_POST['bln'])) ? $_POST['bln'] : date('m') ;
+        $bl = (isset($_POST['bln'])) ? $_POST['bln'] : date('m');
         $this->db->select("*");
         $this->db->from("tb_laporan");
         $this->db->join("tb_user", "tb_laporan.created_by = tb_user.id_user");
@@ -239,13 +240,17 @@ class M_home extends CI_Model {
         $post = $this->input->post();
 
         $telp = explode("-", $post['no_telp']);
-        if ($telp[1] == "____" || substr($telp[0],0,2) != "08") {
-            $msg = array('res'=>0, 'msg' => 'Nomor Telp Harus Diisi dengan BENAR', 'kondisi' => $post['kondisi']);
+        if ($telp[1] == "____" || substr($telp[0], 0, 2) != "08") {
+            $msg = array('res' => 0, 'msg' => 'Nomor Telp Harus Diisi dengan BENAR', 'kondisi' => $post['kondisi']);
             return json_encode($msg);
         }
         // if ($post['umur'] == '' || $post['umur'] == '0') {
         if ($post['umur'] == '') {
-            $msg = array('res'=>0, 'msg' => 'Umur Harus Diisi dengan BENAR', 'kondisi' => $post['kondisi']);
+            $msg = array('res' => 0, 'msg' => 'Umur Harus Diisi dengan BENAR', 'kondisi' => $post['kondisi']);
+            return json_encode($msg);
+        }
+        if ($post['rawat'] == '') {
+            $msg = array('res' => 0, 'msg' => 'Perawatan Harus Diisi dengan BENAR', 'kondisi' => $post['kondisi']);
             return json_encode($msg);
         }
 
@@ -269,14 +274,14 @@ class M_home extends CI_Model {
             $rs = $faskes[0];
             $kota = $faskes[1];
         }
-        
+
 
         if ($post['nik'] != '' && strlen($post['nik']) == '16') {
             $cekNik = $this->cekNik($post['nik']);
             if ($cekNik == '0') {
-                if ($post['alamat_domisili'] != '' && $post['jekel'] != '' && $post['riwayat_jalan'] != '') {
+                if ($post['alamat_domisili'] != '' && $post['jekel'] != '' && $post['riwayat_jalan'] != '' && $post['nakes'] != '') {
                     $bpjs = $this->getBpjs($post['nik']);
-                    $data = array (
+                    $data = array(
                         'id_kecamatan' => $post['id_kecamatan'],
                         'tgl_periksa' => $post['tgl_periksa'],
                         'nik' => $post['nik'],
@@ -299,34 +304,32 @@ class M_home extends CI_Model {
                         'rs' => $rs,
                         'kota' => $kota,
                         "covid" => $covid,
-                        'rdt' => $post['rdt'],
                         'nakes' => $post['nakes'],
-                        'swab' => $post['swab']
+                        'penyakit' => $post['penyakit']
                     );
-            
+
                     if ($this->session->userdata("id_user") != "") {
                         $cek = $this->db->insert('tb_laporan', $data);
                     } else {
                         $cek = 0;
                     }
-                    
+
                     if ($cek) {
-                        $msg = array('res'=>1, 'msg' => 'Laporan Berhasil Dibuat', 'kondisi' => $post['kondisi']);
+                        $msg = array('res' => 1, 'msg' => 'Laporan Berhasil Dibuat', 'kondisi' => $post['kondisi']);
                     } else {
-                        $msg = array('res'=>0, 'msg' => 'Laporan Gagal Dibuat', 'kondisi' => $post['kondisi']);
+                        $msg = array('res' => 0, 'msg' => 'Laporan Gagal Dibuat', 'kondisi' => $post['kondisi']);
                     }
                 } else {
-                    $msg = array('res'=>0, 'msg' => 'Jenis Kelamin, Alamat Domisili dan Riwayat Perjalanan Tidak Boleh Kosong', 'kondisi' => $post['kondisi']);
+                    $msg = array('res' => 0, 'msg' => 'Nakes Non Nakes, Jenis Kelamin, Alamat Domisili dan Riwayat Perjalanan Tidak Boleh Kosong', 'kondisi' => $post['kondisi']);
                 }
             } else {
-                $msg = array('res'=>0, 'msg' => 'NIK Sudah Digunakan', 'kondisi' => $post['kondisi']);
+                $msg = array('res' => 0, 'msg' => 'NIK Sudah Digunakan', 'kondisi' => $post['kondisi']);
             }
-            
         } else {
-            $msg = array('res'=>0, 'msg' => 'NIK tidak berjumlah 16 karakter', 'kondisi' => $post['kondisi']);
+            $msg = array('res' => 0, 'msg' => 'NIK tidak berjumlah 16 karakter', 'kondisi' => $post['kondisi']);
         }
-        
-        
+
+
         return json_encode($msg);
     }
 
@@ -339,13 +342,13 @@ class M_home extends CI_Model {
         );
 
         $telp = explode("-", $post['no_telp']);
-        if ($telp[1] == "____" || substr($telp[0],0,2) != "08") {
-            $msg = array('res'=>0, 'msg' => 'Nomor Telp Harus Diisi dengan BENAR', 'kondisi' => $post['kondisi']);
+        if ($telp[1] == "____" || substr($telp[0], 0, 2) != "08") {
+            $msg = array('res' => 0, 'msg' => 'Nomor Telp Harus Diisi dengan BENAR', 'kondisi' => $post['kondisi']);
             return json_encode($msg);
         }
         // if ($post['umur'] == '' || $post['umur'] == '0') {
         if ($post['umur'] == '') {
-            $msg = array('res'=>0, 'msg' => 'Umur Harus Diisi dengan BENAR', 'kondisi' => $post['kondisi']);
+            $msg = array('res' => 0, 'msg' => 'Umur Harus Diisi dengan BENAR', 'kondisi' => $post['kondisi']);
             return json_encode($msg);
         }
 
@@ -369,9 +372,9 @@ class M_home extends CI_Model {
                 $cekNik = "0";
             }
             if ($cekNik == '0') {
-                if ($post['alamat_domisili'] != '' && $post['jekel'] != '' && $post['riwayat_jalan'] != '') {
+                if ($post['alamat_domisili'] != '' && $post['jekel'] != '' && $post['riwayat_jalan'] != '' && $post['nakes'] != '') {
                     $bpjs = $this->getBpjs($post['nik']);
-    
+
                     $data = array(
                         'id_kecamatan' => $post['id_kecamatan'],
                         'tgl_periksa' => $post['tgl_periksa'],
@@ -392,28 +395,27 @@ class M_home extends CI_Model {
                         'rs' => $rs,
                         'kota' => $kota,
                         'kirim' => 0,
-                        'rdt' => $post['rdt'],
                         'nakes' => $post['nakes'],
-                        'swab' => $post['swab']
+                        'penyakit' => $post['penyakit']
                     );
-    
+
                     $cek = $this->db->update('tb_laporan', $data, $where);
-            
+
                     if ($cek) {
-                        $msg = array('res'=>1, 'msg' => 'Laporan Berhasil Diperbarui', 'kondisi' => $post['kondisi']);
+                        $msg = array('res' => 1, 'msg' => 'Laporan Berhasil Diperbarui', 'kondisi' => $post['kondisi']);
                     } else {
-                        $msg = array('res'=>0, 'msg' => 'Laporan Gagal Diperbarui', 'kondisi' => $post['kondisi']);
+                        $msg = array('res' => 0, 'msg' => 'Laporan Gagal Diperbarui', 'kondisi' => $post['kondisi']);
                     }
                 } else {
-                    $msg = array('res'=>0, 'msg' => 'Umur, Jenis Kelamin, No. Telepon, Alamat Domisili dan Riwayat Perjalanan Tidak Boleh Kosong', 'kondisi' => $post['kondisi']);
+                    $msg = array('res' => 0, 'msg' => 'Nakes Non Nakes, Umur, Jenis Kelamin, No. Telepon, Alamat Domisili dan Riwayat Perjalanan Tidak Boleh Kosong', 'kondisi' => $post['kondisi']);
                 }
             } else {
-                $msg = array('res'=>0, 'msg' => 'NIK Sudah Digunakan', 'kondisi' => $post['kondisi']);
+                $msg = array('res' => 0, 'msg' => 'NIK Sudah Digunakan', 'kondisi' => $post['kondisi']);
             }
         } else {
-            $msg = array('res'=>0, 'msg' => 'NIK tidak berjumlah 16 karakter', 'kondisi' => $post['kondisi']);
+            $msg = array('res' => 0, 'msg' => 'NIK tidak berjumlah 16 karakter', 'kondisi' => $post['kondisi']);
         }
-        
+
         return json_encode($msg);
     }
 
@@ -431,9 +433,9 @@ class M_home extends CI_Model {
                 'data_id' => $data_id
             );
             $this->db->insert("tb_delete", $data);
-            $msg = array('res'=>1, 'msg' => 'Laporan Berhasil Dihapus');
+            $msg = array('res' => 1, 'msg' => 'Laporan Berhasil Dihapus');
         } else {
-            $msg = array('res'=>0, 'msg' => 'Laporan Gagal Dihapus');
+            $msg = array('res' => 0, 'msg' => 'Laporan Gagal Dihapus');
         }
 
         return json_encode($msg);
@@ -452,6 +454,7 @@ class M_home extends CI_Model {
         $kasus = $q->kasus + 1;
 
         $data = array(
+            'kondisi' => 2,
             'covid' => 1,
             'kasus' => $kasus,
             'valid_at' => date("Y-m-d H.i.s")
@@ -465,9 +468,9 @@ class M_home extends CI_Model {
 
         if ($cek) {
             // $this->_insertData(date("Y-m-d"));
-            $msg = array('res'=>1, 'msg' => 'Data Berhasil Diubah');
+            $msg = array('res' => 1, 'msg' => 'Data Berhasil Diubah');
         } else {
-            $msg = array('res'=>0, 'msg' => 'Data Gagal Diubah');
+            $msg = array('res' => 0, 'msg' => 'Data Gagal Diubah');
         }
 
         return json_encode($msg);
@@ -488,9 +491,9 @@ class M_home extends CI_Model {
 
         if ($cek) {
             // $this->_insertData(date("Y-m-d"));
-            $msg = array('res'=>1, 'msg' => 'Data Berhasil Diubah');
+            $msg = array('res' => 1, 'msg' => 'Data Berhasil Diubah');
         } else {
-            $msg = array('res'=>0, 'msg' => 'Data Gagal Diubah');
+            $msg = array('res' => 0, 'msg' => 'Data Gagal Diubah');
         }
 
         return json_encode($msg);
@@ -511,14 +514,14 @@ class M_home extends CI_Model {
 
         if ($cek) {
             // $this->_insertData(date("Y-m-d"));
-            $msg = array('res'=>1, 'msg' => 'Data Berhasil Diubah');
+            $msg = array('res' => 1, 'msg' => 'Data Berhasil Diubah');
         } else {
-            $msg = array('res'=>0, 'msg' => 'Data Gagal Diubah');
+            $msg = array('res' => 0, 'msg' => 'Data Gagal Diubah');
         }
 
         return json_encode($msg);
     }
-    
+
     public function sendPDP($id)
     {
         $post = $this->input->post();
@@ -540,9 +543,9 @@ class M_home extends CI_Model {
 
         if ($cek) {
             // $this->_insertData(date("Y-m-d"));
-            $msg = array('res'=>1, 'msg' => 'Data Berhasil Diubah');
+            $msg = array('res' => 1, 'msg' => 'Data Berhasil Diubah');
         } else {
-            $msg = array('res'=>0, 'msg' => 'Data Gagal Diubah');
+            $msg = array('res' => 0, 'msg' => 'Data Gagal Diubah');
         }
 
         return json_encode($msg);
@@ -555,6 +558,10 @@ class M_home extends CI_Model {
             'valid_at' => date("Y-m-d H.i.s")
         );
 
+        $data2 = array(
+            'st' => 1
+        );
+
         $where = array(
             'id_laporan' => $id
         );
@@ -563,14 +570,15 @@ class M_home extends CI_Model {
 
         if ($cek) {
             // $this->_insertData(date("Y-m-d"));
-            $msg = array('res'=>1, 'msg' => 'Data Berhasil Diubah');
+            $this->db->update('tb_pasien_karantina', $data2, $where);
+            $msg = array('res' => 1, 'msg' => 'Data Berhasil Diubah');
         } else {
-            $msg = array('res'=>0, 'msg' => 'Data Gagal Diubah');
+            $msg = array('res' => 0, 'msg' => 'Data Gagal Diubah');
         }
 
         return json_encode($msg);
     }
-    
+
     public function changePass($id_user)
     {
         $post = $this->input->post();
@@ -589,15 +597,14 @@ class M_home extends CI_Model {
             $this->db->where($where);
             $cek = $this->db->update('tb_user', $data);
             if ($cek) {
-                $msg = array("res"=> 1, "msg"=>"Berhasil Merubah Password");
+                $msg = array("res" => 1, "msg" => "Berhasil Merubah Password");
             } else {
-                $msg = array("res"=> 0, "msg"=>"Gagal Merubah Password");
+                $msg = array("res" => 0, "msg" => "Gagal Merubah Password");
             }
-            
         } else {
-            $msg = array("res"=> 0, "msg"=>"Ulangi Input Password, Password Tidak sama.");
+            $msg = array("res" => 0, "msg" => "Ulangi Input Password, Password Tidak sama.");
         }
-        
+
         return json_encode($msg);
     }
 
@@ -609,7 +616,7 @@ class M_home extends CI_Model {
             $result = file_get_contents($url);
             // Will dump a beauty json :3
             $data = json_decode($result, true);
-    
+
             if ($data['ketAktif'] == '' || $data['ketAktif'] == 'MENINGGAL') {
             } else {
                 $hsl = $data['ketAktif'];
@@ -617,7 +624,7 @@ class M_home extends CI_Model {
         } else {
             $hsl = 'NIK TIDAK BENAR';
         }
-        
+
         return $hsl;
     }
 
@@ -628,19 +635,12 @@ class M_home extends CI_Model {
         return $data;
     }
 
-    public function cekNikOtg($nik)
-    {
-        $data = $this->db->get_where("tb_otg", ["nik" => $nik])->num_rows();
-
-        return $data;
-    }
-
     public function cekPasien()
     {
-        $sblm = mktime(0, 0, 0, date('n'), date('j')-14, date('Y'));
+        $sblm = mktime(0, 0, 0, date('n'), date('j') - 14, date('Y'));
 
         $tgl = date("Y-m-d", $sblm);
-        
+
         $data = array(
             "covid" => "2"
         );
@@ -669,7 +669,7 @@ class M_home extends CI_Model {
     public function getApi2($id)
     {
         // $this->cekPasien();
-        $url = "http://lapor-covid19.mi-kes.net/services/getData3/".$id;
+        $url = "http://lapor-covid19.mi-kes.net/services/getData3/" . $id;
         $result = file_get_contents($url);
         // Will dump a beauty json :3
         $data = json_decode($result, true);
@@ -678,7 +678,7 @@ class M_home extends CI_Model {
     }
 
     // UPDATE KE KOMINFO
-    
+
     public function updateAll()
     {
         $data = array(
@@ -700,22 +700,119 @@ class M_home extends CI_Model {
             "rawat" => $this->getCov("rawat"),
             "sembuh" => $this->getCov("sembuh"),
             "meninggal" => $this->getCov("meninggal"),
-            "rawat_luar" => $this->getCov("rawat_luar")
+            "rawat_luar" => $this->getCov("rawat_luar"),
+            "rajal" => $this->getCov("rajal")
         );
 
         $cek = $this->db->insert("tb_update", $data);
-        
+
         if ($cek) {
             $this->updateLaporan("1");
             $this->updateLaporan("2");
             $this->updateHarian();
             $this->updateKec();
-            $msg = array("res"=> 1, "msg"=>"Berhasil Update Data ke CORONA.JEPARA.GO.ID");
+            $msg = array("res" => 1, "msg" => "Berhasil Update Data ke CORONA.JEPARA.GO.ID");
         } else {
-            $msg = array("res"=> 0, "msg"=>"Gagal Update Data ke CORONA.JEPARA.GO.ID");
+            $msg = array("res" => 0, "msg" => "Gagal Update Data ke CORONA.JEPARA.GO.ID");
         }
 
         return $msg;
+    }
+
+    public function updateAll2()
+    {
+        $data = array(
+            "update_at" => date("Y-m-d H:i:s"),
+            "odp_lama" => $this->getODP2("lama"),
+            "odp_baru" => $this->getODP2("baru"),
+            "odp_all" => $this->getODP2("komulatif"),
+            "odp_lulus" => $this->getODP2("lulus"),
+            "odp_proses" => $this->getODP2("proses"),
+            "pdp_ranap" => $this->getPDP2("ranap"),
+            "pdp_rajal" => $this->getPDP2("rajal"),
+            "pdp_rujuk" => $this->getPDP2("rujuk"),
+            "pdp_sembuh" => $this->getPDP2("sembuh"),
+            "pdp_all" => $this->getPDP2("komulatif"),
+            "pdp_lama" => $this->getPDP2("lama"),
+            "pdp_baru" => $this->getPDP2("baru"),
+            "pdp_meninggal" => $this->getPDP2("meninggal"),
+            "covid_all" => $this->getCov2("komulatif"),
+            "rawat" => $this->getCov2("rawat"),
+            "sembuh" => $this->getCov2("sembuh"),
+            "meninggal" => $this->getCov2("meninggal"),
+            "rawat_luar" => $this->getCov2("rawat_luar"),
+            "rajal" => $this->getCov2("rajal")
+        );
+
+        $cek = $this->db->insert("tb_update", $data);
+
+        if ($cek) {
+            $this->updateLaporan("1");
+            $this->updateLaporan("2");
+            // $this->updateHarian();
+            $this->updateKec2();
+            $msg = array("res" => 1, "msg" => "Berhasil Update Data ke CORONA.JEPARA.GO.ID");
+        } else {
+            $msg = array("res" => 0, "msg" => "Gagal Update Data ke CORONA.JEPARA.GO.ID");
+        }
+
+        return $msg;
+    }
+
+    public function updateAll3()
+    {
+        $q = $this->db->query("SELECT * FROM tb_update_1 WHERE crowl='0' ORDER BY update_at DESC LIMIT 1");
+
+        if ($q->num_rows() > 0) {
+            $d = $q->row();
+            $waktu = $d->update_at;
+            $where = array(
+                'id_update' => $d->id_update
+            );
+            $data = array(
+                "odp_lama" => $this->getODP3("lama", $waktu),
+                "odp_baru" => $this->getODP3("baru", $waktu),
+                "odp_all" => $this->getODP3("komulatif", $waktu),
+                "odp_lulus" => $this->getODP3("lulus", $waktu),
+                "odp_proses" => $this->getODP3("proses", $waktu),
+                "pdp_ranap" => $this->getPDP3("ranap", $waktu),
+                "pdp_rajal" => $this->getPDP3("rajal", $waktu),
+                "pdp_rujuk" => $this->getPDP3("rujuk", $waktu),
+                "pdp_sembuh" => $this->getPDP3("sembuh", $waktu),
+                "pdp_all" => $this->getPDP3("komulatif", $waktu),
+                "pdp_lama" => $this->getPDP3("lama", $waktu),
+                "pdp_baru" => $this->getPDP3("baru", $waktu),
+                "pdp_meninggal" => $this->getPDP3("meninggal", $waktu),
+                "covid_all" => $this->getCov3("komulatif", $waktu),
+                "rawat" => $this->getCov3("rawat", $waktu),
+                "sembuh" => $this->getCov3("sembuh", $waktu),
+                "meninggal" => $this->getCov3("meninggal", $waktu),
+                "rawat_luar" => $this->getCov3("rawat_luar", $waktu),
+                "rajal" => $this->getCov3("rajal", $waktu)
+            );
+
+            $cek = $this->db->update("tb_update", $data, $where);
+
+            if ($cek) {
+                $dt = array(
+                    "waktu" => $waktu,
+                    "status" => "OK"
+                );
+                $msg = array("res" => 1, "data" => $dt);
+                $this->db->update("tb_update", ["crowl" => 1], $where);
+            } else {
+                $dt = array(
+                    "waktu" => $waktu,
+                    "status" => "GAGAL"
+                );
+                $msg = array("res" => 0, "data" => $dt);
+            }
+        } else {
+            $this->db->query("UPDATE tb_update_1 SET crowl='0'");
+            $msg = array("res" => 2);
+        }
+
+        return json_encode($msg);
     }
 
     public function updateLaporan($id)
@@ -730,6 +827,7 @@ class M_home extends CI_Model {
         );
         $this->db->update("tb_laporan", $data, $where);
     }
+
     public function getODP($id)
     {
         if ($id == "baru") {
@@ -752,23 +850,23 @@ class M_home extends CI_Model {
                 "validasi !=" => "2",
                 "covid !=" => "1"
             );
-        } elseif($id == "lulus") {
+        } elseif ($id == "lulus") {
             $where = array(
                 "kondisi" => "1",
                 "validasi" => "1",
                 "covid" => "2"
             );
-        } elseif($id == "proses") {
+        } elseif ($id == "proses") {
             $where = array(
                 "kondisi" => "1",
                 "validasi !=" => "2",
                 "covid" => "0"
             );
         }
-        
+
         $data = $this->db->get_where("tb_laporan", $where)->num_rows();
 
-        return number_format($data, 0, ",", ".");
+        return $data;
     }
 
     public function getPDP($id)
@@ -806,27 +904,27 @@ class M_home extends CI_Model {
                 "covid" => "0",
                 "st" => "1"
             );
-        } elseif($id == "komulatif") {
+        } elseif ($id == "komulatif") {
             $where = array(
                 "kondisi" => "2",
                 "validasi !=" => "2",
                 "covid !=" => "1"
             );
-        } elseif($id == "lama") {
+        } elseif ($id == "lama") {
             $this->db->not_like('valid_at', date("Y-m-d"));
             $where = array(
                 "kondisi" => "2",
                 "validasi !=" => "2",
                 "covid" => "0"
             );
-        } elseif($id == "baru") {
+        } elseif ($id == "baru") {
             $this->db->like('valid_at', date("Y-m-d"));
             $where = array(
                 "kondisi" => "2",
                 "validasi !=" => "2",
                 "covid" => "0"
             );
-        } elseif($id == "meninggal") {
+        } elseif ($id == "meninggal") {
             $where = array(
                 "kondisi" => "2",
                 "validasi !=" => "2",
@@ -834,23 +932,10 @@ class M_home extends CI_Model {
                 "st" => "2"
             );
         }
-        
-        $data = $this->db->get_where("tb_laporan", $where)->num_rows();
-
-        return number_format($data, 0, ",", ".");
-        
-    }
-
-    public function getCovidAll()
-    {
-        $where = array(
-            "kondisi" => "2",
-            "covid" => "1"
-        );
 
         $data = $this->db->get_where("tb_laporan", $where)->num_rows();
 
-        return number_format($data, 0, ",", ".");
+        return $data;
     }
 
     public function getCov($id)
@@ -865,7 +950,8 @@ class M_home extends CI_Model {
                 "kondisi" => "2",
                 "covid" => "1",
                 "st" => "0",
-                "rujuk" => "0"
+                "rujuk" => "0",
+                "rawat !=" => "RAWAT JALAN"
             );
         } elseif ($id == "sembuh") {
             $where = array(
@@ -891,7 +977,398 @@ class M_home extends CI_Model {
                 "st" => "0",
                 "rujuk" => "1"
             );
+        } elseif ($id == "rajal") {
+            $where = array(
+                "kondisi" => "2",
+                "covid" => "1",
+                "st" => "0",
+                "rujuk" => "0",
+                "rawat" => "RAWAT JALAN"
+            );
         }
+
+        $data = $this->db->get_where("tb_laporan", $where)->num_rows();
+
+        return $data;
+    }
+    // tambahan baru hlooo
+    public function getODP2($id)
+    {
+        if ($id == "baru") {
+            $this->db->like('valid_at', date("Y-m-d"));
+            $where = array(
+                "kondisi" => "1",
+                "validasi !=" => "2",
+                "covid" => "0",
+                "id_kecamatan !=" => "17"
+            );
+        } elseif ($id == "lama") {
+            $this->db->not_like('valid_at', date("Y-m-d"));
+            $where = array(
+                "kondisi" => "1",
+                "validasi !=" => "2",
+                "covid" => "0",
+                "id_kecamatan !=" => "17"
+            );
+        } elseif ($id == "komulatif") {
+            $where = array(
+                "kondisi" => "1",
+                "validasi !=" => "2",
+                "covid !=" => "1",
+                "id_kecamatan !=" => "17"
+            );
+        } elseif ($id == "lulus") {
+            $where = array(
+                "kondisi" => "1",
+                "validasi" => "1",
+                "covid" => "2",
+                "id_kecamatan !=" => "17"
+            );
+        } elseif ($id == "proses") {
+            $where = array(
+                "kondisi" => "1",
+                "validasi !=" => "2",
+                "covid" => "0",
+                "id_kecamatan !=" => "17"
+            );
+        }
+
+        $data = $this->db->get_where("tb_laporan", $where)->num_rows();
+
+        return $data;
+    }
+
+    public function getPDP2($id)
+    {
+        if ($id == "ranap") {
+            $where = array(
+                "kondisi" => "2",
+                "validasi !=" => "2",
+                "covid" => "0",
+                "rujuk" => "0",
+                "st" => "0",
+                "rawat !=" => "RAWAT JALAN",
+                "id_kecamatan !=" => "17"
+            );
+        } elseif ($id == "rajal") {
+            $where = array(
+                "kondisi" => "2",
+                "validasi !=" => "2",
+                "covid" => "0",
+                "rujuk" => "0",
+                "st" => "0",
+                "rawat" => "RAWAT JALAN",
+                "id_kecamatan !=" => "17"
+            );
+        } elseif ($id == "rujuk") {
+            $where = array(
+                "kondisi" => "2",
+                "validasi !=" => "2",
+                "covid" => "0",
+                "rujuk" => "1",
+                "st" => "0",
+                "id_kecamatan !=" => "17"
+            );
+        } elseif ($id == "sembuh") {
+            $where = array(
+                "kondisi" => "2",
+                "validasi !=" => "2",
+                "covid" => "0",
+                "st" => "1",
+                "id_kecamatan !=" => "17"
+            );
+        } elseif ($id == "komulatif") {
+            $where = array(
+                "kondisi" => "2",
+                "validasi !=" => "2",
+                "covid !=" => "1",
+                "id_kecamatan !=" => "17"
+            );
+        } elseif ($id == "lama") {
+            $this->db->not_like('valid_at', date("Y-m-d"));
+            $where = array(
+                "kondisi" => "2",
+                "validasi !=" => "2",
+                "covid" => "0",
+                "id_kecamatan !=" => "17"
+            );
+        } elseif ($id == "baru") {
+            $this->db->like('valid_at', date("Y-m-d"));
+            $where = array(
+                "kondisi" => "2",
+                "validasi !=" => "2",
+                "covid" => "0",
+                "id_kecamatan !=" => "17"
+            );
+        } elseif ($id == "meninggal") {
+            $where = array(
+                "kondisi" => "2",
+                "validasi !=" => "2",
+                "covid" => "0",
+                "st" => "2",
+                "id_kecamatan !=" => "17"
+            );
+        }
+
+        $data = $this->db->get_where("tb_laporan", $where)->num_rows();
+
+        return $data;
+    }
+
+    public function getCov2($id)
+    {
+        if ($id == "rawat") {
+            $where = array(
+                "kondisi" => "2",
+                "covid" => "1",
+                "st" => "0",
+                "rujuk" => "0",
+                "rawat !=" => "RAWAT JALAN",
+                "id_kecamatan !=" => "17"
+            );
+        } elseif ($id == "sembuh") {
+            $where = array(
+                "kondisi" => "2",
+                "covid" => "1",
+                "st" => "1",
+                "id_kecamatan !=" => "17"
+            );
+        } elseif ($id == "meninggal") {
+            $where = array(
+                "kondisi" => "2",
+                "covid" => "1",
+                "st" => "2",
+                "id_kecamatan !=" => "17"
+            );
+        } elseif ($id == "komulatif") {
+            $where = array(
+                "kondisi" => "2",
+                "covid" => "1",
+                "id_kecamatan !=" => "17"
+            );
+        } elseif ($id == "rawat_luar") {
+            $where = array(
+                "kondisi" => "2",
+                "covid" => "1",
+                "st" => "0",
+                "rujuk" => "1",
+                "id_kecamatan !=" => "17"
+            );
+        } elseif ($id == "rajal") {
+            $where = array(
+                "kondisi" => "2",
+                "covid" => "1",
+                "st" => "0",
+                "rujuk" => "0",
+                "rawat" => "RAWAT JALAN",
+                "id_kecamatan !=" => "17"
+            );
+        }
+
+        $data = $this->db->get_where("tb_laporan", $where)->num_rows();
+
+        return $data;
+    }
+
+    public function getODP3($id, $waktu)
+    {
+        if ($id == "baru") {
+            $this->db->like('valid_at', date("Y-m-d", strtotime($waktu)));
+            $where = array(
+                "kondisi" => "1",
+                "validasi !=" => "2",
+                "covid" => "0",
+                "id_kecamatan !=" => "17"
+            );
+        } elseif ($id == "lama") {
+            $this->db->not_like('valid_at', date("Y-m-d", strtotime($waktu)));
+            $where = array(
+                "kondisi" => "1",
+                "validasi !=" => "2",
+                "covid" => "0",
+                "id_kecamatan !=" => "17"
+            );
+        } elseif ($id == "komulatif") {
+            $where = array(
+                "kondisi" => "1",
+                "validasi !=" => "2",
+                "covid !=" => "1",
+                "id_kecamatan !=" => "17",
+                "valid_at <=" => $waktu
+            );
+        } elseif ($id == "lulus") {
+            $where = array(
+                "kondisi" => "1",
+                "validasi" => "1",
+                "covid" => "2",
+                "id_kecamatan !=" => "17",
+                "valid_at <=" => $waktu
+            );
+        } elseif ($id == "proses") {
+            $where = array(
+                "kondisi" => "1",
+                "validasi !=" => "2",
+                "covid" => "0",
+                "id_kecamatan !=" => "17",
+                "valid_at <=" => $waktu
+            );
+        }
+
+        $data = $this->db->get_where("tb_laporan", $where)->num_rows();
+
+        return $data;
+    }
+
+    public function getPDP3($id, $waktu)
+    {
+        if ($id == "ranap") {
+            $where = array(
+                "kondisi" => "2",
+                "validasi !=" => "2",
+                "covid" => "0",
+                "rujuk" => "0",
+                "st" => "0",
+                "rawat !=" => "RAWAT JALAN",
+                "id_kecamatan !=" => "17",
+                "valid_at <=" => $waktu
+            );
+        } elseif ($id == "rajal") {
+            $where = array(
+                "kondisi" => "2",
+                "validasi !=" => "2",
+                "covid" => "0",
+                "rujuk" => "0",
+                "st" => "0",
+                "rawat" => "RAWAT JALAN",
+                "id_kecamatan !=" => "17",
+                "valid_at <=" => $waktu
+            );
+        } elseif ($id == "rujuk") {
+            $where = array(
+                "kondisi" => "2",
+                "validasi !=" => "2",
+                "covid" => "0",
+                "rujuk" => "1",
+                "st" => "0",
+                "id_kecamatan !=" => "17",
+                "valid_at <=" => $waktu
+            );
+        } elseif ($id == "sembuh") {
+            $where = array(
+                "kondisi" => "2",
+                "validasi !=" => "2",
+                "covid" => "0",
+                "st" => "1",
+                "id_kecamatan !=" => "17",
+                "valid_at <=" => $waktu
+            );
+        } elseif ($id == "komulatif") {
+            $where = array(
+                "kondisi" => "2",
+                "validasi !=" => "2",
+                "covid !=" => "1",
+                "id_kecamatan !=" => "17",
+                "valid_at <=" => $waktu
+            );
+        } elseif ($id == "lama") {
+            $this->db->not_like('valid_at', date("Y-m-d", strtotime($waktu)));
+            $where = array(
+                "kondisi" => "2",
+                "validasi !=" => "2",
+                "covid" => "0",
+                "id_kecamatan !=" => "17"
+            );
+        } elseif ($id == "baru") {
+            $this->db->like('valid_at', date("Y-m-d", strtotime($waktu)));
+            $where = array(
+                "kondisi" => "2",
+                "validasi !=" => "2",
+                "covid" => "0",
+                "id_kecamatan !=" => "17"
+            );
+        } elseif ($id == "meninggal") {
+            $where = array(
+                "kondisi" => "2",
+                "validasi !=" => "2",
+                "covid" => "0",
+                "st" => "2",
+                "id_kecamatan !=" => "17",
+                "valid_at <=" => $waktu
+            );
+        }
+
+        $data = $this->db->get_where("tb_laporan", $where)->num_rows();
+
+        return $data;
+    }
+
+    public function getCov3($id, $waktu)
+    {
+        if ($id == "rawat") {
+            $where = array(
+                "kondisi" => "2",
+                "covid" => "1",
+                "st" => "0",
+                "rujuk" => "0",
+                "rawat !=" => "RAWAT JALAN",
+                "id_kecamatan !=" => "17",
+                "valid_at <=" => $waktu
+            );
+        } elseif ($id == "sembuh") {
+            $where = array(
+                "kondisi" => "2",
+                "covid" => "1",
+                "st" => "1",
+                "id_kecamatan !=" => "17",
+                "valid_at <=" => $waktu
+            );
+        } elseif ($id == "meninggal") {
+            $where = array(
+                "kondisi" => "2",
+                "covid" => "1",
+                "st" => "2",
+                "id_kecamatan !=" => "17",
+                "valid_at <=" => $waktu
+            );
+        } elseif ($id == "komulatif") {
+            $where = array(
+                "kondisi" => "2",
+                "covid" => "1",
+                "id_kecamatan !=" => "17",
+                "valid_at <=" => $waktu
+            );
+        } elseif ($id == "rawat_luar") {
+            $where = array(
+                "kondisi" => "2",
+                "covid" => "1",
+                "st" => "0",
+                "rujuk" => "1",
+                "id_kecamatan !=" => "17",
+                "valid_at <=" => $waktu
+            );
+        } elseif ($id == "rajal") {
+            $where = array(
+                "kondisi" => "2",
+                "covid" => "1",
+                "st" => "0",
+                "rujuk" => "0",
+                "rawat" => "RAWAT JALAN",
+                "id_kecamatan !=" => "17",
+                "valid_at <=" => $waktu
+            );
+        }
+
+        $data = $this->db->get_where("tb_laporan", $where)->num_rows();
+
+        return $data;
+    }
+
+    public function getCovidAll()
+    {
+        $where = array(
+            "kondisi" => "2",
+            "covid" => "1"
+        );
 
         $data = $this->db->get_where("tb_laporan", $where)->num_rows();
 
@@ -902,25 +1379,25 @@ class M_home extends CI_Model {
     {
         $msg = 0;
         $this->db->truncate("tb_harian");
-        for ($i=4; $i >= 0 ; $i--) { 
-            $sblm = mktime(0, 0, 0, date('n'), date('j')-$i, date('Y'));
+        for ($i = 4; $i >= 0; $i--) {
+            $sblm = mktime(0, 0, 0, date('n'), date('j') - $i, date('Y'));
 
             if ($i == 4) {
                 $tgl2 = date("Y-m-d", $sblm);
-                $tgl = $tgl2." 23:59:00";
-                echo $tgl."<br>";
+                $tgl = $tgl2 . " 23:59:00";
+                echo $tgl . "<br>";
                 $odp = $this->db->query("SELECT * FROM tb_laporan WHERE validasi != '2' AND kondisi='1' AND covid != '1' AND valid_at <= '$tgl'")->num_rows();
                 $pdp = $this->db->query("SELECT * FROM tb_laporan WHERE validasi != '2' AND kondisi='2' AND covid != '1' AND valid_at <= '$tgl'")->num_rows();
                 $covid = $this->db->query("SELECT * FROM tb_laporan WHERE kondisi='2' AND covid='1' AND valid_at <= '$tgl'")->num_rows();
             } else {
                 $tgl = date("Y-m-d", $sblm);
-                echo $tgl."<br>";
+                echo $tgl . "<br>";
                 $odp = $this->db->query("SELECT * FROM tb_laporan WHERE validasi != '2' AND kondisi='1' AND covid != '1' AND valid_at LIKE '$tgl%'")->num_rows();
                 $pdp = $this->db->query("SELECT * FROM tb_laporan WHERE validasi != '2' AND kondisi='2' AND covid != '1' AND valid_at LIKE '$tgl%'")->num_rows();
                 $covid = $this->db->query("SELECT * FROM tb_laporan WHERE kondisi='2' AND covid='1' AND valid_at LIKE '$tgl%'")->num_rows();
             }
-            
-            
+
+
             $data = array(
                 "tanggal" => date("Y-m-d", strtotime($tgl)),
                 "jumlah_odp" => $odp,
@@ -930,14 +1407,13 @@ class M_home extends CI_Model {
             $where = array(
                 "tanggal" => date("Y-m-d", strtotime($tgl))
             );
-    
+
             $hsl = $this->db->insert("tb_harian", $data);
             if ($hsl) {
                 $msg = 1;
             } else {
                 $msg = 0;
             }
-            
         }
         return $msg;
     }
@@ -1025,7 +1501,7 @@ class M_home extends CI_Model {
                 "st" => "1",
                 "id_kecamatan" => $id_k
             );
-        } elseif($id == "pdp_meninggal") {
+        } elseif ($id == "pdp_meninggal") {
             $where = array(
                 "kondisi" => "2",
                 "validasi" => "1",
@@ -1078,7 +1554,116 @@ class M_home extends CI_Model {
             $d = array(
                 "pdp_sehat" => $data
             );
-        } elseif($id == "pdp_meninggal") {
+        } elseif ($id == "pdp_meninggal") {
+            $d = array(
+                "pdp_meninggal" => $data
+            );
+        } elseif ($id == "covid") {
+            $d = array(
+                "covid_all" => $data
+            );
+        } elseif ($id == "covid_sembuh") {
+            $d = array(
+                "covid_sembuh" => $data
+            );
+        } elseif ($id == "covid_md") {
+            $d = array(
+                "covid_meninggal" => $data
+            );
+        }
+
+        $w = array(
+            "id_kecamatan" => $id_k
+        );
+        $this->db->update("tb_kecamatan", $d, $w);
+    }
+
+    public function _updateDataKec2($id, $id_k)
+    {
+        if ($id == "odp") {
+            $where = array(
+                "kondisi" => "1",
+                "validasi" => "1",
+                "covid" => "0",
+                "id_kecamatan" => $id_k
+            );
+        } elseif ($id == "odp_selesai") {
+            $where = array(
+                "kondisi" => "1",
+                "validasi" => "1",
+                "covid" => "2",
+                "id_kecamatan" => $id_k
+            );
+        } elseif ($id == "pdp") {
+            $where = array(
+                "kondisi" => "2",
+                "validasi" => "1",
+                "covid" => "0",
+                "st" => "0",
+                "id_kecamatan" => $id_k
+            );
+        } elseif ($id == "pdp_sehat") {
+            $where = array(
+                "kondisi" => "2",
+                "validasi" => "1",
+                "covid" => "0",
+                "st" => "1",
+                "id_kecamatan" => $id_k
+            );
+        } elseif ($id == "pdp_meninggal") {
+            $where = array(
+                "kondisi" => "2",
+                "validasi" => "1",
+                "covid" => "0",
+                "st" => "2",
+                "id_kecamatan" => $id_k
+            );
+        } elseif ($id == "covid") {
+            $where = array(
+                "kondisi" => "2",
+                "validasi" => "1",
+                "covid" => "1",
+                "st" => "0",
+                "id_kecamatan" => $id_k
+            );
+        } elseif ($id == "covid_sembuh") {
+            $where = array(
+                "kondisi" => "2",
+                "validasi" => "1",
+                "covid" => "1",
+                "st" => "1",
+                "id_kecamatan" => $id_k
+            );
+        } elseif ($id == "covid_md") {
+            $where = array(
+                "kondisi" => "2",
+                "validasi" => "1",
+                "covid" => "1",
+                "st" => "2",
+                "id_kecamatan" => $id_k
+            );
+        }
+
+        $data = $this->db->get_where("tb_laporan", $where)->num_rows();
+
+        // return $data;
+        if ($id == "odp") {
+            $d = array(
+                "odp" => $data
+            );
+        } elseif ($id == "odp_selesai") {
+            $d = array(
+                "odp_selesai" => $data
+            );
+        } elseif ($id == "pdp") {
+            $d = array(
+                "pdp" => $data
+            );
+        } elseif ($id == "pdp_sehat") {
+            $d = array(
+                "pdp_sehat" => $data
+            );
+        } elseif ($id == "pdp_meninggal") {
             $d = array(
                 "pdp_meninggal" => $data
             );
@@ -1110,14 +1695,30 @@ class M_home extends CI_Model {
             // $this->getOP2("1",$id);
             // $this->getOP2("2",$id);
             // $this->getCovidAll2($id);
-            $this->_updateDataKec("odp",$id);
-            $this->_updateDataKec("odp_selesai",$id);
-            $this->_updateDataKec("pdp",$id);
-            $this->_updateDataKec("pdp_sehat",$id);
-            $this->_updateDataKec("pdp_meninggal",$id);
-            $this->_updateDataKec("covid",$id);
-            $this->_updateDataKec("covid_sembuh",$id);
-            $this->_updateDataKec("covid_md",$id);
+            $this->_updateDataKec("odp", $id);
+            $this->_updateDataKec("odp_selesai", $id);
+            $this->_updateDataKec("pdp", $id);
+            $this->_updateDataKec("pdp_sehat", $id);
+            $this->_updateDataKec("pdp_meninggal", $id);
+            $this->_updateDataKec("covid", $id);
+            $this->_updateDataKec("covid_sembuh", $id);
+            $this->_updateDataKec("covid_md", $id);
+        }
+    }
+
+    public function updateKec2()
+    {
+        $d = $this->getKecamatan()->result();
+        foreach ($d as $key) {
+            $id = $key->id_kecamatan;
+            $this->_updateDataKec2("odp", $id);
+            $this->_updateDataKec2("odp_selesai", $id);
+            $this->_updateDataKec2("pdp", $id);
+            $this->_updateDataKec2("pdp_sehat", $id);
+            $this->_updateDataKec2("pdp_meninggal", $id);
+            $this->_updateDataKec2("covid", $id);
+            $this->_updateDataKec2("covid_sembuh", $id);
+            $this->_updateDataKec2("covid_md", $id);
         }
     }
 
@@ -1223,17 +1824,17 @@ class M_home extends CI_Model {
         $d = $this->getKelurahan()->result();
         foreach ($d as $key) {
             $id = $key->id_kelurahan;
-            $this->_updateDataKel("odp",$id);
-            $this->_updateDataKel("odp_selesai",$id);
-            $this->_updateDataKel("pdp",$id);
-            $this->_updateDataKel("pdp_sehat",$id);
-            $this->_updateDataKel("covid",$id);
-            $this->_updateDataKel("covid_sembuh",$id);
-            $this->_updateDataKel("covid_md",$id);
+            $this->_updateDataKel("odp", $id);
+            $this->_updateDataKel("odp_selesai", $id);
+            $this->_updateDataKel("pdp", $id);
+            $this->_updateDataKel("pdp_sehat", $id);
+            $this->_updateDataKel("covid", $id);
+            $this->_updateDataKel("covid_sembuh", $id);
+            $this->_updateDataKel("covid_md", $id);
         }
     }
-    
-    
+
+
     public function rujuk($id)
     {
         $post = $this->input->post();
@@ -1266,10 +1867,10 @@ class M_home extends CI_Model {
         $cek = $this->db->update('tb_laporan', $data, $where);
 
         if ($cek) {
-            
-            $msg = array('res'=>1, 'msg' => 'Data Berhasil Diubah');
+
+            $msg = array('res' => 1, 'msg' => 'Data Berhasil Diubah');
         } else {
-            $msg = array('res'=>0, 'msg' => 'Data Gagal Diubah');
+            $msg = array('res' => 0, 'msg' => 'Data Gagal Diubah');
         }
 
         return json_encode($msg);
@@ -1277,10 +1878,10 @@ class M_home extends CI_Model {
 
     public function getFaskes($nama)
     {
-        $data = $this->db->get_where("tb_faskes", ["nama_faskes"=> $nama])->row();
+        $data = $this->db->get_where("tb_faskes", ["nama_faskes" => $nama])->row();
 
-        $data2 = $this->db->get_where("tb_faskes", ["id_faskes"=> $data->kode_kecamatan])->row();
-        $data3 = $this->db->get_where("tb_user", ["nama_user"=> $data2->nama_faskes])->row();
+        $data2 = $this->db->get_where("tb_faskes", ["id_faskes" => $data->kode_kecamatan])->row();
+        $data3 = $this->db->get_where("tb_user", ["nama_user" => $data2->nama_faskes])->row();
         $hasil["id_faskes"] = $data3->id_user;
         $hasil["nama_faskes"] = $data3->nama_user;
         return $hasil;
@@ -1305,7 +1906,7 @@ class M_home extends CI_Model {
 
         return $data;
     }
-    
+
     public function add_faskes()
     {
         $post = $this->input->post();
@@ -1316,9 +1917,9 @@ class M_home extends CI_Model {
         $cek = $this->db->insert('tb_faskes_luar', $data);
 
         if ($cek) {
-            $msg = array('res'=>1, 'msg' => 'Data Berhasil Ditambah');
+            $msg = array('res' => 1, 'msg' => 'Data Berhasil Ditambah');
         } else {
-            $msg = array('res'=>0, 'msg' => 'Data Gagal Ditambah');
+            $msg = array('res' => 0, 'msg' => 'Data Gagal Ditambah');
         }
 
         return json_encode($msg);
@@ -1336,9 +1937,9 @@ class M_home extends CI_Model {
         $cek = $this->db->update('tb_faskes_luar', $data, $where);
 
         if ($cek) {
-            $msg = array('res'=>1, 'msg' => 'Data Berhasil Diubah');
+            $msg = array('res' => 1, 'msg' => 'Data Berhasil Diubah');
         } else {
-            $msg = array('res'=>0, 'msg' => 'Data Gagal Diubah');
+            $msg = array('res' => 0, 'msg' => 'Data Gagal Diubah');
         }
 
         return json_encode($msg);
@@ -1351,9 +1952,9 @@ class M_home extends CI_Model {
         $cek = $this->db->delete('tb_faskes_luar', $where);
 
         if ($cek) {
-            $msg = array('res'=>1, 'msg' => 'Data Berhasil Dihapus');
+            $msg = array('res' => 1, 'msg' => 'Data Berhasil Dihapus');
         } else {
-            $msg = array('res'=>0, 'msg' => 'Data Gagal Dihapus');
+            $msg = array('res' => 0, 'msg' => 'Data Gagal Dihapus');
         }
 
         return json_encode($msg);
@@ -1378,73 +1979,104 @@ class M_home extends CI_Model {
         return $data;
     }
 
-    public function save_tracing()
+    public function save_tracing($post)
     {
-        # code...
-    }
-    
-    public function save_otg_tracing()
-    {
-        $post = $this->input->post();
+        $id_user = $this->session->userdata('id_user');
 
-        $telp = explode("-", $post['no_telp']);
-        if ($telp[1] == "____" || substr($telp[0],0,2) != "08") {
-            $msg = array('res'=>0, 'msg' => 'Nomor Telp Harus Diisi dengan BENAR');
-            return json_encode($msg);
+        $data = array(
+            'id_laporan' => $post['id_laporan'],
+            'kontak' => $post['id'],
+            'status' => $post['tipe'],
+            'id_hubungan' => $post['id_hubungan'],
+            'id_jenis_kontak' => $post['id_jenis_kontak']
+        );
+
+        if ($this->session->userdata("id_user") != "") {
+            $where = array(
+                "id_laporan" => $post['id_laporan'],
+                "kontak" => $post['id']
+            );
+            $cek2 = $this->db->get_where("tb_kontak", $where)->num_rows();
+            if ($cek2 <= 0) {
+                $cek = $this->db->insert('tb_kontak', $data);
+            } else {
+                $cek = 0;
+            }
+        } else {
+            $cek = 0;
         }
-        // if ($post['umur'] == '' || $post['umur'] == '0') {
-        if ($post['umur'] == '') {
-            $msg = array('res'=>0, 'msg' => 'Umur Harus Diisi dengan BENAR');
-            return json_encode($msg);
+
+        if ($cek) {
+            $msg = array('res' => 1, 'msg' => 'Laporan Berhasil Dibuat');
+        } else {
+            $msg = array('res' => 0, 'msg' => 'Laporan Gagal Dibuat');
         }
+
+        return json_encode($msg);
+    }
+
+    public function save_otg_tracing($post)
+    {
+        $id_user = $this->session->userdata('id_user');
+        $created = date("Y-m-d H:i:s");
 
         if ($post['nik'] != '' && strlen($post['nik']) == '16') {
             $cekNik = $this->cekNik($post['nik']);
-            $cekNik2 = $this->cekNikOtg($post['nik']);
-            if ($cekNik == '0' && $cekNik2 == '0') {
+            if ($cekNik == '0') {
                 if ($post['alamat_domisili'] != '' && $post['jekel'] != '') {
-                    $data = array (
+                    $data = array(
+                        'tgl_periksa' => $created,
+                        'rawat' => 'RAWAT JALAN',
                         'id_kecamatan' => $post['id_kecamatan'],
                         'nik' => $post['nik'],
                         'nama' => $post['nama'],
                         'alamat_domisili' => $post['alamat_domisili'],
-                        'created_at' => $post['created_at'],
+                        'created_at' => $created,
                         'wn' => $post['wn'],
-                        'keterangan' => $post['keterangan'],
-                        'created_by' => $post['created_by'],
+                        'created_by' => $id_user,
                         'jekel' => $post['jekel'],
                         'umur' => $post['umur'],
                         'no_telp' => $post['no_telp'],
                         'id_kelurahan' => $post['id_kelurahan'],
-                        'rdt' => $post['rdt'],
-                        'nakes' => $post['nakes'],
-                        'swab' => $post['swab']
+                        'validasi' => 1,
+                        'valid_at' => $created,
+                        'keterangan' => 'Hasil Tracing',
+                        'kondisi' => '3'
                     );
-            
+
                     if ($this->session->userdata("id_user") != "") {
-                        $cek = $this->db->insert('tb_otg', $data);
+                        $cek = $this->db->insert('tb_laporan', $data);
                     } else {
                         $cek = 0;
                     }
-                    
+
                     if ($cek) {
-                        $msg = array('res'=>1, 'msg' => 'Laporan Berhasil Dibuat');
+                        $dt = $this->db->get_where("tb_laporan", ['nik' => $post['nik']])->row();
+                        $msg = array('res' => 1, 'msg' => 'Laporan Berhasil Dibuat', 'id' => $dt->id_laporan);
                     } else {
-                        $msg = array('res'=>0, 'msg' => 'Laporan Gagal Dibuat');
+                        $msg = array('res' => 0, 'msg' => 'Laporan Gagal Dibuat', 'id' => '');
                     }
                 } else {
-                    $msg = array('res'=>0, 'msg' => 'Jenis Kelamin dan Alamat Domisili Tidak Boleh Kosong');
+                    $msg = array('res' => 0, 'msg' => 'Jenis Kelamin dan Alamat Domisili Tidak Boleh Kosong', 'id' => '');
                 }
             } else {
-                $msg = array('res'=>0, 'msg' => 'NIK Sudah Digunakan');
+                $msg = array('res' => 0, 'msg' => 'NIK Sudah Digunakan', 'id' => '');
             }
-            
         } else {
-            $msg = array('res'=>0, 'msg' => 'NIK tidak berjumlah 16 karakter');
+            $msg = array('res' => 0, 'msg' => 'NIK tidak berjumlah 16 karakter', 'id' => '');
         }
-        
-        
+
+
         return json_encode($msg);
+    }
+
+    public function removeTracing($id)
+    {
+        $where = array(
+            'id_laporan' => $id
+        );
+
+        $this->db->delete('tb_kontak', $where);
     }
 
     public function save_otg()
@@ -1452,22 +2084,23 @@ class M_home extends CI_Model {
         $post = $this->input->post();
 
         $telp = explode("-", $post['no_telp']);
-        if ($telp[1] == "____" || substr($telp[0],0,2) != "08") {
-            $msg = array('res'=>0, 'msg' => 'Nomor Telp Harus Diisi dengan BENAR');
+        if ($telp[1] == "____" || substr($telp[0], 0, 2) != "08") {
+            $msg = array('res' => 0, 'msg' => 'Nomor Telp Harus Diisi dengan BENAR');
             return json_encode($msg);
         }
         // if ($post['umur'] == '' || $post['umur'] == '0') {
         if ($post['umur'] == '') {
-            $msg = array('res'=>0, 'msg' => 'Umur Harus Diisi dengan BENAR');
+            $msg = array('res' => 0, 'msg' => 'Umur Harus Diisi dengan BENAR');
             return json_encode($msg);
         }
 
         if ($post['nik'] != '' && strlen($post['nik']) == '16') {
             $cekNik = $this->cekNik($post['nik']);
-            $cekNik2 = $this->cekNikOtg($post['nik']);
-            if ($cekNik == '0' && $cekNik2 == '0') {
+            if ($cekNik == '0') {
                 if ($post['alamat_domisili'] != '' && $post['jekel'] != '') {
-                    $data = array (
+                    $data = array(
+                        'tgl_periksa' => $post['created_at'],
+                        'rawat' => 'RAWAT JALAN',
                         'id_kecamatan' => $post['id_kecamatan'],
                         'nik' => $post['nik'],
                         'nama' => $post['nama'],
@@ -1480,34 +2113,32 @@ class M_home extends CI_Model {
                         'umur' => $post['umur'],
                         'no_telp' => $post['no_telp'],
                         'id_kelurahan' => $post['id_kelurahan'],
-                        'rdt' => $post['rdt'],
                         'nakes' => $post['nakes'],
-                        'swab' => $post['swab']
+                        'kondisi' => '3'
                     );
-            
+
                     if ($this->session->userdata("id_user") != "") {
-                        $cek = $this->db->insert('tb_otg', $data);
+                        $cek = $this->db->insert('tb_laporan', $data);
                     } else {
                         $cek = 0;
                     }
-                    
+
                     if ($cek) {
-                        $msg = array('res'=>1, 'msg' => 'Laporan Berhasil Dibuat');
+                        $msg = array('res' => 1, 'msg' => 'Laporan Berhasil Dibuat');
                     } else {
-                        $msg = array('res'=>0, 'msg' => 'Laporan Gagal Dibuat');
+                        $msg = array('res' => 0, 'msg' => 'Laporan Gagal Dibuat');
                     }
                 } else {
-                    $msg = array('res'=>0, 'msg' => 'Jenis Kelamin dan Alamat Domisili Tidak Boleh Kosong');
+                    $msg = array('res' => 0, 'msg' => 'Jenis Kelamin dan Alamat Domisili Tidak Boleh Kosong');
                 }
             } else {
-                $msg = array('res'=>0, 'msg' => 'NIK Sudah Digunakan');
+                $msg = array('res' => 0, 'msg' => 'NIK Sudah Digunakan');
             }
-            
         } else {
-            $msg = array('res'=>0, 'msg' => 'NIK tidak berjumlah 16 karakter');
+            $msg = array('res' => 0, 'msg' => 'NIK tidak berjumlah 16 karakter');
         }
-        
-        
+
+
         return json_encode($msg);
     }
 
@@ -1516,17 +2147,17 @@ class M_home extends CI_Model {
         $post = $this->input->post();
 
         $where = array(
-            'id_otg' => $id
+            'id_laporan' => $id
         );
 
         $telp = explode("-", $post['no_telp']);
-        if ($telp[1] == "____" || substr($telp[0],0,2) != "08") {
-            $msg = array('res'=>0, 'msg' => 'Nomor Telp Harus Diisi dengan BENAR');
+        if ($telp[1] == "____" || substr($telp[0], 0, 2) != "08") {
+            $msg = array('res' => 0, 'msg' => 'Nomor Telp Harus Diisi dengan BENAR');
             return json_encode($msg);
         }
         // if ($post['umur'] == '' || $post['umur'] == '0') {
         if ($post['umur'] == '') {
-            $msg = array('res'=>0, 'msg' => 'Umur Harus Diisi dengan BENAR');
+            $msg = array('res' => 0, 'msg' => 'Umur Harus Diisi dengan BENAR');
             return json_encode($msg);
         }
 
@@ -1534,12 +2165,10 @@ class M_home extends CI_Model {
         if ($post['nik'] != '' && strlen($post['nik']) == '16') {
             if ($post['nik'] != $post['nik2']) {
                 $cekNik = $this->cekNik($post['nik']);
-                $cekNik2 = $this->cekNikOtg($post['nik']);
             } else {
                 $cekNik = "0";
-                $cekNik2 = "0";
             }
-            if ($cekNik == '0' && $cekNik2 == "0") {
+            if ($cekNik == '0') {
                 if ($post['alamat_domisili'] != '' && $post['jekel'] != '') {
                     $data = array(
                         'id_kecamatan' => $post['id_kecamatan'],
@@ -1552,43 +2181,41 @@ class M_home extends CI_Model {
                         'umur' => $post['umur'],
                         'no_telp' => $post['no_telp'],
                         'id_kelurahan' => $post['id_kelurahan'],
-                        'rdt' => $post['rdt'],
-                        'nakes' => $post['nakes'],
-                        'swab' => $post['swab']
+                        'nakes' => $post['nakes']
                     );
-    
-                    $cek = $this->db->update('tb_otg', $data, $where);
-            
+
+                    $cek = $this->db->update('tb_laporan', $data, $where);
+
                     if ($cek) {
-                        $msg = array('res'=>1, 'msg' => 'Laporan Berhasil Diperbarui');
+                        $msg = array('res' => 1, 'msg' => 'Laporan Berhasil Diperbarui');
                     } else {
-                        $msg = array('res'=>0, 'msg' => 'Laporan Gagal Diperbarui');
+                        $msg = array('res' => 0, 'msg' => 'Laporan Gagal Diperbarui');
                     }
                 } else {
-                    $msg = array('res'=>0, 'msg' => 'Umur, Jenis Kelamin, No. Telepon, Alamat Domisili dan Riwayat Perjalanan Tidak Boleh Kosong');
+                    $msg = array('res' => 0, 'msg' => 'Umur, Jenis Kelamin, No. Telepon, Alamat Domisili dan Riwayat Perjalanan Tidak Boleh Kosong');
                 }
             } else {
-                $msg = array('res'=>0, 'msg' => 'NIK Sudah Digunakan');
+                $msg = array('res' => 0, 'msg' => 'NIK Sudah Digunakan');
             }
         } else {
-            $msg = array('res'=>0, 'msg' => 'NIK tidak berjumlah 16 karakter');
+            $msg = array('res' => 0, 'msg' => 'NIK tidak berjumlah 16 karakter');
         }
-        
+
         return json_encode($msg);
     }
 
     public function delete_otg($id)
     {
         $where = array(
-            'id_otg' => $id
+            'id_laporan' => $id
         );
 
-        $cek = $this->db->delete('tb_otg', $where);
+        $cek = $this->db->delete('tb_laporan', $where);
 
         if ($cek) {
-            $msg = array('res'=>1, 'msg' => 'Laporan Berhasil Dihapus');
+            $msg = array('res' => 1, 'msg' => 'Laporan Berhasil Dihapus');
         } else {
-            $msg = array('res'=>0, 'msg' => 'Laporan Gagal Dihapus');
+            $msg = array('res' => 0, 'msg' => 'Laporan Gagal Dihapus');
         }
 
         return json_encode($msg);
@@ -1596,77 +2223,213 @@ class M_home extends CI_Model {
 
     public function getOtgBy($id)
     {
-        
+
         $this->db->select("*");
-        $this->db->from("tb_otg");
-        $this->db->join("tb_kecamatan", "tb_otg.id_kecamatan = tb_kecamatan.id_kecamatan");
-        $this->db->join("tb_kelurahan", "tb_otg.id_kelurahan = tb_kelurahan.id_kelurahan");
-        $this->db->where(['id_otg' => $id]);
+        $this->db->from("tb_laporan");
+        $this->db->join("tb_kecamatan", "tb_laporan.id_kecamatan = tb_kecamatan.id_kecamatan");
+        $this->db->join("tb_kelurahan", "tb_laporan.id_kelurahan = tb_kelurahan.id_kelurahan");
+        $this->db->where(['id_laporan' => $id]);
         $data = $this->db->get()->row();
 
         return $data;
-    }
-
-    public function save_swab($id, $tgl, $hsl)
-    {
-        $data = array (
-            'id_laporan' => $id,
-            'tgl_swab' => $tgl,
-            'hasil_swab' => $hsl
-        );
-
-        if ($this->session->userdata("id_user") != "") {
-            $cek = $this->db->insert('tb_swab', $data);
-        } else {
-            $cek = 0;
-        }
-    }
-
-    public function remove_swab($id)
-    {
-        $where = array(
-            'id_laporan' => $id
-        );
-
-        $this->db->delete('tb_swab', $where);
     }
 
     public function changeStatus($id, $covid, $hsl)
     {
         if ($covid == '3') {
             $where = array(
-                'id_otg' => $id
+                'id_laporan' => $id
             );
         } else {
             $where = array(
                 'id_laporan' => $id
             );
         }
-        
+
         if ($covid == '0') {
             if ($hsl == '1') {
-                $data = array (
+                $data = array(
                     'covid' => '1'
                 );
-            } elseif ($hsl == '2')  {
-                $data = array (
+            } elseif ($hsl == '2') {
+                $data = array(
                     'st' => '1'
                 );
             }
-            
         } elseif ($covid == '1') {
             if ($hsl == '1') {
-                $data = array (
+                $data = array(
                     'st' => '0'
                 );
-            } elseif ($hsl == '2')  {
-                $data = array (
+            } elseif ($hsl == '2') {
+                $data = array(
                     'st' => '1'
                 );
             }
         }
-        
+
         $cek = $this->db->update('tb_laporan', $data, $where);
+    }
+
+    public function save_rdt($id, $tgl, $hsl, $lokasi)
+    {
+        $data = array(
+            'id_laporan' => $id,
+            'tgl_rdt' => $tgl,
+            'hasil_rdt' => $hsl,
+            'lokasi_rdt' => $lokasi
+        );
+
+        if ($this->session->userdata("id_user") != "") {
+            $cek = $this->db->insert('tb_rdt', $data);
+        } else {
+            $cek = 0;
+        }
+    }
+
+    public function getKarantina()
+    {
+        $data = $this->db->get("tb_karantina");
+
+        return $data;
+    }
+
+    public function getCovid2()
+    {
+        $this->db->order_by("nama", "ASC");
+        $data = $this->db->get("v_covid_karantina");
+
+        return $data;
+    }
+
+    public function getCovid3($id_laporan)
+    {
+        $this->db->order_by("nama", "ASC");
+        //$data = $this->db->get("covid");
+        $data = $this->db->get_where("covid", ['id_laporan' => $id_laporan])->row();
+        return $data;
+    }
+
+
+    public function save_pasienKarantina($id_laporan, $id_karantina)
+    {
+        $data = array(
+            'id_laporan' => $id_laporan,
+            'id_karantina' => $id_karantina
+        );
+
+        if ($this->session->userdata("id_user") != "") {
+            $cek = $this->db->insert('tb_pasien_karantina', $data);
+        } else {
+            $cek = 0;
+        }
+    }
+
+    public function getPasienKarantinaBy($id)
+    {
+        $data = $this->db->get_where("tb_pasien_karantina", ['id_pasien_karantina' => $id])->row();
+
+        return $data;
+    }
+
+    public function edit_karantina($id)
+    {
+        $post = $this->input->post();
+        $data = array(
+            "id_laporan" => strtoupper($post['id_laporan']),
+            "id_karantina" => strtoupper($post['id_karantina'])
+        );
+        $where = array(
+            "id_pasien_karantina" => $id
+        );
+        $cek = $this->db->update('tb_pasien_karantina', $data, $where);
+
+        if ($cek) {
+            $msg = array('res' => 1, 'msg' => 'Data Berhasil Diubah');
+        } else {
+            $msg = array('res' => 0, 'msg' => 'Data Gagal Diubah');
+        }
+
+        return json_encode($msg);
+    }
+
+    public function delete_karantina($id)
+    {
+        $where = array(
+            'id_pasien_karantina' => $id
+        );
+
+        $cek = $this->db->delete('tb_pasien_karantina', $where);
+
+        if ($cek) {
+            $msg = array('res' => 1, 'msg' => 'Data Berhasil Dihapus');
+        } else {
+            $msg = array('res' => 0, 'msg' => 'Data Gagal Dihapus');
+        }
+
+        return json_encode($msg);
+    }
+
+    public function save_swab()
+    {
+        $post = $this->input->post();
+
+        $data = array(
+            'id_laporan' => $post['id_laporan'],
+            'tgl_swab' => $post['tgl_swab'],
+            'tgl_kirim_faskes' => $post['tgl_kirim_faskes'],
+            'swab_ke' => $post['swab_ke'],
+            'created_by' => $this->session->userdata("id_user"),
+            'created_at' => date("Y-m-d H:i:s")
+        );
+
+        if ($post['tgl_swab'] == '') {
+            $msg = array('res' => 0, 'msg' => 'Tanggal Ambil Sampel Harus Diisi !');
+            return json_encode($msg);
+        }
+        if ($post['tgl_kirim_faskes'] == '') {
+            $msg = array('res' => 0, 'msg' => 'Tanggal Kirim ke Labkesda Harus Diisi !');
+            return json_encode($msg);
+        }
+        if ($post['swab_ke'] == '') {
+            $msg = array('res' => 0, 'msg' => 'Swab Ke Harus Diisi !');
+            return json_encode($msg);
+        }
+
+        if ($this->session->userdata("id_user") != "") {
+            $cek = $this->db->insert('tb_swab', $data);
+        } else {
+            $cek = 0;
+        }
+
+        if ($cek) {
+            $msg = array('res' => 1, 'msg' => 'Laporan Berhasil Dibuat');
+        } else {
+            $msg = array('res' => 0, 'msg' => 'Laporan Gagal Dibuat');
+        }
+
+        return json_encode($msg);
+    }
+
+    public function getSwabBy($id)
+    {
+        $data = $this->db->get_where("tb_swab", ["id_swab" => $id])->row();
+
+        return $data;
+    }
+
+    public function get_lab()
+    {
+        $data = $this->db->get("tb_lab")->result();
+
+        return $data;
+    }
+
+    public function get_penyakit($kdiag)
+    {
+        $data = $this->db->get_where("tb_penyakit", ["kdiag" => $kdiag])->row();
+
+        return $data;
     }
 }
 

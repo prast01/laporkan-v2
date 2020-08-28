@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------
@@ -78,7 +78,7 @@ $db['default'] = array(
 	'hostname' => 'localhost',
 	'username' => 'root',
 	'password' => '',
-	'database' => 'tb_lapor',
+	'database' => 'db_lapor_v2',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
