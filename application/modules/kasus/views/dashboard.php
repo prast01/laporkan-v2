@@ -4,10 +4,13 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <div class="col-sm-2">
+                <div class="col-2">
                     <h1 class="m-0 text-dark">
                         Data Kasus
                     </h1>
+                </div>
+                <div class="col-2">
+                    <button type="button" class="btn btn-success text-white" onclick="tambah_kasus()" title="Tambah Kasus"><i class="fa fa-plus"></i> Tambah Kasus</button>
                 </div>
             </div>
         </div>

@@ -551,3 +551,16 @@ function modalSwabEdit(id, id_lap) {
     },
   });
 }
+
+function tambah_kasus() {
+  $("#modalku").modal();
+  $(".modal-title").html("Tambah Kasus");
+  var origin = window.location.origin + "/laporkan-v2/kasus/modal_tambah";
+  $.ajax({
+    type: "POST",
+    url: origin,
+    success: function (data) {
+      $(".modal-body").html(data);
+    },
+  });
+}

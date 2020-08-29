@@ -244,7 +244,6 @@ class M_home extends CI_Model
             $msg = array('res' => 0, 'msg' => 'Nomor Telp Harus Diisi dengan BENAR', 'kondisi' => $post['kondisi']);
             return json_encode($msg);
         }
-        // if ($post['umur'] == '' || $post['umur'] == '0') {
         if ($post['umur'] == '') {
             $msg = array('res' => 0, 'msg' => 'Umur Harus Diisi dengan BENAR', 'kondisi' => $post['kondisi']);
             return json_encode($msg);

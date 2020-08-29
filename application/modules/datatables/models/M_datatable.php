@@ -729,13 +729,13 @@ class M_datatable extends CI_Model
         $nm = explode(" ", $nama_user);
         $data = $this->db->get_where("tb_faskes", ["nama_faskes" => $nama_user])->row();
 
-        $this->db->from('tb_laporan_baru');
+        $this->db->from('view_data_laporan');
 
-        $this->db->join("tb_user", "tb_laporan_baru.created_by = tb_user.id_user");
-        $this->db->join("tb_kecamatan", "tb_laporan_baru.id_kecamatan = tb_kecamatan.id_kecamatan");
-        $this->db->join("tb_kelurahan", "tb_laporan_baru.id_kelurahan = tb_kelurahan.id_kelurahan");
-        $this->db->join("tb_status_2", "tb_laporan_baru.status_baru = tb_status_2.id_status_2");
-        $this->db->join("tb_penyakit", "tb_laporan_baru.penyakit = tb_penyakit.kdiag");
+        // $this->db->join("tb_user", "tb_laporan_baru.created_by = tb_user.id_user");
+        // $this->db->join("tb_kecamatan", "tb_laporan_baru.id_kecamatan = tb_kecamatan.id_kecamatan");
+        // $this->db->join("tb_kelurahan", "tb_laporan_baru.id_kelurahan = tb_kelurahan.id_kelurahan");
+        // $this->db->join("tb_status_2", "tb_laporan_baru.status_baru = tb_status_2.id_status_2");
+        // $this->db->join("tb_penyakit", "tb_laporan_baru.penyakit = tb_penyakit.kdiag");
         if ($level != '2') {
             if ($nm[0] == "PKM") {
                 if ($_POST['filterByRS'] != '') {
@@ -824,13 +824,13 @@ class M_datatable extends CI_Model
         $nm = explode(" ", $nama_user);
         $data = $this->db->get_where("tb_faskes", ["nama_faskes" => $nama_user])->row();
 
-        $this->db->from('tb_laporan_baru');
+        $this->db->from('view_data_laporan');
 
-        $this->db->join("tb_user", "tb_laporan_baru.created_by = tb_user.id_user");
-        $this->db->join("tb_kecamatan", "tb_laporan_baru.id_kecamatan = tb_kecamatan.id_kecamatan");
-        $this->db->join("tb_kelurahan", "tb_laporan_baru.id_kelurahan = tb_kelurahan.id_kelurahan");
-        $this->db->join("tb_status_2", "tb_laporan_baru.status_baru = tb_status_2.id_status_2");
-        $this->db->join("tb_penyakit", "tb_laporan_baru.penyakit = tb_penyakit.kdiag");
+        // $this->db->join("tb_user", "tb_laporan_baru.created_by = tb_user.id_user");
+        // $this->db->join("tb_kecamatan", "tb_laporan_baru.id_kecamatan = tb_kecamatan.id_kecamatan");
+        // $this->db->join("tb_kelurahan", "tb_laporan_baru.id_kelurahan = tb_kelurahan.id_kelurahan");
+        // $this->db->join("tb_status_2", "tb_laporan_baru.status_baru = tb_status_2.id_status_2");
+        // $this->db->join("tb_penyakit", "tb_laporan_baru.penyakit = tb_penyakit.kdiag");
         if ($level != '2') {
             if ($nm[0] == "PKM") {
                 if ($_POST['filterByRS'] != '') {
@@ -917,13 +917,13 @@ class M_datatable extends CI_Model
         $nm = explode(" ", $nama_user);
         $data = $this->db->get_where("tb_faskes", ["nama_faskes" => $nama_user])->row();
 
-        $this->db->from('tb_laporan_baru');
+        $this->db->from('view_data_laporan');
 
-        $this->db->join("tb_user", "tb_laporan_baru.created_by = tb_user.id_user");
-        $this->db->join("tb_kecamatan", "tb_laporan_baru.id_kecamatan = tb_kecamatan.id_kecamatan");
-        $this->db->join("tb_kelurahan", "tb_laporan_baru.id_kelurahan = tb_kelurahan.id_kelurahan");
-        $this->db->join("tb_status_2", "tb_laporan_baru.status_baru = tb_status_2.id_status_2");
-        $this->db->join("tb_penyakit", "tb_laporan_baru.penyakit = tb_penyakit.kdiag");
+        // $this->db->join("tb_user", "tb_laporan_baru.created_by = tb_user.id_user");
+        // $this->db->join("tb_kecamatan", "tb_laporan_baru.id_kecamatan = tb_kecamatan.id_kecamatan");
+        // $this->db->join("tb_kelurahan", "tb_laporan_baru.id_kelurahan = tb_kelurahan.id_kelurahan");
+        // $this->db->join("tb_status_2", "tb_laporan_baru.status_baru = tb_status_2.id_status_2");
+        // $this->db->join("tb_penyakit", "tb_laporan_baru.penyakit = tb_penyakit.kdiag");
         if ($level != '2') {
             if ($nm[0] == "PKM") {
                 if ($_POST['filterByRS'] != '') {
@@ -1010,13 +1010,13 @@ class M_datatable extends CI_Model
         $nm = explode(" ", $nama_user);
         $data = $this->db->get_where("tb_faskes", ["nama_faskes" => $nama_user])->row();
 
-        $this->db->from('tb_laporan_baru');
+        $this->db->from('view_data_laporan');
 
-        $this->db->join("tb_user", "tb_laporan_baru.created_by = tb_user.id_user");
-        $this->db->join("tb_kecamatan", "tb_laporan_baru.id_kecamatan = tb_kecamatan.id_kecamatan");
-        $this->db->join("tb_kelurahan", "tb_laporan_baru.id_kelurahan = tb_kelurahan.id_kelurahan");
-        $this->db->join("tb_status_2", "tb_laporan_baru.status_baru = tb_status_2.id_status_2");
-        $this->db->join("tb_penyakit", "tb_laporan_baru.penyakit = tb_penyakit.kdiag");
+        // $this->db->join("tb_user", "tb_laporan_baru.created_by = tb_user.id_user");
+        // $this->db->join("tb_kecamatan", "tb_laporan_baru.id_kecamatan = tb_kecamatan.id_kecamatan");
+        // $this->db->join("tb_kelurahan", "tb_laporan_baru.id_kelurahan = tb_kelurahan.id_kelurahan");
+        // $this->db->join("tb_status_2", "tb_laporan_baru.status_baru = tb_status_2.id_status_2");
+        // $this->db->join("tb_penyakit", "tb_laporan_baru.penyakit = tb_penyakit.kdiag");
         if ($level != '2') {
             if ($nm[0] == "PKM") {
                 if ($_POST['filterByRS'] != '') {
