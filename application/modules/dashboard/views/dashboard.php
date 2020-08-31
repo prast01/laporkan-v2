@@ -26,7 +26,6 @@ $tglku = tgl_ind($tgl_update);
 
 $bln = array(01 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
 
-$bl = (isset($_POST['bln'])) ? $_POST['bln'] : date('m');
 ?>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -45,7 +44,216 @@ $bl = (isset($_POST['bln'])) ? $_POST['bln'] : date('m');
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <p class="mb-0">DATA REAL TIME</p>
+                            <p class="mb-3">update terakhir : </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="card card-outline card-success">
+                                <div class="card-header" style="background-color: #c9ffde;">
+                                    <p class="text-center text-success mb-0">Suspek</p>
+                                    <h1 class="text-center text-success mb-0">100</h1>
+                                    <p class="text-center text-success mb-0">Total Kasus</p>
+                                    <!-- /.card-tools -->
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="pt-2 pb-2">
+                                    <p class="text-center mb-0">Dirawat</p>
+                                    <h3 class="text-center mb-0 text-success">
+                                        50 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                    </h3>
+                                    <hr class="my-md-0">
+                                    <p class="text-center mb-0">Isolasi</p>
+                                    <h3 class="text-center mb-0 text-success">
+                                        5 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                    </h3>
+                                    <hr class="my-md-0">
+                                    <p class="text-center mb-0">Discard</p>
+                                    <h3 class="text-center mb-0 text-success">
+                                        45 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                    </h3>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card card-outline card-warning">
+                                <div class="card-header" style="background-color: #fffadb;">
+                                    <p class="text-center text-warning mb-0">Probable</p>
+                                    <h1 class="text-center text-warning mb-0">100</h1>
+                                    <p class="text-center text-warning mb-0">Total Kasus</p>
+                                    <!-- /.card-tools -->
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="pt-2 pb-2">
+                                    <p class="text-center mb-0">Dirawat</p>
+                                    <h3 class="text-center mb-0 text-warning">
+                                        50 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                    </h3>
+                                    <hr class="my-md-0">
+                                    <p class="text-center mb-0">Isolasi</p>
+                                    <h3 class="text-center mb-0 text-warning">
+                                        5 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                    </h3>
+                                    <hr class="my-md-0">
+                                    <p class="text-center mb-0">Sembuh</p>
+                                    <h3 class="text-center mb-0 text-warning">
+                                        45 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                    </h3>
+                                    <hr class="my-md-0">
+                                    <p class="text-center mb-0">Meninggal</p>
+                                    <h3 class="text-center mb-0 text-warning">
+                                        45 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                    </h3>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card card-outline card-danger">
+                                <div class="card-header" style="background-color: #ffeded;">
+                                    <p class="text-center text-danger mb-0">Terkonfirmasi</p>
+                                    <h1 class="text-center text-danger mb-0">100</h1>
+                                    <p class="text-center text-danger mb-0">Total Kasus</p>
+                                    <!-- /.card-tools -->
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="pt-2 pb-2">
+                                    <p class="text-center mb-0">Dirawat</p>
+                                    <h3 class="text-center mb-0 text-danger">
+                                        50 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                    </h3>
+                                    <hr class="my-md-0">
+                                    <p class="text-center mb-0">Isolasi</p>
+                                    <h3 class="text-center mb-0 text-danger">
+                                        5 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                    </h3>
+                                    <hr class="my-md-0">
+                                    <p class="text-center mb-0">Sembuh</p>
+                                    <h3 class="text-center mb-0 text-danger">
+                                        45 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                    </h3>
+                                    <hr class="my-md-0">
+                                    <p class="text-center mb-0">Meninggal</p>
+                                    <h3 class="text-center mb-0 text-danger">
+                                        45 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                    </h3>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <p class="mb-0">DATA CUT OFF</p>
+                            <p class="mb-3">update terakhir : </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="card card-outline card-success">
+                                <div class="card-header" style="background-color: #c9ffde;">
+                                    <p class="text-center text-success mb-0">Suspek</p>
+                                    <h1 class="text-center text-success mb-0">100</h1>
+                                    <p class="text-center text-success mb-0">Total Kasus</p>
+                                    <!-- /.card-tools -->
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="pt-2 pb-2">
+                                    <p class="text-center mb-0">Dirawat</p>
+                                    <h3 class="text-center mb-0 text-success">
+                                        50 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                    </h3>
+                                    <hr class="my-md-0">
+                                    <p class="text-center mb-0">Isolasi</p>
+                                    <h3 class="text-center mb-0 text-success">
+                                        5 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                    </h3>
+                                    <hr class="my-md-0">
+                                    <p class="text-center mb-0">Discard</p>
+                                    <h3 class="text-center mb-0 text-success">
+                                        45 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                    </h3>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card card-outline card-warning">
+                                <div class="card-header" style="background-color: #fffadb;">
+                                    <p class="text-center text-warning mb-0">Probable</p>
+                                    <h1 class="text-center text-warning mb-0">100</h1>
+                                    <p class="text-center text-warning mb-0">Total Kasus</p>
+                                    <!-- /.card-tools -->
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="pt-2 pb-2">
+                                    <p class="text-center mb-0">Dirawat</p>
+                                    <h3 class="text-center mb-0 text-warning">
+                                        50 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                    </h3>
+                                    <hr class="my-md-0">
+                                    <p class="text-center mb-0">Isolasi</p>
+                                    <h3 class="text-center mb-0 text-warning">
+                                        5 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                    </h3>
+                                    <hr class="my-md-0">
+                                    <p class="text-center mb-0">Sembuh</p>
+                                    <h3 class="text-center mb-0 text-warning">
+                                        45 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                    </h3>
+                                    <hr class="my-md-0">
+                                    <p class="text-center mb-0">Meninggal</p>
+                                    <h3 class="text-center mb-0 text-warning">
+                                        45 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                    </h3>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card card-outline card-danger">
+                                <div class="card-header" style="background-color: #ffeded;">
+                                    <p class="text-center text-danger mb-0">Terkonfirmasi</p>
+                                    <h1 class="text-center text-danger mb-0">100</h1>
+                                    <p class="text-center text-danger mb-0">Total Kasus</p>
+                                    <!-- /.card-tools -->
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="pt-2 pb-2">
+                                    <p class="text-center mb-0">Dirawat</p>
+                                    <h3 class="text-center mb-0 text-danger">
+                                        50 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                    </h3>
+                                    <hr class="my-md-0">
+                                    <p class="text-center mb-0">Isolasi</p>
+                                    <h3 class="text-center mb-0 text-danger">
+                                        5 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                    </h3>
+                                    <hr class="my-md-0">
+                                    <p class="text-center mb-0">Sembuh</p>
+                                    <h3 class="text-center mb-0 text-danger">
+                                        45 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                    </h3>
+                                    <hr class="my-md-0">
+                                    <p class="text-center mb-0">Meninggal</p>
+                                    <h3 class="text-center mb-0 text-danger">
+                                        45 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                    </h3>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- /.modal -->
     </section>
     <!-- /.content -->

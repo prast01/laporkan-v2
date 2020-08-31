@@ -564,3 +564,61 @@ function tambah_kasus() {
     },
   });
 }
+
+function ubah_kasus(id) {
+  $("#modalku").modal();
+  $(".modal-title").html("Ubah Kasus");
+  var origin = window.location.origin + "/laporkan-v2/kasus/modal_ubah/" + id;
+  $.ajax({
+    type: "POST",
+    url: origin,
+    success: function (data) {
+      $(".modal-body").html(data);
+    },
+  });
+}
+
+function detail_kasus(id) {
+  $("#modalku").modal();
+  $(".modal-title").html("Detail Kasus");
+  var origin = window.location.origin + "/laporkan-v2/kasus/modal_detail/" + id;
+  $.ajax({
+    type: "POST",
+    url: origin,
+    success: function (data) {
+      $(".modal-body").html(data);
+    },
+  });
+}
+
+function riwayat_kasus(id) {
+  $("#modalku").modal();
+  $(".modal-title").html("Riwayat Kasus");
+  var origin =
+    window.location.origin + "/laporkan-v2/kasus/modal_riwayat/" + id;
+  $.ajax({
+    type: "POST",
+    url: origin,
+    success: function (data) {
+      $(".modal-body").html(data);
+    },
+  });
+}
+
+function selesai_isolasi(id, kode) {
+  var url =
+    window.location.origin + "/laporkan-v2/kasus/selesai_isolasi/" + kode + "/";
+  var cek = confirm("Yakin Pasien selesai isolasi?");
+  if (cek) {
+    window.location = url + id;
+  }
+}
+
+function pasien_die(id, kode) {
+  var url =
+    window.location.origin + "/laporkan-v2/kasus/meninggal/" + kode + "/";
+  var cek = confirm("Yakin Pasien Meninggal?");
+  if (cek) {
+    window.location = url + id;
+  }
+}

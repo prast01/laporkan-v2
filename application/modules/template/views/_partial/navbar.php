@@ -24,7 +24,7 @@
 			?>
 				<ul class="navbar-nav">
 					<li class="nav-item">
-						<a href="<?php echo site_url('../'); ?>" class="nav-link">Beranda</a>
+						<a href="<?php echo site_url('../beranda'); ?>" class="nav-link">Beranda</a>
 					</li>
 					<?php
 					if ($level == '1') {
@@ -220,9 +220,9 @@
 								<li class="nav-item">
 									<a tabindex="-1" href="<?php echo site_url('../pasien'); ?>" class="dropdown-item">Pasien</a>
 								</li>
-								<li class="nav-item">
+								<!-- <li class="nav-item">
 									<a tabindex="-1" href="<?php echo site_url('../swab'); ?>" class="dropdown-item">Swab</a>
-								</li>
+								</li> -->
 							</ul>
 						</li>
 						<li class="nav-item">
@@ -233,9 +233,9 @@
 
 					if ($level == "2") {
 					?>
-						<li class="nav-item">
+						<!-- <li class="nav-item">
 							<a href="<?php echo site_url('../home/faskes_luar'); ?>" class="nav-link">Faskes Luar Daerah</a>
-						</li>
+						</li> -->
 					<?php
 					}
 					?>

@@ -918,63 +918,50 @@ class Datatables extends MY_Controller
         $data = array();
         $no = $_POST['start'];
         foreach ($list as $field) {
-            if ($this->session->userdata('level') == '2') {
-                if ($field->st == '0') {
+            if ($this->session->userdata("level") == "2") {
+                if ($field->status_baru == '3' || $field->status_baru == '4') {
                     $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                Aksi <span class="sr-only">Toggle Dropdown</span>
-                                <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item" href="#" onclick="modal2(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
-                                    <a class="dropdown-item text-primary" href="#" onclick="modal6(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Rujuk Pasien</a>
-                                    <a class="dropdown-item" href="#" onclick="modal13(\'' . $field->id_laporan . '\', \'1\')"><span class="fa fa-eye"></span> Detail Data</a>
-                                    <a class="dropdown-item text-warning" href="#" onclick="modal10(\'' . $field->id_laporan . '\')"><span class="fa fa-search"></span> Tracing</a>
-                                    <a class="dropdown-item text-primary" href="#" onclick="modal15(\'' . $field->id_laporan . '\')"><span class="fa fa-flask"></span> Swab</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item text-success" href="#" onclick="sembuh(\'' . $field->id_laporan . '\', \'3\')"><span class="fa fa-check"></span> Sembuh</a>
-                                    <a class="dropdown-item text-warning" href="#" onclick="meninggal(\'' . $field->id_laporan . '\', \'3\')"><span class="fa fa-plus"></span> Meninggal</a>
-                                </div>
-                            </button>';
+                                        Aksi <span class="sr-only">Toggle Dropdown</span>
+                                        <div class="dropdown-menu" role="menu">
+                                            <a class="dropdown-item" href="#" onclick="ubah_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
+                                            <a class="dropdown-item" href="#" onclick="detail_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-eye"></span> Detail Data</a>
+                                            <a class="dropdown-item text-primary" href="#" onclick="riwayat_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Riwayat Pasien</a>
+                                        </div>
+                                    </button>';
                 } else {
                     $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                Aksi <span class="sr-only">Toggle Dropdown</span>
-                                <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item" href="#" onclick="modal2(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
-                                    <a class="dropdown-item text-warning" href="#" onclick="modal10(\'' . $field->id_laporan . '\')"><span class="fa fa-search"></span> Tracing</a>
-                                </div>
-                            </button>';
+                                                        Aksi <span class="sr-only">Toggle Dropdown</span>
+                                                        <div class="dropdown-menu" role="menu">
+                                                            <a class="dropdown-item" href="#" onclick="ubah_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
+                                                            <a class="dropdown-item" href="#" onclick="detail_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-eye"></span> Detail Data</a>
+                                                            <a class="dropdown-item text-primary" href="#" onclick="riwayat_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Riwayat Pasien</a>
+                                                            <div class="dropdown-divider"></div>
+                                                            <a class="dropdown-item text-success" href="#" onclick="selesai_isolasi(\'' . $field->id_laporan . '\', \'1\')"><span class="fa fa-check"></span> Selesai Isolasi</a>
+                                                            <a class="dropdown-item text-danger" href="#" onclick="pasien_die(\'' . $field->id_laporan . '\', \'1\')"><span class="fa fa-check"></span> Meninggal</a>
+                                                        </div>
+                                                    </button>';
                 }
             } else {
-                if ($field->validasi == '0') {
+                if ($field->status_baru == '3' || $field->status_baru == '4') {
                     $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                Aksi <span class="sr-only">Toggle Dropdown</span>
-                                <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item" href="#" onclick="modal2(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
-                                    <a class="dropdown-item" href="#" onclick="modal13(\'' . $field->id_laporan . '\', \'1\')"><span class="fa fa-eye"></span> Detail Data</a>
-                                    <a class="dropdown-item text-primary" href="#" onclick="modal15(\'' . $field->id_laporan . '\')"><span class="fa fa-flask"></span> Swab</a>
-                                    <a class="dropdown-item text-primary" href="#" onclick="modal6(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Rujuk Pasien</a>
-                                </div>
-                            </button>';
+                                        Aksi <span class="sr-only">Toggle Dropdown</span>
+                                        <div class="dropdown-menu" role="menu">
+                                            <a class="dropdown-item" href="#" onclick="detail_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-eye"></span> Detail Data</a>
+                                            <a class="dropdown-item text-primary" href="#" onclick="riwayat_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Riwayat Pasien</a>
+                                        </div>
+                                    </button>';
                 } else {
-                    if ($field->st == '0') {
-                        $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                    Aksi <span class="sr-only">Toggle Dropdown</span>
-                                    <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-primary" href="#" onclick="modal6(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Rujuk Pasien</a>
-                                        <a class="dropdown-item" href="#" onclick="modal13(\'' . $field->id_laporan . '\', \'1\')"><span class="fa fa-eye"></span> Detail Data</a>
-                                        <a class="dropdown-item text-warning" href="#" onclick="modal10(\'' . $field->id_laporan . '\')"><span class="fa fa-search"></span> Tracing</a>
-                                        <a class="dropdown-item text-primary" href="#" onclick="modal15(\'' . $field->id_laporan . '\')"><span class="fa fa-flask"></span> Swab</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item text-success" href="#" onclick="sembuh(\'' . $field->id_laporan . '\', \'3\')"><span class="fa fa-check"></span> Sembuh</a>
-                                        <a class="dropdown-item text-warning" href="#" onclick="meninggal(\'' . $field->id_laporan . '\', \'3\')"><span class="fa fa-plus"></span> Meninggal</a>
-                                    </div>
-                                </button>';
-                    } else {
-                        $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                    Aksi <span class="sr-only">Toggle Dropdown</span>
-                                    <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-warning" href="#" onclick="modal10(\'' . $field->id_laporan . '\')"><span class="fa fa-search"></span> Tracing</a>
-                                    </div>
-                                </button>';
-                    }
+                    $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                        Aksi <span class="sr-only">Toggle Dropdown</span>
+                                        <div class="dropdown-menu" role="menu">
+                                            <a class="dropdown-item" href="#" onclick="ubah_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
+                                            <a class="dropdown-item" href="#" onclick="detail_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-eye"></span> Detail Data</a>
+                                            <a class="dropdown-item text-primary" href="#" onclick="riwayat_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Riwayat Pasien</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item text-success" href="#" onclick="selesai_isolasi(\'' . $field->id_laporan . '\', \'1\')"><span class="fa fa-check"></span> Selesai Isolasi</a>
+                                            <a class="dropdown-item text-danger" href="#" onclick="pasien_die(\'' . $field->id_laporan . '\', \'1\')"><span class="fa fa-check"></span> Meninggal</a>
+                                        </div>
+                                    </button>';
                 }
             }
 
@@ -1027,63 +1014,50 @@ class Datatables extends MY_Controller
         $data = array();
         $no = $_POST['start'];
         foreach ($list as $field) {
-            if ($this->session->userdata('level') == '2') {
-                if ($field->st == '0') {
+            if ($this->session->userdata("level") == "2") {
+                if ($field->status_baru == '9' || $field->status_baru == '10') {
                     $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                Aksi <span class="sr-only">Toggle Dropdown</span>
-                                <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item" href="#" onclick="modal2(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
-                                    <a class="dropdown-item text-primary" href="#" onclick="modal6(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Rujuk Pasien</a>
-                                    <a class="dropdown-item" href="#" onclick="modal13(\'' . $field->id_laporan . '\', \'1\')"><span class="fa fa-eye"></span> Detail Data</a>
-                                    <a class="dropdown-item text-warning" href="#" onclick="modal10(\'' . $field->id_laporan . '\')"><span class="fa fa-search"></span> Tracing</a>
-                                    <a class="dropdown-item text-primary" href="#" onclick="modal15(\'' . $field->id_laporan . '\')"><span class="fa fa-flask"></span> Swab</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item text-success" href="#" onclick="sembuh(\'' . $field->id_laporan . '\', \'3\')"><span class="fa fa-check"></span> Sembuh</a>
-                                    <a class="dropdown-item text-warning" href="#" onclick="meninggal(\'' . $field->id_laporan . '\', \'3\')"><span class="fa fa-plus"></span> Meninggal</a>
-                                </div>
-                            </button>';
+                                        Aksi <span class="sr-only">Toggle Dropdown</span>
+                                        <div class="dropdown-menu" role="menu">
+                                            <a class="dropdown-item" href="#" onclick="ubah_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
+                                            <a class="dropdown-item" href="#" onclick="detail_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-eye"></span> Detail Data</a>
+                                            <a class="dropdown-item text-primary" href="#" onclick="riwayat_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Riwayat Pasien</a>
+                                        </div>
+                                    </button>';
                 } else {
                     $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
                                 Aksi <span class="sr-only">Toggle Dropdown</span>
                                 <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item" href="#" onclick="modal2(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
-                                    <a class="dropdown-item text-warning" href="#" onclick="modal10(\'' . $field->id_laporan . '\')"><span class="fa fa-search"></span> Tracing</a>
+                                    <a class="dropdown-item" href="#" onclick="ubah_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
+                                    <a class="dropdown-item" href="#" onclick="detail_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-eye"></span> Detail Data</a>
+                                    <a class="dropdown-item text-primary" href="#" onclick="riwayat_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Riwayat Pasien</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item text-success" href="#" onclick="selesai_isolasi(\'' . $field->id_laporan . '\', \'2\')"><span class="fa fa-check"></span> Selesai Isolasi</a>
+                                    <a class="dropdown-item text-danger" href="#" onclick="pasien_die(\'' . $field->id_laporan . '\', \'2\')"><span class="fa fa-check"></span> Meninggal</a>
                                 </div>
                             </button>';
                 }
             } else {
-                if ($field->validasi == '0') {
+                if ($field->status_baru == '9' || $field->status_baru == '10') {
                     $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                Aksi <span class="sr-only">Toggle Dropdown</span>
-                                <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item" href="#" onclick="modal2(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
-                                    <a class="dropdown-item" href="#" onclick="modal13(\'' . $field->id_laporan . '\', \'1\')"><span class="fa fa-eye"></span> Detail Data</a>
-                                    <a class="dropdown-item text-primary" href="#" onclick="modal15(\'' . $field->id_laporan . '\')"><span class="fa fa-flask"></span> Swab</a>
-                                    <a class="dropdown-item text-primary" href="#" onclick="modal6(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Rujuk Pasien</a>
-                                </div>
-                            </button>';
+                                        Aksi <span class="sr-only">Toggle Dropdown</span>
+                                        <div class="dropdown-menu" role="menu">
+                                            <a class="dropdown-item" href="#" onclick="detail_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-eye"></span> Detail Data</a>
+                                            <a class="dropdown-item text-primary" href="#" onclick="riwayat_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Riwayat Pasien</a>
+                                        </div>
+                                    </button>';
                 } else {
-                    if ($field->st == '0') {
-                        $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                    $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
                                     Aksi <span class="sr-only">Toggle Dropdown</span>
                                     <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-primary" href="#" onclick="modal6(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Rujuk Pasien</a>
-                                        <a class="dropdown-item" href="#" onclick="modal13(\'' . $field->id_laporan . '\', \'1\')"><span class="fa fa-eye"></span> Detail Data</a>
-                                        <a class="dropdown-item text-warning" href="#" onclick="modal10(\'' . $field->id_laporan . '\')"><span class="fa fa-search"></span> Tracing</a>
-                                        <a class="dropdown-item text-primary" href="#" onclick="modal15(\'' . $field->id_laporan . '\')"><span class="fa fa-flask"></span> Swab</a>
+                                        <a class="dropdown-item" href="#" onclick="ubah_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
+                                        <a class="dropdown-item" href="#" onclick="detail_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-eye"></span> Detail Data</a>
+                                        <a class="dropdown-item text-primary" href="#" onclick="riwayat_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Riwayat Pasien</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item text-success" href="#" onclick="sembuh(\'' . $field->id_laporan . '\', \'3\')"><span class="fa fa-check"></span> Sembuh</a>
-                                        <a class="dropdown-item text-warning" href="#" onclick="meninggal(\'' . $field->id_laporan . '\', \'3\')"><span class="fa fa-plus"></span> Meninggal</a>
+                                        <a class="dropdown-item text-success" href="#" onclick="selesai_isolasi(\'' . $field->id_laporan . '\', \'2\')"><span class="fa fa-check"></span> Selesai Isolasi</a>
+                                        <a class="dropdown-item text-danger" href="#" onclick="pasien_die(\'' . $field->id_laporan . '\', \'2\')"><span class="fa fa-check"></span> Meninggal</a>
                                     </div>
                                 </button>';
-                    } else {
-                        $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                    Aksi <span class="sr-only">Toggle Dropdown</span>
-                                    <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-warning" href="#" onclick="modal10(\'' . $field->id_laporan . '\')"><span class="fa fa-search"></span> Tracing</a>
-                                    </div>
-                                </button>';
-                    }
                 }
             }
 
@@ -1136,65 +1110,51 @@ class Datatables extends MY_Controller
         $data = array();
         $no = $_POST['start'];
         foreach ($list as $field) {
-            if ($this->session->userdata('level') == '2') {
-                if ($field->st == '0') {
+            if ($this->session->userdata("level") == "2") {
+                if ($field->status_baru == '15') {
                     $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                Aksi <span class="sr-only">Toggle Dropdown</span>
-                                <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item" href="#" onclick="modal2(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
-                                    <a class="dropdown-item text-primary" href="#" onclick="modal6(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Rujuk Pasien</a>
-                                    <a class="dropdown-item" href="#" onclick="modal13(\'' . $field->id_laporan . '\', \'1\')"><span class="fa fa-eye"></span> Detail Data</a>
-                                    <a class="dropdown-item text-warning" href="#" onclick="modal10(\'' . $field->id_laporan . '\')"><span class="fa fa-search"></span> Tracing</a>
-                                    <a class="dropdown-item text-primary" href="#" onclick="modal15(\'' . $field->id_laporan . '\')"><span class="fa fa-flask"></span> Swab</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item text-success" href="#" onclick="sembuh(\'' . $field->id_laporan . '\', \'3\')"><span class="fa fa-check"></span> Sembuh</a>
-                                    <a class="dropdown-item text-warning" href="#" onclick="meninggal(\'' . $field->id_laporan . '\', \'3\')"><span class="fa fa-plus"></span> Meninggal</a>
-                                </div>
-                            </button>';
+                                        Aksi <span class="sr-only">Toggle Dropdown</span>
+                                        <div class="dropdown-menu" role="menu">
+                                            <a class="dropdown-item" href="#" onclick="ubah_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
+                                            <a class="dropdown-item" href="#" onclick="detail_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-eye"></span> Detail Data</a>
+                                            <a class="dropdown-item text-primary" href="#" onclick="riwayat_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Riwayat Pasien</a>
+                                        </div>
+                                    </button>';
                 } else {
                     $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                Aksi <span class="sr-only">Toggle Dropdown</span>
-                                <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item" href="#" onclick="modal2(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
-                                    <a class="dropdown-item text-warning" href="#" onclick="modal10(\'' . $field->id_laporan . '\')"><span class="fa fa-search"></span> Tracing</a>
-                                </div>
-                            </button>';
+                                    Aksi <span class="sr-only">Toggle Dropdown</span>
+                                    <div class="dropdown-menu" role="menu">
+                                        <a class="dropdown-item" href="#" onclick="ubah_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
+                                        <a class="dropdown-item" href="#" onclick="detail_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-eye"></span> Detail Data</a>
+                                        <a class="dropdown-item text-primary" href="#" onclick="riwayat_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Riwayat Pasien</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item text-success" href="#" onclick="selesai_isolasi(\'' . $field->id_laporan . '\', \'3\')"><span class="fa fa-check"></span> Selesai Isolasi</a>
+                                    </div>
+                                </button>';
                 }
             } else {
-                if ($field->validasi == '0') {
+                if ($field->status_baru == '15') {
                     $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                Aksi <span class="sr-only">Toggle Dropdown</span>
-                                <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item" href="#" onclick="modal2(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
-                                    <a class="dropdown-item" href="#" onclick="modal13(\'' . $field->id_laporan . '\', \'1\')"><span class="fa fa-eye"></span> Detail Data</a>
-                                    <a class="dropdown-item text-primary" href="#" onclick="modal15(\'' . $field->id_laporan . '\')"><span class="fa fa-flask"></span> Swab</a>
-                                    <a class="dropdown-item text-primary" href="#" onclick="modal6(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Rujuk Pasien</a>
-                                </div>
-                            </button>';
+                                        Aksi <span class="sr-only">Toggle Dropdown</span>
+                                        <div class="dropdown-menu" role="menu">
+                                            <a class="dropdown-item" href="#" onclick="detail_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-eye"></span> Detail Data</a>
+                                            <a class="dropdown-item text-primary" href="#" onclick="riwayat_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Riwayat Pasien</a>
+                                        </div>
+                                    </button>';
                 } else {
-                    if ($field->st == '0') {
-                        $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                    Aksi <span class="sr-only">Toggle Dropdown</span>
-                                    <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-primary" href="#" onclick="modal6(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Rujuk Pasien</a>
-                                        <a class="dropdown-item" href="#" onclick="modal13(\'' . $field->id_laporan . '\', \'1\')"><span class="fa fa-eye"></span> Detail Data</a>
-                                        <a class="dropdown-item text-warning" href="#" onclick="modal10(\'' . $field->id_laporan . '\')"><span class="fa fa-search"></span> Tracing</a>
-                                        <a class="dropdown-item text-primary" href="#" onclick="modal15(\'' . $field->id_laporan . '\')"><span class="fa fa-flask"></span> Swab</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item text-success" href="#" onclick="sembuh(\'' . $field->id_laporan . '\', \'3\')"><span class="fa fa-check"></span> Sembuh</a>
-                                        <a class="dropdown-item text-warning" href="#" onclick="meninggal(\'' . $field->id_laporan . '\', \'3\')"><span class="fa fa-plus"></span> Meninggal</a>
-                                    </div>
-                                </button>';
-                    } else {
-                        $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                    Aksi <span class="sr-only">Toggle Dropdown</span>
-                                    <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-warning" href="#" onclick="modal10(\'' . $field->id_laporan . '\')"><span class="fa fa-search"></span> Tracing</a>
-                                    </div>
-                                </button>';
-                    }
+                    $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                        Aksi <span class="sr-only">Toggle Dropdown</span>
+                                        <div class="dropdown-menu" role="menu">
+                                            <a class="dropdown-item" href="#" onclick="ubah_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
+                                            <a class="dropdown-item" href="#" onclick="detail_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-eye"></span> Detail Data</a>
+                                            <a class="dropdown-item text-primary" href="#" onclick="riwayat_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Riwayat Pasien</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item text-success" href="#" onclick="selesai_isolasi(\'' . $field->id_laporan . '\', \'3\')"><span class="fa fa-check"></span> Selesai Isolasi</a>
+                                        </div>
+                                    </button>';
                 }
             }
+
 
             if ($field->nakes == 'NAKES') {
                 $nakes = 'NAKES';
@@ -1245,65 +1205,51 @@ class Datatables extends MY_Controller
         $data = array();
         $no = $_POST['start'];
         foreach ($list as $field) {
-            if ($this->session->userdata('level') == '2') {
-                if ($field->st == '0') {
+            if ($this->session->userdata("level") == "2") {
+                if ($field->status_baru == '19') {
                     $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                Aksi <span class="sr-only">Toggle Dropdown</span>
-                                <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item" href="#" onclick="modal2(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
-                                    <a class="dropdown-item text-primary" href="#" onclick="modal6(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Rujuk Pasien</a>
-                                    <a class="dropdown-item" href="#" onclick="modal13(\'' . $field->id_laporan . '\', \'1\')"><span class="fa fa-eye"></span> Detail Data</a>
-                                    <a class="dropdown-item text-warning" href="#" onclick="modal10(\'' . $field->id_laporan . '\')"><span class="fa fa-search"></span> Tracing</a>
-                                    <a class="dropdown-item text-primary" href="#" onclick="modal15(\'' . $field->id_laporan . '\')"><span class="fa fa-flask"></span> Swab</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item text-success" href="#" onclick="sembuh(\'' . $field->id_laporan . '\', \'3\')"><span class="fa fa-check"></span> Sembuh</a>
-                                    <a class="dropdown-item text-warning" href="#" onclick="meninggal(\'' . $field->id_laporan . '\', \'3\')"><span class="fa fa-plus"></span> Meninggal</a>
-                                </div>
-                            </button>';
+                                                        Aksi <span class="sr-only">Toggle Dropdown</span>
+                                                        <div class="dropdown-menu" role="menu">
+                                                            <a class="dropdown-item" href="#" onclick="ubah_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
+                                                            <a class="dropdown-item" href="#" onclick="detail_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-eye"></span> Detail Data</a>
+                                                            <a class="dropdown-item text-primary" href="#" onclick="riwayat_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Riwayat Pasien</a>
+                                                        </div>
+                                                    </button>';
                 } else {
                     $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                Aksi <span class="sr-only">Toggle Dropdown</span>
-                                <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item" href="#" onclick="modal2(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
-                                    <a class="dropdown-item text-warning" href="#" onclick="modal10(\'' . $field->id_laporan . '\')"><span class="fa fa-search"></span> Tracing</a>
-                                </div>
-                            </button>';
+                                        Aksi <span class="sr-only">Toggle Dropdown</span>
+                                        <div class="dropdown-menu" role="menu">
+                                            <a class="dropdown-item" href="#" onclick="ubah_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
+                                            <a class="dropdown-item" href="#" onclick="detail_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-eye"></span> Detail Data</a>
+                                            <a class="dropdown-item text-primary" href="#" onclick="riwayat_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Riwayat Pasien</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item text-success" href="#" onclick="selesai_isolasi(\'' . $field->id_laporan . '\', \'4\')"><span class="fa fa-check"></span> Selesai Isolasi</a>
+                                        </div>
+                                    </button>';
                 }
             } else {
-                if ($field->validasi == '0') {
+                if ($field->status_baru == '19') {
                     $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                Aksi <span class="sr-only">Toggle Dropdown</span>
-                                <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item" href="#" onclick="modal2(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
-                                    <a class="dropdown-item" href="#" onclick="modal13(\'' . $field->id_laporan . '\', \'1\')"><span class="fa fa-eye"></span> Detail Data</a>
-                                    <a class="dropdown-item text-primary" href="#" onclick="modal15(\'' . $field->id_laporan . '\')"><span class="fa fa-flask"></span> Swab</a>
-                                    <a class="dropdown-item text-primary" href="#" onclick="modal6(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Rujuk Pasien</a>
-                                </div>
-                            </button>';
+                                    Aksi <span class="sr-only">Toggle Dropdown</span>
+                                    <div class="dropdown-menu" role="menu">
+                                        <a class="dropdown-item" href="#" onclick="detail_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-eye"></span> Detail Data</a>
+                                        <a class="dropdown-item text-primary" href="#" onclick="riwayat_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Riwayat Pasien</a>
+                                    </div>
+                                </button>';
                 } else {
-                    if ($field->st == '0') {
-                        $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                    Aksi <span class="sr-only">Toggle Dropdown</span>
-                                    <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-primary" href="#" onclick="modal6(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Rujuk Pasien</a>
-                                        <a class="dropdown-item" href="#" onclick="modal13(\'' . $field->id_laporan . '\', \'1\')"><span class="fa fa-eye"></span> Detail Data</a>
-                                        <a class="dropdown-item text-warning" href="#" onclick="modal10(\'' . $field->id_laporan . '\')"><span class="fa fa-search"></span> Tracing</a>
-                                        <a class="dropdown-item text-primary" href="#" onclick="modal15(\'' . $field->id_laporan . '\')"><span class="fa fa-flask"></span> Swab</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item text-success" href="#" onclick="sembuh(\'' . $field->id_laporan . '\', \'3\')"><span class="fa fa-check"></span> Sembuh</a>
-                                        <a class="dropdown-item text-warning" href="#" onclick="meninggal(\'' . $field->id_laporan . '\', \'3\')"><span class="fa fa-plus"></span> Meninggal</a>
-                                    </div>
-                                </button>';
-                    } else {
-                        $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                    Aksi <span class="sr-only">Toggle Dropdown</span>
-                                    <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-warning" href="#" onclick="modal10(\'' . $field->id_laporan . '\')"><span class="fa fa-search"></span> Tracing</a>
-                                    </div>
-                                </button>';
-                    }
+                    $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                        Aksi <span class="sr-only">Toggle Dropdown</span>
+                                        <div class="dropdown-menu" role="menu">
+                                            <a class="dropdown-item" href="#" onclick="ubah_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
+                                            <a class="dropdown-item" href="#" onclick="detail_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-eye"></span> Detail Data</a>
+                                            <a class="dropdown-item text-primary" href="#" onclick="riwayat_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Riwayat Pasien</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item text-success" href="#" onclick="selesai_isolasi(\'' . $field->id_laporan . '\', \'4\')"><span class="fa fa-check"></span> Selesai Isolasi</a>
+                                        </div>
+                                    </button>';
                 }
             }
+
 
             if ($field->nakes == 'NAKES') {
                 $nakes = 'NAKES';
