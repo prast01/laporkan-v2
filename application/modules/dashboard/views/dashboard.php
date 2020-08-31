@@ -38,6 +38,25 @@ $bln = array(01 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli"
                     <h1 class="m-0 text-dark"> Selamat datang <small><br />di Sistem Administrasi <strong>Covid-19</strong> Kabupaten Jepara</small></h1>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <?php if ($this->session->flashdata('success')) : ?>
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <h5><i class="icon fas fa-check"></i> Sukses!</h5>
+                            <?php echo $this->session->flashdata('success'); ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if ($this->session->flashdata('gagal')) : ?>
+                        <div class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <h5><i class="icon fas fa-ban"></i> Eror!</h5>
+                            <?php echo $this->session->flashdata('gagal'); ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
         </div>
     </div>
     <!-- /.content-header -->
@@ -157,9 +176,14 @@ $bln = array(01 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli"
                 </div>
                 <div class="col-lg-6">
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-10">
                             <p class="mb-0">DATA CUT OFF</p>
                             <p class="mb-3">update terakhir : <?= $update_at_cutoff; ?></p>
+                        </div>
+                        <div class="col-lg-2">
+                            <?php if ($level == "2") : ?>
+                                <a href="<?= site_url("../dashboard/update"); ?>" class="btn btn-danger">PUBLISH</a>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="row">

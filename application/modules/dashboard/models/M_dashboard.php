@@ -348,6 +348,232 @@ class M_dashboard extends CI_Model
         }
         return $data;
     }
+
+    // update data all
+    public function update()
+    {
+        $data = array(
+            "updated_at" => date("Y-m-d H:i:s"),
+            "suspek_total" => $this->cek_suspek("all"),
+            "suspek_dirawat" => $this->cek_suspek("dirawat"),
+            "suspek_dirawat_baru" => $this->cek_suspek("dirawat baru"),
+            "suspek_isolasi" => $this->cek_suspek("isolasi"),
+            "suspek_isolasi_baru" => $this->cek_suspek("isolasi baru"),
+            "suspek_discard" => $this->cek_suspek("discard"),
+            "suspek_discard_baru" => $this->cek_suspek("discard baru"),
+            "probable_total" => $this->cek_probable("all"),
+            "probable_dirawat" => $this->cek_probable("dirawat"),
+            "probable_dirawat_baru" => $this->cek_probable("dirawat baru"),
+            "probable_isolasi" => $this->cek_probable("isolasi"),
+            "probable_isolasi_baru" => $this->cek_probable("isolasi baru"),
+            "probable_sembuh" => $this->cek_probable("sembuh"),
+            "probable_sembuh_baru" => $this->cek_probable("sembuh baru"),
+            "probable_meninggal" => $this->cek_probable("meninggal"),
+            "probable_meninggal_baru" => $this->cek_probable("meninggal baru"),
+            "konfirmasi_total" => $this->cek_konfirmasi("all"),
+            "konfirmasi_dirawat" => $this->cek_konfirmasi("dirawat"),
+            "konfirmasi_dirawat_baru" => $this->cek_konfirmasi("dirawat baru"),
+            "konfirmasi_isolasi" => $this->cek_konfirmasi("isolasi"),
+            "konfirmasi_isolasi_baru" => $this->cek_konfirmasi("isolasi baru"),
+            "konfirmasi_sembuh" => $this->cek_konfirmasi("sembuh"),
+            "konfirmasi_sembuh_baru" => $this->cek_konfirmasi("sembuh baru"),
+            "konfirmasi_meninggal" => $this->cek_konfirmasi("meninggal"),
+            "konfirmasi_meninggal_baru" => $this->cek_konfirmasi("meninggal baru"),
+            "konfirmasi_luar" => $this->cek_konfirmasi("luar"),
+            "konfirmasi_luar_baru" => $this->cek_konfirmasi("luar baru"),
+        );
+
+        $cek = $this->db->insert("tb_update_baru", $data);
+
+        if ($cek) {
+            $this->_valid_all();
+            $kec = $this->_get_kecamatan();
+            foreach ($kec as $key) {
+                $id = $key->id_kecamatan;
+                $this->_update_kec($id);
+            }
+            $msg = array('res' => 1, 'msg' => 'Berhasil Dipublish');
+        } else {
+            $msg = array('res' => 0, 'msg' => 'Gagal Dipublish');
+        }
+
+        return json_encode($msg);
+    }
+
+    private function _valid_all()
+    {
+        $date = date("Y-m-d H:i:s");
+        $this->db->query("UPDATE tb_laporan_baru SET validasi='1', updated_at='$date' WHERE validasi='0'");
+    }
+
+    // update kecamatan
+    private function _get_kecamatan()
+    {
+        $data = $this->db->get("tb_kecamatan")->result();
+
+        return $data;
+    }
+
+    private function _update_kec($id)
+    {
+        $where = array(
+            "id_kecamatan" => $id
+        );
+
+        $data = array(
+            "suspek_dirawat" => $this->_cek_suspek("dirawat", $id),
+            "suspek_discard" => $this->_cek_suspek("discard", $id),
+            "probable_dirawat" => $this->_cek_probable("dirawat", $id),
+            "probable_sembuh" => $this->_cek_probable("sembuh", $id),
+            "probable_meninggal" => $this->_cek_probable("meninggal", $id),
+            "konfirmasi_dirawat" => $this->_cek_konfirmasi("dirawat", $id),
+            "konfirmasi_sembuh" => $this->_cek_konfirmasi("sembuh", $id),
+            "konfirmasi_meninggal" => $this->_cek_konfirmasi("meninggal", $id),
+        );
+
+        $this->db->update("tb_kecamatan_baru", $data, $where);
+    }
+
+    private function _cek_suspek($kondisi, $id)
+    {
+        $this->db->select('id_laporan');
+        $this->db->from('tb_laporan_baru');
+        $this->db->where(["id_kecamatan" => $id]);
+        if ($kondisi == "dirawat") {
+            $status = array("13", "14", "16", "17");
+            $this->db->where_in("status_baru", $status);
+        } elseif ($kondisi == "discard") {
+            $this->db->where(["status_baru" => 15]);
+        }
+
+        $data = $this->db->get();
+
+        return $data->num_rows();
+    }
+
+    private function _cek_probable($kondisi, $id)
+    {
+        $this->db->select('id_laporan');
+        $this->db->from('tb_laporan_baru');
+        $this->db->where(["id_kecamatan" => $id]);
+        if ($kondisi == "dirawat") {
+            $status = array("7", "8", "11", "12");
+            $this->db->where_in("status_baru", $status);
+        } elseif ($kondisi == "sembuh") {
+            $this->db->where(["status_baru" => 9]);
+        } elseif ($kondisi == "meninggal") {
+            $this->db->where(["status_baru" => 10]);
+        }
+
+        $data = $this->db->get();
+
+        return $data->num_rows();
+    }
+
+    private function _cek_konfirmasi($kondisi, $id)
+    {
+        $this->db->select('id_laporan');
+        $this->db->from('tb_laporan_baru');
+        $this->db->where(["id_kecamatan" => $id]);
+        if ($kondisi == "dirawat") {
+            $status = array("1", "2", "5", "6");
+            $this->db->where_in("status_baru", $status);
+        } elseif ($kondisi == "sembuh") {
+            $this->db->where(["status_baru" => 3]);
+        } elseif ($kondisi == "meninggal") {
+            $this->db->where(["status_baru" => 4]);
+        }
+
+        $data = $this->db->get();
+
+        return $data->num_rows();
+    }
+
+    // update desa
+    public function _get_desa()
+    {
+        $data = $this->db->query("SELECT * FROM tb_kelurahan_baru WHERE updated='0' LIMIT 1");
+
+        return $data;
+    }
+
+    public function _update_kel($id)
+    {
+        $where = array(
+            "id_kelurahan" => $id
+        );
+
+        $data = array(
+            "suspek_dirawat" => $this->_cek_suspek_kel("dirawat", $id),
+            "suspek_discard" => $this->_cek_suspek_kel("discard", $id),
+            "probable_dirawat" => $this->_cek_probable_kel("dirawat", $id),
+            "probable_sembuh" => $this->_cek_probable_kel("sembuh", $id),
+            "probable_meninggal" => $this->_cek_probable_kel("meninggal", $id),
+            "konfirmasi_dirawat" => $this->_cek_konfirmasi_kel("dirawat", $id),
+            "konfirmasi_sembuh" => $this->_cek_konfirmasi_kel("sembuh", $id),
+            "konfirmasi_meninggal" => $this->_cek_konfirmasi_kel("meninggal", $id),
+            "updated" => 1,
+        );
+
+        $this->db->update("tb_kelurahan_baru", $data, $where);
+
+        return $data;
+    }
+
+    private function _cek_suspek_kel($kondisi, $id)
+    {
+        $this->db->select('id_laporan');
+        $this->db->from('tb_laporan_baru');
+        $this->db->where(["id_kelurahan" => $id]);
+        if ($kondisi == "dirawat") {
+            $status = array("13", "14", "16", "17");
+            $this->db->where_in("status_baru", $status);
+        } elseif ($kondisi == "discard") {
+            $this->db->where(["status_baru" => 15]);
+        }
+
+        $data = $this->db->get();
+
+        return $data->num_rows();
+    }
+
+    private function _cek_probable_kel($kondisi, $id)
+    {
+        $this->db->select('id_laporan');
+        $this->db->from('tb_laporan_baru');
+        $this->db->where(["id_kelurahan" => $id]);
+        if ($kondisi == "dirawat") {
+            $status = array("7", "8", "11", "12");
+            $this->db->where_in("status_baru", $status);
+        } elseif ($kondisi == "sembuh") {
+            $this->db->where(["status_baru" => 9]);
+        } elseif ($kondisi == "meninggal") {
+            $this->db->where(["status_baru" => 10]);
+        }
+
+        $data = $this->db->get();
+
+        return $data->num_rows();
+    }
+
+    private function _cek_konfirmasi_kel($kondisi, $id)
+    {
+        $this->db->select('id_laporan');
+        $this->db->from('tb_laporan_baru');
+        $this->db->where(["id_kelurahan" => $id]);
+        if ($kondisi == "dirawat") {
+            $status = array("1", "2", "5", "6");
+            $this->db->where_in("status_baru", $status);
+        } elseif ($kondisi == "sembuh") {
+            $this->db->where(["status_baru" => 3]);
+        } elseif ($kondisi == "meninggal") {
+            $this->db->where(["status_baru" => 4]);
+        }
+
+        $data = $this->db->get();
+
+        return $data->num_rows();
+    }
 }
 
 /* End of file M_dashboard.php */

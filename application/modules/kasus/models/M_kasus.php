@@ -320,7 +320,7 @@ class M_kasus extends CI_Model
             }
         }
 
-        if ($post['status'] == '1') {
+        if ($post['status'] == '1' || $post['status'] == '2') {
             $kasus = $this->_get_last_case();
         } else {
             $kasus = null;
@@ -336,7 +336,8 @@ class M_kasus extends CI_Model
             "kasus" => $kasus,
             "keterangan" => $post['keterangan'],
             "status_baru" => $post['status'],
-            "updated_at" => date("Y-m-d H:i:s")
+            "updated_at" => date("Y-m-d H:i:s"),
+            "validasi" => 0
         );
 
 
@@ -390,7 +391,8 @@ class M_kasus extends CI_Model
             "keterangan" => $post['keterangan'],
             "status_baru" => $post['status'],
             "updated_at" => date("Y-m-d H:i:s"),
-            "tgl_periksa" => date("Y-m-d")
+            "tgl_periksa" => date("Y-m-d"),
+            "validasi" => 0
         );
 
 
@@ -425,7 +427,8 @@ class M_kasus extends CI_Model
         $data = array(
             "keterangan" => '-',
             "status_baru" => $status,
-            "updated_at" => date("Y-m-d H:i:s")
+            "updated_at" => date("Y-m-d H:i:s"),
+            "validasi" => 0
         );
 
 
@@ -456,7 +459,8 @@ class M_kasus extends CI_Model
         $data = array(
             "keterangan" => 'MD',
             "status_baru" => $status,
-            "updated_at" => date("Y-m-d H:i:s")
+            "updated_at" => date("Y-m-d H:i:s"),
+            "validasi" => 0
         );
 
 
