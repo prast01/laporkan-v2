@@ -1,46 +1,43 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Dashboard extends MY_Controller {
+class Dashboard extends MY_Controller
+{
 
     public function __construct()
     {
-      parent::__construct();
-          $this->load->model("M_dashboard");
-  
+        parent::__construct();
+        $this->load->model("M_dashboard");
     }
-    
+
     public function index()
     {
         $model = $this->M_dashboard;
         $data['id_user'] = $this->session->userdata("id_user");
         $data['level'] = $this->session->userdata("level");
-        
+
         if ($this->session->userdata('id_user') != '') {
-            if ($data['level'] == '2' || $data['level'] == '3') {
-                $api = $model->getApi();
-                $data['tgl_update'] = $api['tgl_update'];
-                $data['odp'] = $api['odp'];
-                $data['pdp'] = $api['pdp'];
-                $data['covid'] = $api['covid'];
-                $this->template('dashboard', $data);
-            } elseif ($data['level'] == '4') {
-                redirect('../home','refresh');
-            } elseif($data['level'] == '1') {
-                redirect('../home','refresh');
-            } elseif($data['level'] == '5') {
-                redirect('../data','refresh');
-            } elseif($data['level'] == '6') {
-                redirect('../pp','refresh');
-            } elseif($data['level'] == '7') {
-                redirect('../tempatKarantina','refresh');
-            }
+            $api = $model->get_realtime();
+            $api2 = $model->get_cut_off();
+
+            $data['update_at_realtime'] = $api['updated_at'];
+            $data['suspek'] = $api['suspek'];
+            $data['probable'] = $api['probable'];
+            $data['konfirmasi'] = $api['konfirmasi'];
+
+            $data['update_at_cutoff'] = $api2['updated_at'];
+            $data['suspek_cut'] = $api2['suspek'];
+            $data['probable_cut'] = $api2['probable'];
+            $data['konfirmasi_cut'] = $api2['konfirmasi'];
+
+            $this->template('dashboard', $data);
+
+            // echo json_encode($api);
         } else {
-          redirect('../','refresh');
+            redirect('../', 'refresh');
         }
     }
-
 }
 
 /* End of file Dashboard.php */

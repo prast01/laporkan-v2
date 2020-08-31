@@ -35,9 +35,13 @@ class M_kasus extends CI_Model
     public function get_status($t = "")
     {
         $this->db->where(["input" => 1]);
-        if ($t != "") {
+        if ($t == "1") {
             $this->db->or_where(["input" => 2]);
+        } elseif ($t == "2") {
+            $this->db->or_where(["input" => 2]);
+            $this->db->or_where(["input" => 3]);
         }
+
         $this->db->order_by('id_status_2', 'desc');
         $data = $this->db->get("tb_status_2")->result();
 
@@ -73,6 +77,33 @@ class M_kasus extends CI_Model
         return $data;
     }
 
+    public function get_pasien_by($nik)
+    {
+        $data = $this->db->get_where("tb_laporan_baru", ["nik" => $nik]);
+
+        return $data;
+    }
+
+    public function get_status_by_id($id)
+    {
+        $data = $this->db->get_where("tb_status_2", ["id_status_2" => $id])->row();
+
+        return $data->nama_status;
+    }
+
+    public function get_kecamatan_by_id($id)
+    {
+        $data = $this->db->get_where("tb_kecamatan", ["id_kecamatan" => $id])->row();
+
+        return $data->nama_kecamatan;
+    }
+
+    public function get_kelurahan_by_id($id)
+    {
+        $data = $this->db->get_where("tb_kelurahan", ["id_kelurahan" => $id])->row();
+
+        return $data->nama_kelurahan;
+    }
     // CRUD
     public function save()
     {
@@ -122,7 +153,7 @@ class M_kasus extends CI_Model
         } else {
             $cek_nik = $this->_get_nik($post['nik']);
             if ($cek_nik['res']) {
-                $msg = array('res' => 0, 'msg' => $cek_nik['msg'] . " Pada kasus : " . $cek_nik['data']);
+                $msg = array('res' => 0, 'msg' => $cek_nik['msg'] . " Pada kasus : " . $cek_nik['data'] . "di Faskes : " . $cek_nik['faskes']);
                 return json_encode($msg);
             }
         }
@@ -156,6 +187,7 @@ class M_kasus extends CI_Model
             'nakes' => $post['nakes'],
             'penyakit' => $post['penyakit'],
             "faskes_akhir" => $faskes,
+            "updated_at" => date("Y-m-d H:i:s"),
             'status_baru' => $post['status']
         );
 
@@ -320,6 +352,60 @@ class M_kasus extends CI_Model
         return json_encode($msg);
     }
 
+    public function add_riwayat_lama()
+    {
+        $post = $this->input->post();
+
+        if ($post['status'] == '1' || $post['status'] == '7' || $post['status'] == '13') {
+            if ($post['faskes_akhir'] == '') {
+                $msg = array('res' => 0, 'msg' => 'Rumah Sakit Harus Diisi dengan BENAR');
+                return json_encode($msg);
+            } else {
+                $faskes = $post['faskes_akhir'];
+            }
+        } else {
+            if ($post['status'] == '') {
+                $msg = array('res' => 0, 'msg' => 'Status Harus Diisi dengan BENAR');
+                return json_encode($msg);
+            } else {
+                $nama_user = $this->session->userdata("nama_user");
+                $faskes = $nama_user;
+            }
+        }
+
+        if ($post['status'] == '1') {
+            $kasus = $this->_get_last_case();
+        } else {
+            $kasus = null;
+        }
+
+
+        $where = array(
+            "id_laporan" => $post['id_laporan']
+        );
+
+        $data = array(
+            "faskes_akhir" => $faskes,
+            "kasus" => $kasus,
+            "keterangan" => $post['keterangan'],
+            "status_baru" => $post['status'],
+            "updated_at" => date("Y-m-d H:i:s"),
+            "tgl_periksa" => date("Y-m-d")
+        );
+
+
+        $cek = $this->db->update("tb_laporan_baru", $data, $where);
+
+        if ($cek) {
+            $this->_add_riwayat_baru($post['id_laporan']);
+            $msg = array('res' => 1, 'msg' => 'Laporan Berhasil Ditambahkan');
+        } else {
+            $msg = array('res' => 0, 'msg' => 'Laporan Gagal Ditambahkan');
+        }
+
+        return json_encode($msg);
+    }
+
     public function selesai_isolasi($kode, $id)
     {
         if ($kode == '1') {
@@ -393,7 +479,7 @@ class M_kasus extends CI_Model
 
         if ($data->num_rows() > 0) {
             $d = $data->row();
-            $msg = array('res' => 1, 'msg' => 'NIK Sudah digunakan.', 'data' => $d->nama_status);
+            $msg = array('res' => 1, 'msg' => 'NIK Sudah digunakan.', 'data' => $d->nama_status, 'faskes' => $d->faskes_akhir);
         } else {
             $msg = array('res' => 0);
         }

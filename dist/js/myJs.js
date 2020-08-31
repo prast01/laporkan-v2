@@ -565,6 +565,19 @@ function tambah_kasus() {
   });
 }
 
+function kasus_lama() {
+  $("#modalku").modal();
+  $(".modal-title").html("Tambah Kasus Lama");
+  var origin = window.location.origin + "/laporkan-v2/kasus/modal_tambah_lama";
+  $.ajax({
+    type: "POST",
+    url: origin,
+    success: function (data) {
+      $(".modal-body").html(data);
+    },
+  });
+}
+
 function ubah_kasus(id) {
   $("#modalku").modal();
   $(".modal-title").html("Ubah Kasus");

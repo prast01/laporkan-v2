@@ -22,7 +22,8 @@ function tgl_ind($date)
 
 $tgl = date("Y-m-d");
 
-$tglku = tgl_ind($tgl_update);
+$update_at_realtime = tgl_ind($update_at_realtime);
+$update_at_cutoff = tgl_ind($update_at_cutoff);
 
 $bln = array(01 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
 
@@ -49,7 +50,7 @@ $bln = array(01 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli"
                     <div class="row">
                         <div class="col-lg-12">
                             <p class="mb-0">DATA REAL TIME</p>
-                            <p class="mb-3">update terakhir : </p>
+                            <p class="mb-3">update terakhir : <?= $update_at_realtime; ?></p>
                         </div>
                     </div>
                     <div class="row">
@@ -57,7 +58,7 @@ $bln = array(01 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli"
                             <div class="card card-outline card-success">
                                 <div class="card-header" style="background-color: #c9ffde;">
                                     <p class="text-center text-success mb-0">Suspek</p>
-                                    <h1 class="text-center text-success mb-0">100</h1>
+                                    <h1 class="text-center text-success mb-0"><?= $suspek['total']; ?></h1>
                                     <p class="text-center text-success mb-0">Total Kasus</p>
                                     <!-- /.card-tools -->
                                 </div>
@@ -65,17 +66,17 @@ $bln = array(01 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli"
                                 <div class="pt-2 pb-2">
                                     <p class="text-center mb-0">Dirawat</p>
                                     <h3 class="text-center mb-0 text-success">
-                                        50 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                        <?= $suspek['dirawat']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $suspek['dirawat']['baru']; ?></span>
                                     </h3>
                                     <hr class="my-md-0">
                                     <p class="text-center mb-0">Isolasi</p>
                                     <h3 class="text-center mb-0 text-success">
-                                        5 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                        <?= $suspek['isolasi']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $suspek['isolasi']['baru']; ?></span>
                                     </h3>
                                     <hr class="my-md-0">
                                     <p class="text-center mb-0">Discard</p>
                                     <h3 class="text-center mb-0 text-success">
-                                        45 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                        <?= $suspek['discard']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $suspek['discard']['baru']; ?></span>
                                     </h3>
                                 </div>
                                 <!-- /.card-body -->
@@ -85,7 +86,7 @@ $bln = array(01 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli"
                             <div class="card card-outline card-warning">
                                 <div class="card-header" style="background-color: #fffadb;">
                                     <p class="text-center text-warning mb-0">Probable</p>
-                                    <h1 class="text-center text-warning mb-0">100</h1>
+                                    <h1 class="text-center text-warning mb-0"><?= $probable['total']; ?></h1>
                                     <p class="text-center text-warning mb-0">Total Kasus</p>
                                     <!-- /.card-tools -->
                                 </div>
@@ -93,22 +94,22 @@ $bln = array(01 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli"
                                 <div class="pt-2 pb-2">
                                     <p class="text-center mb-0">Dirawat</p>
                                     <h3 class="text-center mb-0 text-warning">
-                                        50 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                        <?= $probable['dirawat']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $probable['dirawat']['baru']; ?></span>
                                     </h3>
                                     <hr class="my-md-0">
                                     <p class="text-center mb-0">Isolasi</p>
                                     <h3 class="text-center mb-0 text-warning">
-                                        5 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                        <?= $probable['isolasi']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $probable['isolasi']['baru']; ?></span>
                                     </h3>
                                     <hr class="my-md-0">
                                     <p class="text-center mb-0">Sembuh</p>
                                     <h3 class="text-center mb-0 text-warning">
-                                        45 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                        <?= $probable['sembuh']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $probable['sembuh']['baru']; ?></span>
                                     </h3>
                                     <hr class="my-md-0">
                                     <p class="text-center mb-0">Meninggal</p>
                                     <h3 class="text-center mb-0 text-warning">
-                                        45 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                        <?= $probable['meninggal']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $probable['meninggal']['baru']; ?></span>
                                     </h3>
                                 </div>
                                 <!-- /.card-body -->
@@ -118,7 +119,7 @@ $bln = array(01 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli"
                             <div class="card card-outline card-danger">
                                 <div class="card-header" style="background-color: #ffeded;">
                                     <p class="text-center text-danger mb-0">Terkonfirmasi</p>
-                                    <h1 class="text-center text-danger mb-0">100</h1>
+                                    <h1 class="text-center text-danger mb-0"><?= $konfirmasi['total']; ?></h1>
                                     <p class="text-center text-danger mb-0">Total Kasus</p>
                                     <!-- /.card-tools -->
                                 </div>
@@ -126,22 +127,27 @@ $bln = array(01 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli"
                                 <div class="pt-2 pb-2">
                                     <p class="text-center mb-0">Dirawat</p>
                                     <h3 class="text-center mb-0 text-danger">
-                                        50 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                        <?= $konfirmasi['dirawat']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $konfirmasi['dirawat']['baru']; ?></span>
                                     </h3>
                                     <hr class="my-md-0">
                                     <p class="text-center mb-0">Isolasi</p>
                                     <h3 class="text-center mb-0 text-danger">
-                                        5 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                        <?= $konfirmasi['isolasi']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $konfirmasi['isolasi']['baru']; ?></span>
                                     </h3>
                                     <hr class="my-md-0">
                                     <p class="text-center mb-0">Sembuh</p>
                                     <h3 class="text-center mb-0 text-danger">
-                                        45 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                        <?= $konfirmasi['sembuh']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $konfirmasi['sembuh']['baru']; ?></span>
                                     </h3>
                                     <hr class="my-md-0">
                                     <p class="text-center mb-0">Meninggal</p>
                                     <h3 class="text-center mb-0 text-danger">
-                                        45 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                        <?= $konfirmasi['meninggal']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $konfirmasi['meninggal']['baru']; ?></span>
+                                    </h3>
+                                    <hr class="my-md-0">
+                                    <p class="text-center mb-0">Luar Daerah</p>
+                                    <h3 class="text-center mb-0 text-danger">
+                                        <?= $konfirmasi['luar']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $konfirmasi['luar']['baru']; ?></span>
                                     </h3>
                                 </div>
                                 <!-- /.card-body -->
@@ -153,7 +159,7 @@ $bln = array(01 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli"
                     <div class="row">
                         <div class="col-lg-12">
                             <p class="mb-0">DATA CUT OFF</p>
-                            <p class="mb-3">update terakhir : </p>
+                            <p class="mb-3">update terakhir : <?= $update_at_cutoff; ?></p>
                         </div>
                     </div>
                     <div class="row">
@@ -161,7 +167,7 @@ $bln = array(01 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli"
                             <div class="card card-outline card-success">
                                 <div class="card-header" style="background-color: #c9ffde;">
                                     <p class="text-center text-success mb-0">Suspek</p>
-                                    <h1 class="text-center text-success mb-0">100</h1>
+                                    <h1 class="text-center text-success mb-0"><?= $suspek_cut['total']; ?></h1>
                                     <p class="text-center text-success mb-0">Total Kasus</p>
                                     <!-- /.card-tools -->
                                 </div>
@@ -169,17 +175,17 @@ $bln = array(01 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli"
                                 <div class="pt-2 pb-2">
                                     <p class="text-center mb-0">Dirawat</p>
                                     <h3 class="text-center mb-0 text-success">
-                                        50 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                        <?= $suspek_cut['dirawat']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $suspek_cut['dirawat']['baru']; ?></span>
                                     </h3>
                                     <hr class="my-md-0">
                                     <p class="text-center mb-0">Isolasi</p>
                                     <h3 class="text-center mb-0 text-success">
-                                        5 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                        <?= $suspek_cut['isolasi']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $suspek_cut['isolasi']['baru']; ?></span>
                                     </h3>
                                     <hr class="my-md-0">
                                     <p class="text-center mb-0">Discard</p>
                                     <h3 class="text-center mb-0 text-success">
-                                        45 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                        <?= $suspek_cut['discard']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $suspek_cut['discard']['baru']; ?></span>
                                     </h3>
                                 </div>
                                 <!-- /.card-body -->
@@ -189,7 +195,7 @@ $bln = array(01 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli"
                             <div class="card card-outline card-warning">
                                 <div class="card-header" style="background-color: #fffadb;">
                                     <p class="text-center text-warning mb-0">Probable</p>
-                                    <h1 class="text-center text-warning mb-0">100</h1>
+                                    <h1 class="text-center text-warning mb-0"><?= $probable_cut['total']; ?></h1>
                                     <p class="text-center text-warning mb-0">Total Kasus</p>
                                     <!-- /.card-tools -->
                                 </div>
@@ -197,22 +203,22 @@ $bln = array(01 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli"
                                 <div class="pt-2 pb-2">
                                     <p class="text-center mb-0">Dirawat</p>
                                     <h3 class="text-center mb-0 text-warning">
-                                        50 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                        <?= $probable_cut['dirawat']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $probable_cut['dirawat']['baru']; ?></span>
                                     </h3>
                                     <hr class="my-md-0">
                                     <p class="text-center mb-0">Isolasi</p>
                                     <h3 class="text-center mb-0 text-warning">
-                                        5 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                        <?= $probable_cut['isolasi']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $probable_cut['isolasi']['baru']; ?></span>
                                     </h3>
                                     <hr class="my-md-0">
                                     <p class="text-center mb-0">Sembuh</p>
                                     <h3 class="text-center mb-0 text-warning">
-                                        45 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                        <?= $probable_cut['sembuh']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $probable_cut['sembuh']['baru']; ?></span>
                                     </h3>
                                     <hr class="my-md-0">
                                     <p class="text-center mb-0">Meninggal</p>
                                     <h3 class="text-center mb-0 text-warning">
-                                        45 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                        <?= $probable_cut['meninggal']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $probable_cut['meninggal']['baru']; ?></span>
                                     </h3>
                                 </div>
                                 <!-- /.card-body -->
@@ -222,7 +228,7 @@ $bln = array(01 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli"
                             <div class="card card-outline card-danger">
                                 <div class="card-header" style="background-color: #ffeded;">
                                     <p class="text-center text-danger mb-0">Terkonfirmasi</p>
-                                    <h1 class="text-center text-danger mb-0">100</h1>
+                                    <h1 class="text-center text-danger mb-0"><?= $konfirmasi_cut['total']; ?></h1>
                                     <p class="text-center text-danger mb-0">Total Kasus</p>
                                     <!-- /.card-tools -->
                                 </div>
@@ -230,22 +236,27 @@ $bln = array(01 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli"
                                 <div class="pt-2 pb-2">
                                     <p class="text-center mb-0">Dirawat</p>
                                     <h3 class="text-center mb-0 text-danger">
-                                        50 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                        <?= $konfirmasi_cut['dirawat']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $konfirmasi_cut['dirawat']['baru']; ?></span>
                                     </h3>
                                     <hr class="my-md-0">
                                     <p class="text-center mb-0">Isolasi</p>
                                     <h3 class="text-center mb-0 text-danger">
-                                        5 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                        <?= $konfirmasi_cut['isolasi']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $konfirmasi_cut['isolasi']['baru']; ?></span>
                                     </h3>
                                     <hr class="my-md-0">
                                     <p class="text-center mb-0">Sembuh</p>
                                     <h3 class="text-center mb-0 text-danger">
-                                        45 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                        <?= $konfirmasi_cut['sembuh']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $konfirmasi_cut['sembuh']['baru']; ?></span>
                                     </h3>
                                     <hr class="my-md-0">
                                     <p class="text-center mb-0">Meninggal</p>
                                     <h3 class="text-center mb-0 text-danger">
-                                        45 <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> 5</span>
+                                        <?= $konfirmasi_cut['meninggal']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $konfirmasi_cut['meninggal']['baru']; ?></span>
+                                    </h3>
+                                    <hr class="my-md-0">
+                                    <p class="text-center mb-0">Luar Daerah</p>
+                                    <h3 class="text-center mb-0 text-danger">
+                                        <?= $konfirmasi_cut['luar']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $konfirmasi_cut['luar']['baru']; ?></span>
                                     </h3>
                                 </div>
                                 <!-- /.card-body -->

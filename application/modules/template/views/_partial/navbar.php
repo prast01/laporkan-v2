@@ -24,7 +24,7 @@
 			?>
 				<ul class="navbar-nav">
 					<li class="nav-item">
-						<a href="<?php echo site_url('../beranda'); ?>" class="nav-link">Beranda</a>
+						<a href="<?php echo site_url('../dashboard'); ?>" class="nav-link">Beranda</a>
 					</li>
 					<?php
 					if ($level == '1') {
