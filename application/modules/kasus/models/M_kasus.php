@@ -374,7 +374,7 @@ class M_kasus extends CI_Model
             }
         }
 
-        if ($post['status'] == '1') {
+        if ($post['status'] == '1' || $post['status'] == '2') {
             $kasus = $this->_get_last_case();
         } else {
             $kasus = null;
