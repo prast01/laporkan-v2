@@ -78,6 +78,7 @@ class M_dashboard extends CI_Model
     {
         $this->db->select('id_laporan');
         $this->db->from('tb_laporan_baru');
+        $this->db->where(["id_kecamatan !=" => 17]);
         if ($kondisi == "all") {
             $this->db->where(["status_baru >=" => 13]);
             $this->db->where(["status_baru <=" => 17]);
@@ -110,6 +111,7 @@ class M_dashboard extends CI_Model
     {
         $this->db->select('id_laporan');
         $this->db->from('tb_laporan_baru');
+        $this->db->where(["id_kecamatan !=" => 17]);
         if ($kondisi == "all") {
             $this->db->where(["status_baru >=" => 7]);
             $this->db->where(["status_baru <=" => 12]);
