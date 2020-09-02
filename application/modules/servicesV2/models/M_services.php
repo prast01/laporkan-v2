@@ -155,6 +155,98 @@ class M_services extends CI_Model
 
         return $data;
     }
+
+    // get first date
+    public function get_first_date()
+    {
+        $data = $this->db->query("SELECT updated_at FROM tb_update_baru ORDER BY updated_at ASC LIMIT 1")->row();
+
+        $date = date("Y-m-d", strtotime($data->updated_at));
+
+        return $date;
+    }
+
+    // get last date
+    public function get_last_date()
+    {
+        $data = $this->db->query("SELECT updated_at FROM tb_update_baru ORDER BY updated_at DESC LIMIT 1")->row();
+
+        $date = date("Y-m-d", strtotime($data->updated_at));
+
+        return $date;
+    }
+
+    // get update by tanggal
+    public function get_update_tgl($tgl)
+    {
+        $data = $this->db->query("SELECT * FROM tb_update_baru WHERE updated_at LIKE '%$tgl%' ORDER BY updated_at DESC LIMIT 1")->row();
+
+        return $data;
+    }
+
+    // get gender
+    public function get_gender($jk)
+    {
+        if ($jk == "1") {
+            $data = array(
+                "sex" => "Laki-laki",
+                "covid" => $this->_gender_konfirmasi($jk),
+                "probable" => $this->_gender_probable($jk),
+                "suspek" => $this->_gender_suspek($jk),
+            );
+        } else {
+            $data = array(
+                "sex" => "Perempuan",
+                "covid" => $this->_gender_konfirmasi($jk),
+                "probable" => $this->_gender_probable($jk),
+                "suspek" => $this->_gender_suspek($jk),
+            );
+        }
+
+        return $data;
+    }
+
+    // get gender konfirmasi
+    private function _gender_konfirmasi($jk)
+    {
+        $this->db->select("id_laporan");
+        $this->db->from("tb_laporan_baru");
+        $this->db->where("jekel", $jk);
+        $status = array("1", "2", "3", "4", "5", "6");
+        $this->db->where_in("status_baru", $status);
+
+        $data = $this->db->get();
+
+        return $data->num_rows();
+    }
+
+    // get gender probable
+    private function _gender_probable($jk)
+    {
+        $this->db->select("id_laporan");
+        $this->db->from("tb_laporan_baru");
+        $this->db->where("jekel", $jk);
+        $status = array("7", "8", "9", "10", "11", "12");
+        $this->db->where_in("status_baru", $status);
+
+        $data = $this->db->get();
+
+        return $data->num_rows();
+    }
+
+    // get gender suspek
+    private function _gender_suspek($jk)
+    {
+        $this->db->select("id_laporan");
+        $this->db->from("tb_laporan_baru");
+        $this->db->where("jekel", $jk);
+        $status = array("13", "14", "15", "16", "17");
+        $this->db->where_in("status_baru", $status);
+
+        $data = $this->db->get();
+
+        return $data->num_rows();
+    }
 }
 
 /* End of file M_services.php */
