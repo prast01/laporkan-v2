@@ -36,7 +36,7 @@ $bln = array(01 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli"
             <div class="row mb-2">
                 <div class="col-sm-12 text-center">
                     <h1 class="m-0 text-dark"> Selamat datang <small><br />di Sistem Administrasi <strong>Covid-19</strong> Kabupaten Jepara</small></h1>
-                    <a href="http://dinkes.mi-kes.net/beranda/download-btn.png">Download Dokumen Perubahan Aplikasi</a>
+                    <a href="http://dinkes.mi-kes.net/beranda/download/13/">Download Dokumen Perubahan Aplikasi</a>
                 </div>
             </div>
             <div class="row">
