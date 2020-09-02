@@ -52,7 +52,7 @@ class Kasus extends MY_Controller
         $data['laporan'] = $model->get_data($id);
         $data['kecamatan'] = $model->get_kecamatan();
         $data['kelurahan'] = $model->get_kelurahan_by($data['laporan']->id_kecamatan);
-        $data['penyakit'] = $model->get_penyakit_by($data['laporan']->penyakit);
+        $data['penyakit'] = $model->get_penyakit_by($data['laporan']->kdiag);
         $data['created_by'] = $this->session->userdata('id_user');
 
         $this->load->view('modal-ubah', $data);
@@ -64,7 +64,7 @@ class Kasus extends MY_Controller
         $data['laporan'] = $model->get_data($id);
         $data['kecamatan'] = $model->get_kecamatan();
         $data['kelurahan'] = $model->get_kelurahan_by($data['laporan']->id_kecamatan);
-        $data['penyakit'] = $model->get_penyakit_by($data['laporan']->penyakit);
+        $data['penyakit'] = $model->get_penyakit_by($data['laporan']->kdiag);
         $data['created_by'] = $this->session->userdata('id_user');
 
         $this->load->view('modal-detail', $data);

@@ -108,7 +108,7 @@
                                     <label for="inputEmail3" class="col-sm-2 col-form-label">Penyakit Penyerta</label>
                                     <div class="col-sm-4">
                                         <select name="penyakit" id="penyakit" class="form-control select2" style="width: 100%" required>
-                                            <option selected value="<?= $penyakit->kdiag; ?>"><?= $penyakit->diag; ?></option>
+                                            <option selected value="<?= $penyakit->diag; ?>"><?= $penyakit->diag; ?></option>
                                         </select>
                                     </div>
                                     <label for="inputEmail3" class="col-sm-2 col-form-label">Apakah Nakes?</label>
@@ -243,7 +243,7 @@
                         results: $.map(data, function(item) {
                             return {
                                 text: item.diag + ' (<b>' + item.kdiag + '</b>)',
-                                id: item.kdiag
+                                id: item.diag
                             }
                         })
                     }

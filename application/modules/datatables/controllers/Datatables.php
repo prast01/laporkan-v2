@@ -992,7 +992,7 @@ class Datatables extends MY_Controller
             $row[] = $field->nama_status;
             $row[] = $nakes;
             $row[] = $field->faskes_akhir;
-            $row[] = $field->diag;
+            $row[] = $field->penyakit;
             $row[] = $html;
 
             $data[] = $row;
@@ -1088,7 +1088,7 @@ class Datatables extends MY_Controller
             $row[] = $field->nama_status;
             $row[] = $nakes;
             $row[] = $field->faskes_akhir;
-            $row[] = $field->diag;
+            $row[] = $field->penyakit;
             $row[] = $html;
 
             $data[] = $row;
@@ -1183,7 +1183,7 @@ class Datatables extends MY_Controller
             $row[] = $field->nama_status;
             $row[] = $nakes;
             $row[] = $field->faskes_akhir;
-            $row[] = $field->diag;
+            $row[] = $field->penyakit;
             $row[] = $html;
 
             $data[] = $row;
@@ -1278,7 +1278,7 @@ class Datatables extends MY_Controller
             $row[] = $field->nama_status;
             $row[] = $nakes;
             $row[] = $field->faskes_akhir;
-            $row[] = $field->diag;
+            $row[] = $field->penyakit;
             $row[] = $html;
 
             $data[] = $row;

@@ -256,7 +256,7 @@
                         results: $.map(data, function(item) {
                             return {
                                 text: item.diag + ' (<b>' + item.kdiag + '</b>)',
-                                id: item.kdiag
+                                id: item.diag
                             }
                         })
                     }
