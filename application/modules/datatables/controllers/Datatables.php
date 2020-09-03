@@ -1016,14 +1016,27 @@ class Datatables extends MY_Controller
         foreach ($list as $field) {
             if ($this->session->userdata("level") == "2") {
                 if ($field->status_baru == '9' || $field->status_baru == '10') {
-                    $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                        Aksi <span class="sr-only">Toggle Dropdown</span>
-                                        <div class="dropdown-menu" role="menu">
-                                            <a class="dropdown-item" href="#" onclick="ubah_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
-                                            <a class="dropdown-item" href="#" onclick="detail_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-eye"></span> Detail Data</a>
-                                            <a class="dropdown-item text-primary" href="#" onclick="riwayat_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Riwayat Pasien</a>
-                                        </div>
-                                    </button>';
+                    if ($field->status_baru == '10') {
+                        $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                            Aksi <span class="sr-only">Toggle Dropdown</span>
+                                            <div class="dropdown-menu" role="menu">
+                                                <a class="dropdown-item" href="#" onclick="ubah_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
+                                                <a class="dropdown-item" href="#" onclick="detail_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-eye"></span> Detail Data</a>
+                                                <a class="dropdown-item text-primary" href="#" onclick="riwayat_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Riwayat Pasien</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item text-danger" href="#" onclick="kasus_positif(\'' . $field->id_laporan . '\', \'2\')"><span class="fa fa-plus"></span> Positif</a>
+                                            </div>
+                                        </button>';
+                    } else {
+                        $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                            Aksi <span class="sr-only">Toggle Dropdown</span>
+                                            <div class="dropdown-menu" role="menu">
+                                                <a class="dropdown-item" href="#" onclick="ubah_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-edit"></span> Ubah Data</a>
+                                                <a class="dropdown-item" href="#" onclick="detail_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-eye"></span> Detail Data</a>
+                                                <a class="dropdown-item text-primary" href="#" onclick="riwayat_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Riwayat Pasien</a>
+                                            </div>
+                                        </button>';
+                    }
                 } else {
                     $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
                                 Aksi <span class="sr-only">Toggle Dropdown</span>
@@ -1039,13 +1052,25 @@ class Datatables extends MY_Controller
                 }
             } else {
                 if ($field->status_baru == '9' || $field->status_baru == '10') {
-                    $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                        Aksi <span class="sr-only">Toggle Dropdown</span>
-                                        <div class="dropdown-menu" role="menu">
-                                            <a class="dropdown-item" href="#" onclick="detail_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-eye"></span> Detail Data</a>
-                                            <a class="dropdown-item text-primary" href="#" onclick="riwayat_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Riwayat Pasien</a>
-                                        </div>
-                                    </button>';
+                    if ($field->status_baru == '10') {
+                        $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                            Aksi <span class="sr-only">Toggle Dropdown</span>
+                                            <div class="dropdown-menu" role="menu">
+                                                <a class="dropdown-item" href="#" onclick="detail_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-eye"></span> Detail Data</a>
+                                                <a class="dropdown-item text-primary" href="#" onclick="riwayat_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Riwayat Pasien</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item text-danger" href="#" onclick="kasus_positif(\'' . $field->id_laporan . '\', \'2\')"><span class="fa fa-plus"></span> Positif</a>
+                                            </div>
+                                        </button>';
+                    } else {
+                        $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                            Aksi <span class="sr-only">Toggle Dropdown</span>
+                                            <div class="dropdown-menu" role="menu">
+                                                <a class="dropdown-item" href="#" onclick="detail_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-eye"></span> Detail Data</a>
+                                                <a class="dropdown-item text-primary" href="#" onclick="riwayat_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Riwayat Pasien</a>
+                                            </div>
+                                        </button>';
+                    }
                 } else {
                     $html = '<button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
                                     Aksi <span class="sr-only">Toggle Dropdown</span>

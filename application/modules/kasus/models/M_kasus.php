@@ -51,13 +51,13 @@ class M_kasus extends CI_Model
     public function get_status_riwayat($k)
     {
         if ($k >= "1" && $k <= "6") {
-            $where = array("1", "2", "3", "4", "5", "6");
+            $where = array("1", "2", "5", "6");
         } elseif ($k >= "7" && $k <= "12") {
-            $where = array("7", "8", "9", "10", "11", "12");
+            $where = array("1", "2", "5", "6", "7", "8", "11", "12");
         } elseif ($k >= "13" && $k <= "17") {
-            $where = array("13", "14", "15", "16", "17");
+            $where = array("1", "2", "5", "6", "7", "8", "11", "12", "13", "14", "16", "17");
         } elseif ($k >= "18" && $k <= "19") {
-            $where = array("18", "19");
+            $where = array("1", "2", "5", "6", "7", "8", "11", "12", "13", "14", "16", "17", "18");
         }
 
         $this->db->where_in("id_status_2", $where);
@@ -190,6 +190,8 @@ class M_kasus extends CI_Model
             $kasus = NULL;
         }
 
+        $p = $this->get_penyakit_by($post['penyakit']);
+
         $data = array(
             'id_kecamatan' => $post['id_kecamatan'],
             'tgl_periksa' => $post['tgl_periksa'],
@@ -206,7 +208,8 @@ class M_kasus extends CI_Model
             'id_kelurahan' => $post['id_kelurahan'],
             'kasus' => $kasus,
             'nakes' => $post['nakes'],
-            'penyakit' => $post['penyakit'],
+            'kdiag' => $post['penyakit'],
+            'penyakit' => $p->diag,
             "faskes_akhir" => $faskes,
             "updated_at" => date("Y-m-d H:i:s"),
             'status_baru' => $post['status']
@@ -395,7 +398,7 @@ class M_kasus extends CI_Model
             }
         }
 
-        if ($post['status'] == '1' || $post['status'] == '2') {
+        if ($post['status'] == '1' || $post['status'] == '2' || $post['status'] == '5' || $post['status'] == '6') {
             $kasus = $this->_get_last_case();
         } else {
             $kasus = null;
@@ -480,6 +483,35 @@ class M_kasus extends CI_Model
         $data = array(
             "keterangan" => 'MD',
             "status_baru" => $status,
+            "updated_at" => date("Y-m-d H:i:s"),
+            "validasi" => 0
+        );
+
+
+        $cek = $this->db->update("tb_laporan_baru", $data, $where);
+
+        if ($cek) {
+            $this->_add_riwayat_baru($id);
+            $msg = array('res' => 1, 'msg' => 'Laporan Berhasil Diubah');
+        } else {
+            $msg = array('res' => 0, 'msg' => 'Laporan Gagal Diubah');
+        }
+
+        return json_encode($msg);
+    }
+
+    public function positif($id)
+    {
+        $where = array(
+            "id_laporan" => $id
+        );
+
+        $kasus = $this->_get_last_case();
+
+        $data = array(
+            "kasus" => $kasus,
+            "keterangan" => 'MD',
+            "status_baru" => 4,
             "updated_at" => date("Y-m-d H:i:s"),
             "validasi" => 0
         );

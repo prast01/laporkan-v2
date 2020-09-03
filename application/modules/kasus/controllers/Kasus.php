@@ -250,6 +250,21 @@ class Kasus extends MY_Controller
 
         redirect('../kasus', 'refresh');
     }
+
+    public function positif($id)
+    {
+        $model = $this->M_kasus;
+
+        $hasil = json_decode($model->positif($id), true);
+
+        if ($hasil['res']) {
+            $this->session->set_flashdata('success', $hasil['msg']);
+        } else {
+            $this->session->set_flashdata('gagal', $hasil['msg']);
+        }
+
+        redirect('../kasus', 'refresh');
+    }
 }
 
 /* End of file Kasus.php */

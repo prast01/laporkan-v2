@@ -635,3 +635,11 @@ function pasien_die(id, kode) {
     window.location = url + id;
   }
 }
+
+function kasus_positif(id, kode) {
+  var url = window.location.origin + "/laporkan-v2/kasus/positif/";
+  var cek = confirm("Yakin Pasien Terkonfirmasi Positif?");
+  if (cek) {
+    window.location = url + id;
+  }
+}
