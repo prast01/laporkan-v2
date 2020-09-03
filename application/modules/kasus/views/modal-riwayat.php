@@ -32,7 +32,7 @@ endforeach;
                                     <div class="col-sm-4">
                                         <input type="text" class="form-control" name="tgl_periksa" placeholder="Tanggal Pemeriksaan" disabled value="<?= $laporan->nik; ?>">
                                     </div>
-                                    <div style="display: <?= ($laporan->kasus == "") ? "none" : "block"; ?>;" class="col-6">
+                                    <div style="display: <?= ($laporan->kasus != "" || ($laporan->status_baru >= "1" && $laporan->status_baru <= "6")) ? "block" : "none"; ?>;" class="col-6">
                                         <div class="row">
                                             <label for="inputEmail3" class="col-sm-4 col-form-label">Kasus Ke</label>
                                             <div class="col-sm-8">
