@@ -48,6 +48,25 @@ class M_kasus extends CI_Model
         return $data;
     }
 
+    public function get_status_riwayat($k)
+    {
+        if ($k >= "1" && $k <= "6") {
+            $where = array("1", "2", "3", "4", "5", "6");
+        } elseif ($k >= "7" && $k <= "12") {
+            $where = array("7", "8", "9", "10", "11", "12");
+        } elseif ($k >= "13" && $k <= "17") {
+            $where = array("13", "14", "15", "16", "17");
+        } elseif ($k >= "18" && $k <= "19") {
+            $where = array("18", "19");
+        }
+
+        $this->db->where_in("id_status_2", $where);
+        $this->db->order_by('id_status_2', 'desc');
+        $data = $this->db->get("tb_status_2")->result();
+
+        return $data;
+    }
+
     public function get_data($id)
     {
         $data = $this->db->get_where("tb_laporan_baru", ["id_laporan" => $id])->row();
@@ -104,6 +123,8 @@ class M_kasus extends CI_Model
 
         return $data->nama_kelurahan;
     }
+
+
     // CRUD
     public function save()
     {

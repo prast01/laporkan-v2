@@ -1,5 +1,5 @@
 <?php
-foreach ($status as $key) :
+foreach ($status2 as $key) :
     if ($laporan->status_baru != $key->id_status_2) {
         $cek = 0;
         continue;

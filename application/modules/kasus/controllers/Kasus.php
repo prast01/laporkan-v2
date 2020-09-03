@@ -76,7 +76,8 @@ class Kasus extends MY_Controller
         $data['laporan'] = $model->get_data($id);
         $data['kecamatan'] = $model->get_kecamatan();
         $data['kelurahan'] = $model->get_kelurahan_by($data['laporan']->id_kecamatan);
-        $data['status'] = $model->get_status("1");
+        $data['status'] = $model->get_status_riwayat($data['laporan']->status_baru);
+        $data['status2'] = $model->get_status("1");
         $data['riwayat'] = $model->get_riwayat($id);
         $data['created_by'] = $this->session->userdata('id_user');
 
