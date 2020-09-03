@@ -143,6 +143,7 @@ class M_services extends CI_Model
     // get data kecamatan
     public function get_kecamatan()
     {
+        $this->db->where("id_kecamatan !=", 17);
         $data = $this->db->get("tb_kecamatan_baru")->result();
 
         return $data;
