@@ -4,16 +4,16 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <div class="col-2">
+                <div class="col-lg-2 col-6">
                     <h1 class="m-0 text-dark">
                         Data Kasus
                     </h1>
                 </div>
-                <div class="col-3">
-                    <button type="button" class="btn btn-success text-white" onclick="tambah_kasus()" title="Tambah Kasus"><i class="fa fa-plus"></i> Tambah Kasus</button>
+                <div class="col-lg-4 col-6">
+                    <button type="button" class="btn btn-success text-white my-1" onclick="tambah_kasus()" title="Tambah Kasus"><i class="fa fa-plus"></i> Tambah Kasus</button>
                     <?php //if ($this->session->userdata("level") == "2") : 
                     ?>
-                    <button type="button" class="btn btn-warning" onclick="kasus_lama()" title="Kasus Lama"><i class="fa fa-plus"></i> Re-Infeksi</button>
+                    <button type="button" class="btn btn-warning my-1" onclick="kasus_lama()" title="Kasus Lama"><i class="fa fa-plus"></i> Re-Infeksi</button>
                     <?php //endif; 
                     ?>
                 </div>

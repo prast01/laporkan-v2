@@ -748,6 +748,10 @@ class M_datatable extends CI_Model
                 // $this->db->where(['created_by' => $id_user]);
                 $this->db->where(['faskes_akhir' => $nama_user]);
             }
+        } else {
+            if ($_POST['filterByRS'] != '') {
+                $this->db->where(['created_by' => $_POST['filterByRS']]);
+            }
         }
 
 
@@ -843,6 +847,10 @@ class M_datatable extends CI_Model
                 // $this->db->where(['created_by' => $id_user]);
                 $this->db->where(['faskes_akhir' => $nama_user]);
             }
+        } else {
+            if ($_POST['filterByRS'] != '') {
+                $this->db->where(['created_by' => $_POST['filterByRS']]);
+            }
         }
 
         if ($_POST['filterByStatus'] != '') {
@@ -936,6 +944,10 @@ class M_datatable extends CI_Model
                 // $this->db->where(['created_by' => $id_user]);
                 $this->db->where(['faskes_akhir' => $nama_user]);
             }
+        } else {
+            if ($_POST['filterByRS'] != '') {
+                $this->db->where(['created_by' => $_POST['filterByRS']]);
+            }
         }
 
         if ($_POST['filterByStatus'] != '') {
@@ -1028,6 +1040,10 @@ class M_datatable extends CI_Model
             } else {
                 // $this->db->where(['created_by' => $id_user]);
                 $this->db->where(['faskes_akhir' => $nama_user]);
+            }
+        } else {
+            if ($_POST['filterByRS'] != '') {
+                $this->db->where(['created_by' => $_POST['filterByRS']]);
             }
         }
 
