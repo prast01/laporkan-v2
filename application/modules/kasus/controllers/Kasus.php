@@ -53,6 +53,8 @@ class Kasus extends MY_Controller
         $data['kecamatan'] = $model->get_kecamatan();
         $data['kelurahan'] = $model->get_kelurahan_by($data['laporan']->id_kecamatan);
         $data['penyakit'] = $model->get_penyakit_by($data['laporan']->kdiag);
+        $data['job'] = $model->get_job_by($data['laporan']->id_pekerjaan);
+        $data['job_place'] = $model->get_job_place_by($data['laporan']->tempat_kerja);
         $data['created_by'] = $this->session->userdata('id_user');
 
         $this->load->view('modal-ubah', $data);
@@ -65,6 +67,8 @@ class Kasus extends MY_Controller
         $data['kecamatan'] = $model->get_kecamatan();
         $data['kelurahan'] = $model->get_kelurahan_by($data['laporan']->id_kecamatan);
         $data['penyakit'] = $model->get_penyakit_by($data['laporan']->kdiag);
+        $data['job'] = $model->get_job_by($data['laporan']->id_pekerjaan);
+        $data['job_place'] = $model->get_job_place_by($data['laporan']->tempat_kerja);
         $data['created_by'] = $this->session->userdata('id_user');
 
         $this->load->view('modal-detail', $data);
@@ -143,6 +147,44 @@ class Kasus extends MY_Controller
 
 
         echo json_encode($data);
+    }
+
+    public function get_job()
+    {
+        $model = $this->M_kasus;
+        $data = $model->get_job();
+        $hsl = array();
+
+        $no = 0;
+        foreach ($data as $key) {
+            $hsl[$no]['id_pekerjaan'] = $key->id_pekerjaan;
+            $hsl[$no]['pekerjaan'] = $key->pekerjaan;
+
+            $no++;
+        }
+
+        echo json_encode($hsl);
+    }
+
+    public function get_job_place()
+    {
+        $model = $this->M_kasus;
+        $data = $model->get_job_place();
+        $hsl = array();
+
+        if ($data->num_rows() >= 1) {
+            $no = 1;
+            $hsl[0]['tempat_kerja'] = $_GET['search'];
+            foreach ($data->result() as $key) {
+                $hsl[$no]['tempat_kerja'] = $key->tempat_kerja;
+
+                $no++;
+            }
+        } else {
+            $hsl[0]['tempat_kerja'] = $_GET['search'];
+        }
+
+        echo json_encode($hsl);
     }
 
     // CRUD

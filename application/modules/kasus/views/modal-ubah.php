@@ -120,6 +120,24 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="form-group row">
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Pekerjaan</label>
+                                    <div class="col-sm-4">
+                                        <select name="job" id="job" class="form-control select2" style="width: 100%" required>
+                                            <?php if ($laporan->id_pekerjaan != "") : ?>
+                                                <option value="<?= $job->id_pekerjaan; ?>"><?= $job->pekerjaan; ?></option>
+                                            <?php endif; ?>
+                                        </select>
+                                    </div>
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Tempat Kerja</label>
+                                    <div class="col-sm-4">
+                                        <select name="job_place" id="job_place" class="form-control select2" style="width: 100%" required>
+                                            <?php if ($laporan->tempat_kerja != "") : ?>
+                                                <option value="<?= $job_place->tempat_kerja; ?>"><?= $job_place->tempat_kerja; ?></option>
+                                            <?php endif; ?>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer">
@@ -251,6 +269,76 @@
                 cache: true
             },
             placeholder: 'Masukkan Nama atau Kode ICD10',
+            minimumInputLength: 3,
+            escapeMarkup: function(markup) {
+                return markup;
+            },
+            templateResult: function(data) {
+                return data.text;
+            },
+            templateSelection: function(data) {
+                return data.text;
+            }
+        });
+
+        $('#job').select2({
+            ajax: {
+                url: "<?php echo base_url('kasus/get_job') ?>",
+                dataType: 'json',
+                delay: 500,
+                data: function(params) {
+                    return {
+                        search: params.term
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: $.map(data, function(item) {
+                            return {
+                                text: item.pekerjaan,
+                                id: item.id_pekerjaan
+                            }
+                        })
+                    }
+                },
+                cache: true
+            },
+            placeholder: 'Masukkan Nama Pekerjaan',
+            minimumInputLength: 3,
+            escapeMarkup: function(markup) {
+                return markup;
+            },
+            templateResult: function(data) {
+                return data.text;
+            },
+            templateSelection: function(data) {
+                return data.text;
+            }
+        });
+
+        $('#job_place').select2({
+            ajax: {
+                url: "<?php echo base_url('kasus/get_job_place') ?>",
+                dataType: 'json',
+                delay: 500,
+                data: function(params) {
+                    return {
+                        search: params.term
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: $.map(data, function(item) {
+                            return {
+                                text: item.tempat_kerja,
+                                id: item.tempat_kerja
+                            }
+                        })
+                    }
+                },
+                cache: true
+            },
+            placeholder: 'Masukkan Nama Pekerjaan',
             minimumInputLength: 3,
             escapeMarkup: function(markup) {
                 return markup;

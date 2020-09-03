@@ -124,6 +124,50 @@ class M_kasus extends CI_Model
         return $data->nama_kelurahan;
     }
 
+    public function get_job()
+    {
+        $search = $_GET['search'];
+
+        $this->db->from('tb_pekerjaan');
+        $this->db->like("pekerjaan", $search);
+        $data = $this->db->get()->result();
+
+        return $data;
+    }
+
+    public function get_job_place()
+    {
+        $search = $_GET['search'];
+
+        $this->db->distinct("tempat_kerja");
+        $this->db->from('tb_laporan_baru');
+        $this->db->like("tempat_kerja", $search);
+        $data = $this->db->get();
+
+        return $data;
+    }
+
+    public function get_job_by($id)
+    {
+        if ($id != "") {
+            $data = $this->db->get_where("tb_pekerjaan", ["id_pekerjaan" => $id])->row();
+        } else {
+            $data = "";
+        }
+
+        return $data;
+    }
+
+    public function get_job_place_by($id)
+    {
+        if ($id != "") {
+            $data = $this->db->get_where("tb_laporan_baru", ["tempat_kerja" => $id])->row();
+        } else {
+            $data = "";
+        }
+
+        return $data;
+    }
 
     // CRUD
     public function save()
@@ -191,6 +235,12 @@ class M_kasus extends CI_Model
         }
 
         $p = $this->get_penyakit_by($post['penyakit']);
+        if ($post['job'] != "") {
+            $pd = $this->get_job_by($post['job']);
+            $pk = $pd->pekerjaan;
+        } else {
+            $pk = "";
+        }
 
         $data = array(
             'id_kecamatan' => $post['id_kecamatan'],
@@ -211,6 +261,9 @@ class M_kasus extends CI_Model
             'kdiag' => $post['penyakit'],
             'penyakit' => $p->diag,
             "faskes_akhir" => $faskes,
+            "id_pekerjaan" => $post['job'],
+            "pekerjaan" => $pk,
+            "tempat_kerja" => $post['job_place'],
             "updated_at" => date("Y-m-d H:i:s"),
             'status_baru' => $post['status']
         );
@@ -274,6 +327,13 @@ class M_kasus extends CI_Model
             }
         }
 
+        if ($post['job'] != "") {
+            $pd = $this->get_job_by($post['job']);
+            $pk = $pd->pekerjaan;
+        } else {
+            $pk = "";
+        }
+
         $data = array(
             'id_kecamatan' => $post['id_kecamatan'],
             'tgl_periksa' => $post['tgl_periksa'],
@@ -288,6 +348,9 @@ class M_kasus extends CI_Model
             'id_kelurahan' => $post['id_kelurahan'],
             'kasus' => $post['kasus'],
             'nakes' => $post['nakes'],
+            "id_pekerjaan" => $post['job'],
+            "pekerjaan" => $pk,
+            "tempat_kerja" => $post['job_place'],
             'penyakit' => $post['penyakit']
         );
 
