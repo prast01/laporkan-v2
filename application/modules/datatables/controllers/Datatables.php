@@ -74,6 +74,8 @@ class Datatables extends MY_Controller
                 }
             }
 
+            $html = '';
+
             if ($field->covid == '0') {
                 $status = "MASA PANTAU";
             } else {
@@ -169,6 +171,8 @@ class Datatables extends MY_Controller
                     }
                 }
             }
+
+            $html = '';
 
             if ($field->rdt == '1') {
                 $status = "REAKTIF";
@@ -291,6 +295,8 @@ class Datatables extends MY_Controller
                 }
             }
 
+            $html = '';
+
             if ($field->rawat != 'RAWAT JALAN' && $field->rujuk == "0" && $field->st == "0") {
                 $status = "RANAP JEPARA <br>di " . $field->rawat;
             } elseif ($field->rujuk == "1" && $field->st == "0") {
@@ -310,7 +316,7 @@ class Datatables extends MY_Controller
             }
 
             if ($field->penyakit != '') {
-                $penyakit = $this->M_datatable->get_penyakit($field->penyakit);
+                $penyakit = $this->M_datatable->get_penyakit($field->kdiag);
                 $p = $penyakit->diag;
             } else {
                 $p = '';
@@ -411,6 +417,8 @@ class Datatables extends MY_Controller
                 }
             }
 
+            $html = '';
+
             if ($field->st == "1") {
                 $status = "SEMBUH";
             } elseif ($field->st == "2") {
@@ -439,7 +447,7 @@ class Datatables extends MY_Controller
             }
 
             if ($field->penyakit != '') {
-                $penyakit = $this->M_datatable->get_penyakit($field->penyakit);
+                $penyakit = $this->M_datatable->get_penyakit($field->kdiag);
                 $p = $penyakit->diag;
             } else {
                 $p = '';
@@ -554,6 +562,8 @@ class Datatables extends MY_Controller
                 }
             }
 
+            $html = '';
+
             if ($field->rawat != 'RAWAT JALAN' && $field->rujuk == "0" && $field->st == "0") {
                 $status = "RANAP JEPARA <br>di " . $field->rawat;
             } elseif ($field->rujuk == "1" && $field->st == "0") {
@@ -573,7 +583,7 @@ class Datatables extends MY_Controller
             }
 
             if ($field->penyakit != '') {
-                $penyakit = $this->M_datatable->get_penyakit($field->penyakit);
+                $penyakit = $this->M_datatable->get_penyakit($field->kdiag);
                 $p = $penyakit->diag;
             } else {
                 $p = '';
@@ -661,6 +671,9 @@ class Datatables extends MY_Controller
                     }
                 }
             }
+
+            $html = '';
+
             if ($field->st == "1") {
                 $status = "SEMBUH";
             } elseif ($field->st == "2") {
@@ -684,7 +697,7 @@ class Datatables extends MY_Controller
             }
 
             if ($field->penyakit != '') {
-                $penyakit = $this->M_datatable->get_penyakit($field->penyakit);
+                $penyakit = $this->M_datatable->get_penyakit($field->kdiag);
                 $p = $penyakit->diag;
             } else {
                 $p = '';
@@ -972,7 +985,7 @@ class Datatables extends MY_Controller
             }
 
             // if ($field->penyakit != '') {
-            //     $penyakit = $this->M_datatable->get_penyakit($field->penyakit);
+            //     $penyakit = $this->M_datatable->get_penyakit($field->kdiag);
             //     $p = $penyakit->diag;
             // } else {
             //     $p = '';
@@ -1093,7 +1106,7 @@ class Datatables extends MY_Controller
             }
 
             // if ($field->penyakit != '') {
-            //     $penyakit = $this->M_datatable->get_penyakit($field->penyakit);
+            //     $penyakit = $this->M_datatable->get_penyakit($field->kdiag);
             //     $p = $penyakit->diag;
             // } else {
             //     $p = '';
@@ -1188,7 +1201,7 @@ class Datatables extends MY_Controller
             }
 
             // if ($field->penyakit != '') {
-            //     $penyakit = $this->M_datatable->get_penyakit($field->penyakit);
+            //     $penyakit = $this->M_datatable->get_penyakit($field->kdiag);
             //     $p = $penyakit->diag;
             // } else {
             //     $p = '';
@@ -1283,7 +1296,7 @@ class Datatables extends MY_Controller
             }
 
             // if ($field->penyakit != '') {
-            //     $penyakit = $this->M_datatable->get_penyakit($field->penyakit);
+            //     $penyakit = $this->M_datatable->get_penyakit($field->kdiag);
             //     $p = $penyakit->diag;
             // } else {
             //     $p = '';
