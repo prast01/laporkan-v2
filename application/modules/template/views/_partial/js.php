@@ -1,4 +1,3 @@
-		
 		<!-- jQuery -->
 		<script src="<?php echo base_url('plugins/jquery/jquery.min.js'); ?>"></script>
 		<!-- jQuery UI 1.11.4 -->
@@ -42,28 +41,10 @@
 		<!-- Select2 -->
 		<script src="<?php echo base_url('plugins/select2/js/select2.full.min.js'); ?>"></script>
 		<script type="text/javascript" src="http://malsup.github.com/jquery.media.js"></script>
-  		<script src="https://js.pusher.com/5.0/pusher.min.js"></script>
+		<script src="https://js.pusher.com/5.0/pusher.min.js"></script>
 		<!-- My JS -->
 		<script src="<?php echo base_url('dist/js/myJs.js'); ?>"></script>
+		<script src="<?php echo base_url('dist/js/data.js'); ?>"></script>
 		<!-- InputMask -->
 		<script src="<?php echo base_url('plugins/moment/moment.min.js'); ?>"></script>
 		<script src="<?php echo base_url('plugins/inputmask/min/jquery.inputmask.bundle.min.js'); ?>"></script>
-		<!-- <script>
-
-			<?php
-				if ($this->session->userdata("level") == '2') {
-			?>
-			$(document).ready(function(){
-				$('.datatable').DataTable(
-					{
-						"processing": true,
-						"serverSide" : true,
-						"ajax" : "plugins/datatables-serverside/data_odp.php"
-					}
-				);
-			});
-			<?php
-					# code...
-				}
-			?>
-		</script> -->
