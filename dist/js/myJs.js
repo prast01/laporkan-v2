@@ -1,5 +1,6 @@
 $(function () {
   var url = window.location.origin + "/laporkan-v2/datatables/";
+
   $(".datatable-odp").DataTable({
     processing: true,
     serverSide: true,
@@ -195,6 +196,7 @@ $(function () {
   //   }
   // });
 });
+
 function modal(id) {
   $("#modalku").modal();
   $(".modal-title").html("Tambah Data");
@@ -642,4 +644,100 @@ function kasus_positif(id, kode) {
   if (cek) {
     window.location = url + id;
   }
+}
+
+var url_grafik = window.location.origin + "/laporkan-v2/servicesV2/";
+get_chart_harian();
+// console.log(url_grafik);
+function get_chart_harian() {
+  let chart_harian_covid_sum = echarts.init(
+    document.getElementById("chart-harian-covid-sum")
+  );
+  $.ajax({
+    type: "post",
+    url: url_grafik + "get_data_harian_2",
+    cache: false,
+    async: true,
+    dataType: "JSON",
+    success: function (data, textStatus, jqXHR) {
+      let dt = [];
+
+      $.each(data, function (index, val) {
+        dt.push({ tanggal: val.tanggal, covid: val.covid });
+      });
+
+      console.log(dt);
+
+      optionAll = {
+        tooltip: {
+          trigger: "axis",
+        },
+        title: {
+          text: "Pertumbuhan Kasus TERKONFIRMASI di Jawa Tengah",
+          x: "center",
+          subtext: "Data diambil pada " + new Date(),
+        },
+        /* legend: {
+              data:['SUSPEK proses', 'SUSPEK selesai'],
+              align: 'left'
+          }, */
+        xAxis: {
+          type: "category",
+          boundaryGap: false,
+          axisLabel: {
+            formatter: function (value) {
+              return value.split("-").reverse().join("-").substring(0, 5);
+            },
+          },
+        },
+        yAxis: {
+          name: "Jumlah kasus",
+          type: "value",
+        },
+        dataset: {
+          source: dt,
+        },
+        dataZoom: [
+          {
+            type: "inside",
+            start: 0,
+            end: 100,
+          },
+          {
+            start: 0,
+            end: 100,
+            handleIcon:
+              "M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z",
+            handleSize: "80%",
+            handleStyle: {
+              color: "#fff",
+              shadowBlur: 3,
+              shadowColor: "rgba(0, 0, 0, 0.6)",
+              shadowOffsetX: 2,
+              shadowOffsetY: 2,
+            },
+          },
+        ],
+        series: [
+          {
+            name: "TERKONFIRMASI",
+            type: "line",
+            symbol: "none",
+            itemStyle: {
+              color: "#F92925",
+            },
+            encode: { x: "tanggal", y: "covid" },
+          },
+        ],
+      };
+
+      chart_harian_covid_sum.setOption(optionAll);
+    },
+  });
+
+  $(window).on("resize", function () {
+    setTimeout(function () {
+      chart_harian_covid_sum.resize();
+    }, 200);
+  });
 }

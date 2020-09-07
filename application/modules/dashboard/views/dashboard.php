@@ -68,11 +68,11 @@ $bln = array(01 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli"
             <div class="row">
                 <div class="col-lg-6">
                     <div class="row">
-                        <div class="col-lg-10">
+                        <div class="col-lg-9">
                             <p class="mb-0">DATA CUT OFF</p>
                             <p class="mb-3">update terakhir : <?= $update_at_cutoff; ?></p>
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-lg-3">
                             <?php if ($level == "2") : ?>
                                 <a href="<?= site_url("../dashboard/update"); ?>" class="btn btn-danger">PUBLISH</a>
                             <?php endif; ?>

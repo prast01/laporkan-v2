@@ -44,7 +44,7 @@
 		<script src="https://js.pusher.com/5.0/pusher.min.js"></script>
 		<!-- My JS -->
 		<script src="<?php echo base_url('dist/js/myJs.js'); ?>"></script>
-		<script src="<?php echo base_url('dist/js/data.js'); ?>"></script>
+		<!-- <script src="<?php echo base_url('dist/js/data.js'); ?>"></script> -->
 		<!-- InputMask -->
 		<script src="<?php echo base_url('plugins/moment/moment.min.js'); ?>"></script>
 		<script src="<?php echo base_url('plugins/inputmask/min/jquery.inputmask.bundle.min.js'); ?>"></script>

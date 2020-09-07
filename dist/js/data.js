@@ -8,9 +8,11 @@ $(document).on("ready", function () {
     window.location.origin === "http://lapor-covid19.mi-kes.net"
       ? ""
       : base_url.split("/")[1] + "/";
-  var site_url = window.location.origin + "/" + base_url;
+  //   var site_url = window.location.origin + "/" + base_url;
+  var site_url = window.location.origin + "/laporkan-v2/datatables/";
 
   console.log(site_url);
+  //   console.log("TES");
 
   // get_chart_harian();
 

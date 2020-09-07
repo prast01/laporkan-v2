@@ -69,6 +69,37 @@ class ServicesV2 extends MY_Controller
         echo json_encode($data);
     }
 
+    public function get_data_harian_2()
+    {
+        $model = $this->M_services;
+        $awal = $model->get_first_date();
+        $akhir = $model->get_last_date();
+        // $tanggal1 = date('Y-m-d', strtotime('2019-03-01'));
+        // $tanggal2 = date('Y-m-d', strtotime('2019-03-13'));
+
+        $i = 0;
+        while ($awal <= $akhir) {
+            $d = $model->get_update_tgl_2($awal);
+            $data[$i]['tanggal'] = $awal;
+            if ($d->num_rows() > 0) {
+                $dt = $d->row();
+                $data[$i]['covid'] = $dt->konfirmasi_total;
+                $data[$i]['suspek'] = $dt->suspek_total;
+                $data[$i]['probable'] = $dt->probable_total;
+            } else {
+                $data[$i]['covid'] = "0";
+                $data[$i]['suspek'] = "0";
+                $data[$i]['probable'] = "0";
+            }
+
+
+            $awal = date('Y-m-d', strtotime('+1 days', strtotime($awal)));
+            $i++;
+        }
+
+        echo json_encode($data);
+    }
+
     public function get_data_gender()
     {
         $model = $this->M_services;
