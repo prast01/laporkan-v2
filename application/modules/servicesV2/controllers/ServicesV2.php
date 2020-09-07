@@ -74,26 +74,37 @@ class ServicesV2 extends MY_Controller
         $model = $this->M_services;
         $awal = $model->get_first_date();
         $akhir = $model->get_last_date();
-        // $tanggal1 = date('Y-m-d', strtotime('2019-03-01'));
+        // $awal = date('Y-m-d', strtotime('2019-03-01'));
         // $akhir = date('Y-m-d', strtotime('2020-12-31'));
 
+        // $i = 0;
+        // while ($awal <= $akhir) {
+        //     $d = $model->get_update_tgl_2($awal);
+        //     $data[$i]['tanggal'] = $awal;
+        //     if ($d->num_rows() > 0) {
+        //         $dt = $d->row();
+        //         $data[$i]['covid'] = $dt->konfirmasi_total;
+        //         $data[$i]['suspek'] = $dt->suspek_total;
+        //         $data[$i]['probable'] = $dt->probable_total;
+        //         $data[$i]['week'] = $dt->week;
+        //     } else {
+        //         $data[$i]['covid'] = "0";
+        //         $data[$i]['suspek'] = "0";
+        //         $data[$i]['probable'] = "0";
+        //         $data[$i]['week'] = "0";
+        //     }
+
+
+        //     $awal = date('Y-m-d', strtotime('+1 days', strtotime($awal)));
+        //     $i++;
+        // }
+
         $i = 0;
-        while ($awal <= $akhir) {
-            $d = $model->get_update_tgl_2($awal);
-            $data[$i]['tanggal'] = $awal;
-            if ($d->num_rows() > 0) {
-                $dt = $d->row();
-                $data[$i]['covid'] = $dt->konfirmasi_total;
-                $data[$i]['suspek'] = $dt->suspek_total;
-                $data[$i]['probable'] = $dt->probable_total;
-            } else {
-                $data[$i]['covid'] = "0";
-                $data[$i]['suspek'] = "0";
-                $data[$i]['probable'] = "0";
-            }
+        $d = $model->get_update_tgl_2()->result();
+        foreach ($d as $key) {
+            $data[$i]['minggu'] = $key->minggu;
+            $data[$i]['covid'] = $key->konfirmasi_total;
 
-
-            $awal = date('Y-m-d', strtotime('+1 days', strtotime($awal)));
             $i++;
         }
 

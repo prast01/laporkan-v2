@@ -664,25 +664,19 @@ function get_chart_harian() {
       let dt = [];
 
       $.each(data, function (index, val) {
-        dt.push({ tanggal: val.tanggal, covid: val.covid });
+        dt.push({ minggu: val.minggu, covid: val.covid });
       });
-
-      console.log(dt);
 
       optionAll = {
         tooltip: {
           trigger: "axis",
-        },
-        title: {
-          text: "Pertumbuhan Kasus TERKONFIRMASI di Jepara",
-          x: "center",
         },
         xAxis: {
           type: "category",
           boundaryGap: false,
           axisLabel: {
             formatter: function (value) {
-              return value.split("-").reverse().join("-").substring(0, 5);
+              return "Mgg " + value;
             },
           },
         },
@@ -716,13 +710,13 @@ function get_chart_harian() {
         ],
         series: [
           {
-            name: "TERKONFIRMASI",
+            name: "Terkonfirmasi",
             type: "line",
             symbol: "none",
             itemStyle: {
               color: "#F92925",
             },
-            encode: { x: "tanggal", y: "covid" },
+            encode: { x: "minggu", y: "covid" },
           },
         ],
       };

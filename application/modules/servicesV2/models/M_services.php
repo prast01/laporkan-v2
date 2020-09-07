@@ -186,9 +186,9 @@ class M_services extends CI_Model
 
         return $data;
     }
-    public function get_update_tgl_2($tgl)
+    public function get_update_tgl_2()
     {
-        $data = $this->db->query("SELECT * FROM tb_update_baru WHERE updated_at LIKE '%$tgl%' ORDER BY updated_at DESC LIMIT 1");
+        $data = $this->db->get("view_week_3");
 
         return $data;
     }
