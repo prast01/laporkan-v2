@@ -75,7 +75,7 @@ class ServicesV2 extends MY_Controller
         $awal = $model->get_first_date();
         $akhir = $model->get_last_date();
         // $tanggal1 = date('Y-m-d', strtotime('2019-03-01'));
-        // $tanggal2 = date('Y-m-d', strtotime('2019-03-13'));
+        // $akhir = date('Y-m-d', strtotime('2020-12-31'));
 
         $i = 0;
         while ($awal <= $akhir) {

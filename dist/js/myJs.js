@@ -649,6 +649,7 @@ function kasus_positif(id, kode) {
 var url_grafik = window.location.origin + "/laporkan-v2/servicesV2/";
 get_chart_harian();
 // console.log(url_grafik);
+
 function get_chart_harian() {
   let chart_harian_covid_sum = echarts.init(
     document.getElementById("chart-harian-covid-sum")
@@ -673,14 +674,9 @@ function get_chart_harian() {
           trigger: "axis",
         },
         title: {
-          text: "Pertumbuhan Kasus TERKONFIRMASI di Jawa Tengah",
+          text: "Pertumbuhan Kasus TERKONFIRMASI di Jepara",
           x: "center",
-          subtext: "Data diambil pada " + new Date(),
         },
-        /* legend: {
-              data:['SUSPEK proses', 'SUSPEK selesai'],
-              align: 'left'
-          }, */
         xAxis: {
           type: "category",
           boundaryGap: false,

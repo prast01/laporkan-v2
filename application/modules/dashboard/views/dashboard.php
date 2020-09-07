@@ -293,7 +293,12 @@ $bln = array(01 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli"
 
             <div class="row">
                 <div class="col-lg-12">
-                    <div id="chart-harian-covid-sum" style="width:90%; height:400px;"></div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div id="chart-harian-covid-sum" style="width:100%; height:400px;"></div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
     </section>
