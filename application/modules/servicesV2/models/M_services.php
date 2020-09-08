@@ -144,7 +144,7 @@ class M_services extends CI_Model
     public function get_kecamatan()
     {
         $this->db->where("id_kecamatan !=", 17);
-        $this->db->order_by("konfirmasi_dirawat", "DESC");
+        $this->db->order_by("konfirmasi_total", "DESC");
         $data = $this->db->get("tb_kecamatan_baru")->result();
 
         return $data;
@@ -153,7 +153,7 @@ class M_services extends CI_Model
     // get data kelurahan
     public function get_kelurahan($kode)
     {
-        $this->db->order_by("konfirmasi_dirawat", "DESC");
+        $this->db->order_by("konfirmasi_total", "DESC");
         $data = $this->db->get_where("tb_kelurahan_baru", ["kode_kec" => $kode])->result();
 
         return $data;

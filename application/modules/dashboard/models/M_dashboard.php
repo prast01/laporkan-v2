@@ -412,11 +412,14 @@ class M_dashboard extends CI_Model
         );
 
         $data = array(
+            "suspek_total" => $this->_cek_suspek("dirawat", $id) + $this->_cek_suspek("discard", $id),
             "suspek_dirawat" => $this->_cek_suspek("dirawat", $id),
             "suspek_discard" => $this->_cek_suspek("discard", $id),
+            "probable_total" => $this->_cek_probable("dirawat", $id) + $this->_cek_probable("sembuh", $id) + $this->_cek_probable("meninggal", $id),
             "probable_dirawat" => $this->_cek_probable("dirawat", $id),
             "probable_sembuh" => $this->_cek_probable("sembuh", $id),
             "probable_meninggal" => $this->_cek_probable("meninggal", $id),
+            "konfirmasi_total" => $this->_cek_konfirmasi("dirawat", $id) + $this->_cek_konfirmasi("sembuh", $id) + $this->_cek_konfirmasi("meninggal", $id),
             "konfirmasi_dirawat" => $this->_cek_konfirmasi("dirawat", $id),
             "konfirmasi_sembuh" => $this->_cek_konfirmasi("sembuh", $id),
             "konfirmasi_meninggal" => $this->_cek_konfirmasi("meninggal", $id),
@@ -495,11 +498,14 @@ class M_dashboard extends CI_Model
         );
 
         $data = array(
+            "suspek_total" => $this->_cek_suspek_kel("dirawat", $id) + $this->_cek_suspek_kel("discard", $id),
             "suspek_dirawat" => $this->_cek_suspek_kel("dirawat", $id),
             "suspek_discard" => $this->_cek_suspek_kel("discard", $id),
+            "probable_total" => $this->_cek_probable_kel("dirawat", $id) + $this->_cek_probable_kel("sembuh", $id) + $this->_cek_probable_kel("meninggal", $id),
             "probable_dirawat" => $this->_cek_probable_kel("dirawat", $id),
             "probable_sembuh" => $this->_cek_probable_kel("sembuh", $id),
             "probable_meninggal" => $this->_cek_probable_kel("meninggal", $id),
+            "konfirmasi_total" => $this->_cek_konfirmasi_kel("dirawat", $id) + $this->_cek_konfirmasi_kel("sembuh", $id) + $this->_cek_konfirmasi_kel("meninggal", $id),
             "konfirmasi_dirawat" => $this->_cek_konfirmasi_kel("dirawat", $id),
             "konfirmasi_sembuh" => $this->_cek_konfirmasi_kel("sembuh", $id),
             "konfirmasi_meninggal" => $this->_cek_konfirmasi_kel("meninggal", $id),
