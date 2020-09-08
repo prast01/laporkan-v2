@@ -119,6 +119,33 @@ class ServicesV2 extends MY_Controller
 
         echo json_encode($data);
     }
+
+    public function get_data_faskes()
+    {
+        $model = $this->M_services;
+
+        $rs = $model->get_rs();
+        $no = 0;
+        foreach ($rs as $key) {
+            $telp = $model->getFaskesTelp($key->id_faskes);
+            $suspek = $model->get_pasien_by($key->nama_faskes, "13");
+            $probable = $model->get_pasien_by($key->nama_faskes, "7");
+            $konfirmasi = $model->get_pasien_by($key->nama_faskes, "1");
+
+            $data[$no]['id_faskes'] = $key->id_faskes;
+            $data[$no]['nama_faskes'] = $key->nama_faskes;
+            $data[$no]['gmaps'] = $key->gmaps;
+            $data[$no]['alamat'] = $key->alamat;
+            $data[$no]['jml_tt'] = $key->tt_pdp;
+            $data[$no]['telp'] = $telp;
+            $data[$no]['suspek'] = $suspek;
+            $data[$no]['probable'] = $probable;
+            $data[$no]['konfirmasi'] = $konfirmasi;
+            $no++;
+        }
+
+        echo json_encode($data);
+    }
 }
 
 /* End of file ServicesV2.php */

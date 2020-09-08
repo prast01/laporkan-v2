@@ -256,6 +256,32 @@ class M_services extends CI_Model
 
         return $data->num_rows();
     }
+
+    public function get_rs()
+    {
+        $data = $this->db->get_where("tb_faskes", ["kode_kecamatan" => "3320"])->result();
+
+        return $data;
+    }
+
+    public function getFaskesTelp($id)
+    {
+        $data = $this->db->get_where("tb_faskes_telp", ["id_faskes" => $id])->result();
+
+        return $data;
+    }
+
+    public function get_pasien_by($nama, $status)
+    {
+        $this->db->from("tb_laporan_baru");
+        $this->db->where("faskes_akhir", $nama);
+        // $status = array("1", "7", "13");
+        $this->db->where("status_baru", $status);
+
+        $data = $this->db->get()->num_rows();
+
+        return $data;
+    }
 }
 
 /* End of file M_services.php */
