@@ -43,6 +43,8 @@ class M_kasus extends CI_Model
             $this->db->or_where(["input" => 2]);
             $this->db->or_where(["input" => 3]);
             $this->db->or_where(["input" => 4]);
+        } elseif ($t == "3") {
+            $this->db->where(["input" => 1]);
         } else {
             $this->db->or_where(["input" => 4]);
         }
@@ -465,6 +467,61 @@ class M_kasus extends CI_Model
                 $faskes = $nama_user;
             }
         }
+
+        if ($post['status'] == '1' || $post['status'] == '2' || $post['status'] == '5' || $post['status'] == '6') {
+            $kasus = $this->_get_last_case();
+        } else {
+            $kasus = null;
+        }
+
+
+        $where = array(
+            "id_laporan" => $post['id_laporan']
+        );
+
+        $data = array(
+            "faskes_akhir" => $faskes,
+            "kasus" => $kasus,
+            "keterangan" => $post['keterangan'],
+            "status_baru" => $post['status'],
+            "updated_at" => date("Y-m-d H:i:s"),
+            "tgl_periksa" => date("Y-m-d"),
+            "validasi" => 0
+        );
+
+
+        $cek = $this->db->update("tb_laporan_baru", $data, $where);
+
+        if ($cek) {
+            $this->_add_riwayat_baru($post['id_laporan']);
+            $msg = array('res' => 1, 'msg' => 'Laporan Berhasil Ditambahkan');
+        } else {
+            $msg = array('res' => 0, 'msg' => 'Laporan Gagal Ditambahkan');
+        }
+
+        return json_encode($msg);
+    }
+
+    public function add_transfer()
+    {
+        $post = $this->input->post();
+
+        // if ($post['status'] == '1' || $post['status'] == '7' || $post['status'] == '13') {
+        //     if ($post['faskes_akhir'] == '') {
+        //         $msg = array('res' => 0, 'msg' => 'Rumah Sakit Harus Diisi dengan BENAR');
+        //         return json_encode($msg);
+        //     } else {
+        //         $faskes = $post['faskes_akhir'];
+        //     }
+        // } else {
+        //     if ($post['status'] == '') {
+        //         $msg = array('res' => 0, 'msg' => 'Status Harus Diisi dengan BENAR');
+        //         return json_encode($msg);
+        //     } else {
+        $nama_user = $this->session->userdata("nama_user");
+        $faskes = $nama_user;
+        //     }
+        // }
 
         if ($post['status'] == '1' || $post['status'] == '2' || $post['status'] == '5' || $post['status'] == '6') {
             $kasus = $this->_get_last_case();

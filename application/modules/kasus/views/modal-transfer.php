@@ -40,6 +40,17 @@
                                         <input type="text" class="form-control" id="kelurahan" placeholder="Kelurahan" disabled>
                                     </div>
                                 </div>
+
+                                <div class="form-group row">
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Faskes Terakhir</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="fas" placeholder="Faskes Terakhir" disabled>
+                                    </div>
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Penyakit</label>
+                                    <div class="col-sm-4">
+                                        <textarea class="form-control" id="peny" placeholder="Penyakit" disabled></textarea>
+                                    </div>
+                                </div>
                                 <div class="form-group row">
                                     <label for="inputEmail3" class="col-sm-2 col-form-label">Alamat Domisili</label>
                                     <div class="col-sm-10">
@@ -59,7 +70,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-12">
-                                <form class="form-horizontal" method="post" action="<?php echo site_url('../kasus/add_riwayat_lama'); ?>" enctype="multipart/form-data">
+                                <form class="form-horizontal" method="post" action="<?php echo site_url('../kasus/add_transfer'); ?>" enctype="multipart/form-data">
                                     <input type="hidden" name="id_laporan" id="id_laporan">
                                     <div class="form-group">
                                         <label for="inputEmail3" class="form-label">Status Pasien</label>
@@ -78,12 +89,11 @@
                                         <label for="inputEmail3" class="form-label">Kondisi Umum</label>
                                         <textarea class="form-control" name="keterangan" id="keterangan" disabled></textarea>
                                     </div>
-                                    <div class="form-group" id="f_akhir" style="display: none;">
-                                        <label for="inputEmail3" class="form-label">Faskes</label>
-                                        <select name="faskes_akhir" id="faskes_akhir" class="form-control select2" style="width: 100%;">
+                                    <!-- <div class="form-group">
+                                        <label for="inputEmail3" class="form-label">Penyakit Penyerta</label>
+                                        <select name="penyakit" id="penyakit" class="form-control select2" style="width: 100%" disabled>
                                         </select>
-                                        <small>*Data akan berpindah ke RS yang di pilih</small>
-                                    </div>
+                                    </div> -->
                                     <button type="submit" disabled id="btn_simpan" class="btn btn-primary">Simpan</button>
                                 </form>
                             </div>
@@ -103,14 +113,14 @@
         $('[data-mask]').inputmask();
         $('.select2').select2();
 
-        $('#status_form').change(function() {
-            var id = $(this).val();
-            if (id == 1 || id == 5 || id == 7 || id == 11 || id == 13 || id == 16) {
-                $("#f_akhir").show();
-            } else {
-                $("#f_akhir").hide();
-            }
-        });
+        // $('#status_form').change(function() {
+        //     var id = $(this).val();
+        //     if (id == 1 || id == 5 || id == 7 || id == 11 || id == 13 || id == 16) {
+        //         $("#f_akhir").show();
+        //     } else {
+        //         $("#f_akhir").hide();
+        //     }
+        // });
 
         $('#faskes_akhir').select2({
             ajax: {
@@ -168,6 +178,8 @@
                         $("#kecamatan").val(pasien.kecamatan);
                         $("#kelurahan").val(pasien.kelurahan);
                         $("#alamat_domisili").val(pasien.alamat_domisili);
+                        $("#fas").val(pasien.faskes_akhir);
+                        $("#peny").val(pasien.penyakit);
                     } else {
                         alert(data.msg);
                         enabled(0)
@@ -177,10 +189,49 @@
                         $("#kecamatan").val("");
                         $("#kelurahan").val("");
                         $("#alamat_domisili").val("");
+                        $("#fas").val("");
+                        $("#peny").val("");
                     }
                 }
             })
-        })
+        });
+
+
+        $('#penyakit').select2({
+            ajax: {
+                url: "<?php echo base_url('services/get_penyakit') ?>",
+                dataType: 'json',
+                delay: 500,
+                data: function(params) {
+                    return {
+                        search: params.term
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: $.map(data, function(item) {
+                            return {
+                                text: item.diag + ' (<b>' + item.kdiag + '</b>)',
+                                id: item.kdiag
+                            }
+                        })
+                    }
+                },
+                cache: true
+            },
+            placeholder: 'Masukkan Nama atau Kode ICD10',
+            minimumInputLength: 3,
+            escapeMarkup: function(markup) {
+                return markup;
+            },
+            templateResult: function(data) {
+                return data.text;
+            },
+            templateSelection: function(data) {
+                return data.text;
+            }
+        });
+
     });
 
     function enabled(id) {
@@ -188,10 +239,12 @@
             $('#status_form').prop("disabled", false);
             $('#keterangan').prop("disabled", false);
             $('#btn_simpan').prop("disabled", false);
+            $('#penyakit').prop("disabled", false);
         } else {
             $('#status_form').prop("disabled", true);
             $('#keterangan').prop("disabled", true);
             $('#btn_simpan').prop("disabled", true);
+            $('#penyakit').prop("disabled", true);
         }
     }
 </script>

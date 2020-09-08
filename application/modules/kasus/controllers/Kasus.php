@@ -40,7 +40,7 @@ class Kasus extends MY_Controller
     public function modal_tambah_lama()
     {
         $model = $this->M_kasus;
-        $data['status'] = $model->get_status();
+        $data['status'] = $model->get_status("1");
         $data['created_by'] = $this->session->userdata('id_user');
 
         $this->load->view('modal-tambah-lama', $data);
@@ -49,7 +49,7 @@ class Kasus extends MY_Controller
     public function modal_transfer()
     {
         $model = $this->M_kasus;
-        $data['status'] = $model->get_status();
+        $data['status'] = $model->get_status("3");
         $data['created_by'] = $this->session->userdata('id_user');
 
         $this->load->view('modal-transfer', $data);
@@ -147,7 +147,7 @@ class Kasus extends MY_Controller
                 $data['msg'] = "NIK : " . $nik . " ditemukan !";
             } else {
                 $data['cek'] = "0";
-                $data['msg'] = "NIK : " . $nik . " masih status " . strtoupper($st);
+                $data['msg'] = "NIK : " . $nik . " status " . strtoupper($st);
             }
         } else {
             $data['cek'] = "0";
@@ -163,7 +163,7 @@ class Kasus extends MY_Controller
         $nik = $_GET['nik'];
         $model = $this->M_kasus;
         $pasien = $model->get_pasien_by($nik);
-        $status = $model->get_status('2');
+        $status = $model->get_status();
 
         $cek = $pasien->num_rows();
         if ($cek > 0) {
@@ -171,10 +171,10 @@ class Kasus extends MY_Controller
             $st = $model->get_status_by_id($data2->status_baru);
             foreach ($status as $key) :
                 if ($data2->status_baru != $key->id_status_2) {
-                    $cek2 = 1;
+                    $cek2 = 0;
                     continue;
                 } else {
-                    $cek2 = 0;
+                    $cek2 = 1;
                     break;
                 }
             endforeach;
@@ -186,11 +186,13 @@ class Kasus extends MY_Controller
                 $data['data']['kecamatan'] = $model->get_kecamatan_by_id($data2->id_kecamatan);
                 $data['data']['kelurahan'] = $model->get_kelurahan_by_id($data2->id_kelurahan);
                 $data['data']['alamat_domisili'] = $data2->alamat_domisili;
+                $data['data']['faskes_akhir'] = $data2->faskes_akhir;
+                $data['data']['penyakit'] = $data2->penyakit . " (" . $data2->kdiag . ")";
                 $data['cek'] = "1";
                 $data['msg'] = "NIK : " . $nik . " ditemukan !";
             } else {
                 $data['cek'] = "0";
-                $data['msg'] = "NIK : " . $nik . " masih status " . strtoupper($st);
+                $data['msg'] = "NIK : " . $nik . " status " . strtoupper($st);
             }
         } else {
             $data['cek'] = "0";
@@ -305,6 +307,21 @@ class Kasus extends MY_Controller
         $model = $this->M_kasus;
 
         $hasil = json_decode($model->add_riwayat_lama(), true);
+
+        if ($hasil['res']) {
+            $this->session->set_flashdata('success', $hasil['msg']);
+        } else {
+            $this->session->set_flashdata('gagal', $hasil['msg']);
+        }
+
+        redirect('../kasus', 'refresh');
+    }
+
+    public function add_transfer()
+    {
+        $model = $this->M_kasus;
+
+        $hasil = json_decode($model->add_transfer(), true);
 
         if ($hasil['res']) {
             $this->session->set_flashdata('success', $hasil['msg']);
