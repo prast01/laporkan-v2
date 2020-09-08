@@ -580,6 +580,19 @@ function kasus_lama() {
   });
 }
 
+function transfer_kasus() {
+  $("#modalku").modal();
+  $(".modal-title").html("Transfer Kasus");
+  var origin = window.location.origin + "/laporkan-v2/kasus/modal_transfer";
+  $.ajax({
+    type: "POST",
+    url: origin,
+    success: function (data) {
+      $(".modal-body").html(data);
+    },
+  });
+}
+
 function ubah_kasus(id) {
   $("#modalku").modal();
   $(".modal-title").html("Ubah Kasus");

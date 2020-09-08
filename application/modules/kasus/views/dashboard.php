@@ -14,6 +14,7 @@
                     <?php //if ($this->session->userdata("level") == "2") : 
                     ?>
                     <button type="button" class="btn btn-warning my-1" onclick="kasus_lama()" title="Kasus Lama"><i class="fa fa-plus"></i> Re-Infeksi</button>
+                    <button type="button" class="btn btn-primary my-1" onclick="transfer_kasus()" title="Transfer Kasus"><i class="fa fa-plus"></i> Transfer</button>
                     <?php //endif; 
                     ?>
                 </div>

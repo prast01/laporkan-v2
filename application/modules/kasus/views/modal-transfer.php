@@ -150,7 +150,7 @@
         $('#btn_cari').click(function() {
             let nik = $("#nik").val();
             $.ajax({
-                url: "<?= site_url("../kasus/get_nik"); ?>",
+                url: "<?= site_url("../kasus/get_nik_2"); ?>",
                 type: "GET",
                 data: {
                     'nik': nik

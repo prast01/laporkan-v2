@@ -171,7 +171,7 @@ endforeach;
 
         $('#status').change(function() {
             var id = $(this).val();
-            if (id == 1 || id == 5 || id == 7 || id == 11 || id == 13 || id == 16) {
+            if (id == 1 || id == 5 || id == 7 || id == 11 || id == 13 || id == 16 || id == 6 || id == 12 || id == 17) {
                 $("#f_akhir").show();
             } else {
                 $("#f_akhir").hide();

@@ -46,6 +46,15 @@ class Kasus extends MY_Controller
         $this->load->view('modal-tambah-lama', $data);
     }
 
+    public function modal_transfer()
+    {
+        $model = $this->M_kasus;
+        $data['status'] = $model->get_status();
+        $data['created_by'] = $this->session->userdata('id_user');
+
+        $this->load->view('modal-transfer', $data);
+    }
+
     public function modal_ubah($id)
     {
         $model = $this->M_kasus;
@@ -107,6 +116,49 @@ class Kasus extends MY_Controller
     }
 
     public function get_nik()
+    {
+        $nik = $_GET['nik'];
+        $model = $this->M_kasus;
+        $pasien = $model->get_pasien_by($nik);
+        $status = $model->get_status('2');
+
+        $cek = $pasien->num_rows();
+        if ($cek > 0) {
+            $data2 = $pasien->row();
+            $st = $model->get_status_by_id($data2->status_baru);
+            foreach ($status as $key) :
+                if ($data2->status_baru != $key->id_status_2) {
+                    $cek2 = 1;
+                    continue;
+                } else {
+                    $cek2 = 0;
+                    break;
+                }
+            endforeach;
+
+            if ($cek2) {
+                $data['data']['id_laporan'] = $data2->id_laporan;
+                $data['data']['nama'] = $data2->nama;
+                $data['data']['status'] = $st;
+                $data['data']['kecamatan'] = $model->get_kecamatan_by_id($data2->id_kecamatan);
+                $data['data']['kelurahan'] = $model->get_kelurahan_by_id($data2->id_kelurahan);
+                $data['data']['alamat_domisili'] = $data2->alamat_domisili;
+                $data['cek'] = "1";
+                $data['msg'] = "NIK : " . $nik . " ditemukan !";
+            } else {
+                $data['cek'] = "0";
+                $data['msg'] = "NIK : " . $nik . " masih status " . strtoupper($st);
+            }
+        } else {
+            $data['cek'] = "0";
+            $data['msg'] = "NIK : " . $nik . " tidak ditemukan !";
+        }
+
+
+        echo json_encode($data);
+    }
+
+    public function get_nik_2()
     {
         $nik = $_GET['nik'];
         $model = $this->M_kasus;

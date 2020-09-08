@@ -34,12 +34,17 @@ class M_kasus extends CI_Model
 
     public function get_status($t = "")
     {
-        $this->db->where(["input" => 1]);
         if ($t == "1") {
+            $this->db->where(["input" => 1]);
             $this->db->or_where(["input" => 2]);
+            $this->db->or_where(["input" => 4]);
         } elseif ($t == "2") {
+            $this->db->where(["input" => 1]);
             $this->db->or_where(["input" => 2]);
             $this->db->or_where(["input" => 3]);
+            $this->db->or_where(["input" => 4]);
+        } else {
+            $this->db->or_where(["input" => 4]);
         }
 
         $this->db->order_by('id_status_2', 'desc');
