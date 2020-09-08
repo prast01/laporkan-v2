@@ -188,7 +188,7 @@ class M_services extends CI_Model
     }
     public function get_update_tgl_2()
     {
-        $data = $this->db->get("view_week_3");
+        $data = $this->db->get("view_week_2");
 
         return $data;
     }
