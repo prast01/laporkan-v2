@@ -138,9 +138,14 @@ class ServicesV2 extends MY_Controller
             $data[$no]['alamat'] = $key->alamat;
             $data[$no]['jml_tt'] = $key->tt_pdp;
             $data[$no]['telp'] = $telp;
-            $data[$no]['suspek'] = $suspek;
-            $data[$no]['probable'] = $probable;
-            $data[$no]['konfirmasi'] = $konfirmasi;
+            $data[$no]['kasus'] = array(
+                array('nama' => 'Suspek Dirawat', 'kasus' => $suspek),
+                array('nama' => 'Probable Dirawat', 'kasus' => $probable),
+                array('nama' => 'Konfirmasi Dirawat', 'kasus' => $konfirmasi)
+            );
+            // $data[$no]['suspek'] = $suspek;
+            // $data[$no]['probable'] = $probable;
+            // $data[$no]['konfirmasi'] = $konfirmasi;
             $no++;
         }
 
