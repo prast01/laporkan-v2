@@ -1,5 +1,7 @@
 <?php
 
+use phpDocumentor\Reflection\Types\Null_;
+
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Kasus extends MY_Controller
@@ -95,6 +97,18 @@ class Kasus extends MY_Controller
         $data['created_by'] = $this->session->userdata('id_user');
 
         $this->load->view('modal-riwayat', $data);
+    }
+
+    public function modal_tracing($id)
+    {
+        $model = $this->M_kasus;
+        $data['kecamatan'] = $model->get_kecamatan();
+        $data['laporan'] = $model->get_data($id);
+        $data['kel'] = $model->get_kelurahan_by_id($data['laporan']->id_kelurahan);
+        $data['kec'] = $model->get_kecamatan_by_id($data['laporan']->id_kecamatan);
+        $data['hubungan'] = $model->get_hubungan();
+        $data['jenis_kontak'] = $model->get_jenis_kontak();
+        $this->load->view('modal-tracing', $data);
     }
 
     // ambil data
@@ -241,6 +255,54 @@ class Kasus extends MY_Controller
         echo json_encode($hsl);
     }
 
+    public function get_data_pasien()
+    {
+        $model = $this->M_kasus;
+        $data = $model->get_data_pasien();
+        $hsl = array();
+
+        $no = 0;
+        foreach ($data as $key) {
+            if ($key->status_baru >= 1 && $key->status_baru <= 6) {
+                $tipe = 1;
+            } elseif ($key->status_baru >= 7 && $key->status_baru <= 12) {
+                $tipe = 2;
+            } elseif ($key->status_baru >= 13 && $key->status_baru <= 17) {
+                $tipe = 3;
+            } elseif ($key->status_baru >= 18 && $key->status_baru <= 19) {
+                $tipe = 4;
+            }
+
+
+            if ($key->jekel == '1') {
+                $jekel = "L";
+            } else {
+                $jekel = "P";
+            }
+
+            $hsl[$no]['id'] = $key->id_laporan;
+            $hsl[$no]['nik'] = $key->nik;
+            $hsl[$no]['nama'] = $key->nama;
+            $hsl[$no]['status'] = $key->nama_status;
+            $hsl[$no]['tipe'] = $tipe;
+            $hsl[$no]['id_kecamatan'] = $key->id_kecamatan;
+            $hsl[$no]['nama_kecamatan'] = $key->nama_kecamatan;
+            $hsl[$no]['id_kelurahan'] = $key->id_kelurahan;
+            $hsl[$no]['nama_kelurahan'] = $key->nama_kelurahan;
+            $hsl[$no]['no_telp'] = $key->no_telp;
+            $hsl[$no]['alamat_domisili'] = $key->alamat_domisili;
+            $hsl[$no]['umur'] = $key->umur;
+            $hsl[$no]['id_jekel'] = $key->jekel;
+            $hsl[$no]['jekel'] = $jekel;
+            $hsl[$no]['wn'] = $key->wn;
+            $hsl[$no]['is_form_input'] = true;
+
+            $no++;
+        }
+
+        echo json_encode($hsl);
+    }
+
     // CRUD
     public function add()
     {
@@ -375,6 +437,159 @@ class Kasus extends MY_Controller
         }
 
         redirect('../kasus', 'refresh');
+    }
+
+    public function add_tracing()
+    {
+        $model = $this->M_kasus;
+        $id_laporan = $_POST['id_laporan'];
+        $tracing = json_decode($_POST['tracing'], true);
+        $remove_tracing = json_decode($_POST['remove_tracing'], true);
+
+        // remove tracing
+        if (count($remove_tracing) > 0) {
+            foreach ($$remove_tracing as $key => $value) {
+                if ($value['tipe'] == '4' && $value['id'] != null) {
+                    $model->delete_kontak($value['id']);
+                }
+            }
+        }
+
+        // add tracing
+        if (count($tracing) > 0) {
+            foreach ($tracing as $key => $value) {
+                if ($value['id'] == null) {
+                    $cek = $model->get_pasien_by($value['nik']);
+                    if ($cek->num_rows() > 0) {
+                        $dt = $cek->row();
+                        $data = array(
+                            'id_laporan' => $id_laporan,
+                            'kontak' => $dt->id_laporan,
+                            'status' => $dt->status_baru,
+                            'id_hubungan' => $value['id_hubungan'],
+                            'id_jenis_kontak' => $value['id_jenis_kontak'],
+                        );
+
+                        $model->save_kontak($data);
+                    } else {
+                        if ($value['nama_hubungan'] == 'Tenaga Medis') {
+                            $nakes = "NAKES";
+                        } else {
+                            $nakes = 0;
+                        }
+
+                        $data = array(
+                            'status_baru' => 18,
+                            'faskes_akhir' => $this->session->userdata('nama_user'),
+                            'kdiag' => 'BLM',
+                            'penyakit' => 'BELUM DIISI',
+                            'id_pekerjaan' => null,
+                            'pekerjaan' => null,
+                            'tempat_kerja' => null,
+                            'id_kecamatan' => $value['id_kecamatan'],
+                            'tgl_periksa' => date("Y-m-d"),
+                            'wn' => $value['wn'],
+                            'nik' => $value['nik'],
+                            'nama' => $value['nama'],
+                            'alamat_domisili' => $value['alamat_domisili'],
+                            'validasi' => 0,
+                            'created_at' => date("Y-m-d"),
+                            'created_by' => $this->session->userdata('id_user'),
+                            'jekel' => $value['id_jekel'],
+                            'umur' => $value['umur'],
+                            'no_telp' => $value['no_telp'],
+                            'id_kelurahan' => $value['id_kelurahan'],
+                            'nakes' => $nakes
+                        );
+
+                        $data2 = array(
+                            'id_laporan' => $id_laporan,
+                            'nik' => $value['nik'],
+                            'id_hubungan' => $value['id_hubungan'],
+                            'id_jenis_kontak' => $value['id_jenis_kontak'],
+                        );
+                        $model->save_pasien($data, $data2);
+                    }
+                } else {
+                    $cek_kontak = $model->get_kontak_by_id($id_laporan, $value['id']);
+
+                    if ($cek_kontak == 0) {
+                        $dt = $model->get_pasien_by($value['nik'])->row();
+                        $data = array(
+                            'id_laporan' => $id_laporan,
+                            'kontak' => $dt->id_laporan,
+                            'status' => $dt->status_baru,
+                            'id_hubungan' => $value['id_hubungan'],
+                            'id_jenis_kontak' => $value['id_jenis_kontak'],
+                        );
+
+                        $model->save_kontak($data);
+                    }
+                }
+            }
+        }
+    }
+
+    public function delete_tracing($id_laporan, $kontak)
+    {
+        $this->db->delete("tb_kontak", ["kontak" => $kontak, "id_laporan" => $id_laporan]);
+    }
+
+
+    public function data_tracing($id)
+    {
+        $model = $this->M_kasus;
+        $data = $model->get_kontak($id);
+        $hsl = array();
+
+        $no = 0;
+        foreach ($data as $key) {
+            // if ($key->status != '4') {
+            $dt = $model->get_data($key->kontak);
+            $hsl['data'][$no]['id'] = $dt->id_laporan;
+            // } else {
+            //     $dt = $model->get_tracing_otg($key->kontak);
+            //     $hsl['data'][$no]['id'] = $dt->id_otg;
+            // }
+
+            if ($key->status >= 1 && $key->status <= 6) {
+                $tipe = 1;
+            } elseif ($key->status >= 7 && $key->status <= 12) {
+                $tipe = 2;
+            } elseif ($key->status >= 13 && $key->status <= 17) {
+                $tipe = 3;
+            } elseif ($key->status >= 18 && $key->status <= 19) {
+                $tipe = 4;
+            }
+
+            if ($dt->jekel == '1') {
+                $jekel = "L";
+            } else {
+                $jekel = "P";
+            }
+
+
+            $hsl['data'][$no]['nama'] = $dt->nama;
+            $hsl['data'][$no]['status'] = $model->get_status_by_id($key->status);
+            $hsl['data'][$no]['tipe'] = $tipe;
+            $hsl['data'][$no]['nama_kecamatan'] = $model->get_kecamatan_by_id($dt->id_kecamatan);
+            $hsl['data'][$no]['nama_kelurahan'] = $model->get_kelurahan_by_id($dt->id_kelurahan);
+            $hsl['data'][$no]['no_telp'] = $dt->no_telp;
+            $hsl['data'][$no]['alamat_domisili'] = $dt->alamat_domisili;
+            $hsl['data'][$no]['umur'] = $dt->umur;
+            $hsl['data'][$no]['jekel'] = $jekel;
+            $hsl['data'][$no]['id_jekel'] = $dt->jekel;
+            $hsl['data'][$no]['id_hubungan'] = $key->id_hubungan;
+            $hsl['data'][$no]['id_jenis_kontak'] = $key->id_jenis_kontak;
+            $hsl['data'][$no]['nik'] = $dt->nik;
+            $hsl['data'][$no]['wn'] = $dt->wn;
+            $hsl['data'][$no]['id_kecamatan'] = $dt->id_kecamatan;
+            $hsl['data'][$no]['id_kelurahan'] = $dt->id_kelurahan;
+
+            $no++;
+        }
+
+        echo json_encode($hsl);
     }
 }
 

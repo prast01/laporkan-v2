@@ -744,3 +744,17 @@ function get_chart_harian() {
     }, 200);
   });
 }
+
+function tracing(id) {
+  $("#modalku").modal();
+  $(".modal-title").html("Tracing Kasus");
+  var origin =
+    window.location.origin + "/laporkan-v2/kasus/modal_tracing/" + id;
+  $.ajax({
+    type: "POST",
+    url: origin,
+    success: function (data) {
+      $(".modal-body").html(data);
+    },
+  });
+}

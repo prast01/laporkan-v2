@@ -176,6 +176,47 @@ class M_kasus extends CI_Model
         return $data;
     }
 
+    public function get_hubungan()
+    {
+        $data = $this->db->get("tb_hubungan")->result();
+
+        return $data;
+    }
+
+    public function get_jenis_kontak()
+    {
+        $data = $this->db->get("tb_jenis_kontak")->result();
+
+        return $data;
+    }
+
+    public function get_data_pasien()
+    {
+        $search = $_GET['search'];
+        $id_kec = $_GET['id_kecamatan'];
+
+        $this->db->from("view_data_laporan");
+        $this->db->where("id_kecamatan", $id_kec);
+        $this->db->like("nama", $search);
+        $data = $this->db->get()->result();
+
+        return $data;
+    }
+
+    public function get_kontak($id)
+    {
+        $data = $this->db->get_where("tb_kontak", ['id_laporan' => $id])->result();
+
+        return $data;
+    }
+
+    public function get_kontak_by_id($id_laporan, $kontak)
+    {
+        $data = $this->db->get_where("tb_kontak", ['kontak' => $kontak, "id_laporan" => $id_laporan])->num_rows();
+
+        return $data;
+    }
+
     // CRUD
     public function save()
     {
@@ -652,6 +693,28 @@ class M_kasus extends CI_Model
         }
 
         return json_encode($msg);
+    }
+
+    public function save_kontak($data)
+    {
+        $this->db->insert('tb_kontak', $data);
+    }
+
+    public function save_pasien($data, $data2)
+    {
+        $this->db->insert('tb_laporan_baru', $data);
+
+        $dt = $this->get_pasien_by($data2['nik'])->row();
+
+        $datax = array(
+            'id_laporan' => $data2['id_laporan'],
+            'kontak' => $dt->id_laporan,
+            'status' => $dt->status_baru,
+            'id_hubungan' => $data2['id_hubungan'],
+            'id_jenis_kontak' => $data2['id_jenis_kontak'],
+        );
+
+        $this->save_kontak($datax);
     }
 
     // private fungsi

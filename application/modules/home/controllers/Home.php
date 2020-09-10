@@ -335,7 +335,7 @@ class Home extends MY_Controller
     } else {
       $this->session->set_flashdata('gagal', $hasil['msg']);
     }
-    redirect('../home', 'location');
+    redirect('../dashboard', 'location');
   }
 
 

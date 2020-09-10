@@ -720,7 +720,7 @@ class M_datatable extends CI_Model
     // terkonfirmasi
     private function _get_terkonfirmasi_query()
     {
-        $column_order = array('kasus', 'tgl_periksa', 'nama', 'umur', 'nama_kecamatan', 'nama_kelurahan', 'alamat_domisili', 'no_telp', 'nama_status', 'nakes', 'faskes_akhir', 'penyakit'); //field yang ada di table user
+        $column_order = array('kasus', 'tgl_periksa', 'nama', 'umur', 'nama_kecamatan', 'nama_kelurahan', 'alamat_domisili', 'no_telp', 'nama_status', 'nakes', 'faskes_akhir', 'penyakit', 'kontak'); //field yang ada di table user
         $column_search = array('nama_kelurahan', 'nama', 'faskes_akhir', 'rs', 'nik', 'nakes', 'penyakit', 'nama_status'); //field yang diizin untuk pencarian 
 
         $level = $this->session->userdata("level");

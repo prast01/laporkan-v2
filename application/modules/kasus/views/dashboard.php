@@ -115,6 +115,7 @@
                                                             <th>Nakes</th>
                                                             <th>RS Terakhir</th>
                                                             <th>Penyerta</th>
+                                                            <th>Kontak</th>
                                                             <th>Aksi</th>
                                                         </tr>
                                                     </thead>
