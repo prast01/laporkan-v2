@@ -573,18 +573,18 @@
         $('#add-tracing').submit(function(event) {
             event.preventDefault();
             event.stopImmediatePropagation();
-            if (dataTracing.length > 0) {
-                if (validasiTracing()) {
-                    $('#tracing').val(JSON.stringify(dataTracing));
-                    $('#remove-tracing').val(JSON.stringify(removeDataTracing));
-                    let form = $(this);
-                    postdata(form);
-                    // console.log(JSON.stringify(dataTracing));
-                    // console.log(JSON.stringify(removeDataTracing));
-                }
-            } else {
-                alert("Data Masih Kosong");
+            // if (dataTracing.length > 0) {
+            if (validasiTracing()) {
+                $('#tracing').val(JSON.stringify(dataTracing));
+                $('#remove-tracing').val(JSON.stringify(removeDataTracing));
+                let form = $(this);
+                postdata(form);
+                // console.log(JSON.stringify(dataTracing));
+                // console.log(JSON.stringify(removeDataTracing));
             }
+            // } else {
+            //     alert("Data Masih Kosong");
+            // }
         })
 
         function validasiTracing() {
@@ -616,9 +616,11 @@
                 success: function(data) {
                     alert("Berhasil Simpan Data");
                     $("#modalku").modal('hide');
+                    location.reload();
                 },
                 error: function(data) {
                     alert("Gagal Simpan Data");
+                    location.reload();
                 }
             })
         }
