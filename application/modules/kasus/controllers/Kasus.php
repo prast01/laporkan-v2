@@ -528,6 +528,8 @@ class Kasus extends MY_Controller
                 }
             }
         }
+
+        $modal->get_total_kontak($id_laporan);
     }
 
     public function delete_tracing($id_laporan, $kontak)

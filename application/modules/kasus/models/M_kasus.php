@@ -217,6 +217,21 @@ class M_kasus extends CI_Model
         return $data;
     }
 
+    public function get_total_kontak($id_laporan)
+    {
+        $jml = $this->db->get_where("tb_kontak", ["id_laporan" => $id_laporan])->num_rows();
+
+        $where = array(
+            "id_laporan" => $id_laporan
+        );
+
+        $data = array(
+            'kontak' => $jml
+        );
+
+        $this->db->update("tb_laporan_baru", $data, $where);
+    }
+
     // CRUD
     public function save()
     {
