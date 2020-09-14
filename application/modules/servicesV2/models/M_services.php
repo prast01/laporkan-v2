@@ -274,6 +274,7 @@ class M_services extends CI_Model
     public function get_pasien_by($nama, $status)
     {
         $this->db->from("tb_laporan_baru");
+        $this->db->where("id_kecamatan !=", '17');
         $this->db->where("faskes_akhir", $nama);
         // $status = array("1", "7", "13");
         $this->db->where("status_baru", $status);
@@ -289,9 +290,17 @@ class M_services extends CI_Model
         // $faskes = array("RSUD R.A KARTINI", "RSUD REHATTA", "RSI SULTAN HADLIRIN", "RS GRAHA HUSADA", "RS PKU AISYIYAH", "RS PKU MUHAMMADIYAH MAYONG");
         // $this->db->where_not_in("faskes_akhir", $faskes);
         // $status = array("1", "7", "13");
+        $this->db->where("id_kecamatan !=", '17');
         $this->db->where("status_baru", $status);
 
         $data = $this->db->get()->num_rows();
+
+        return $data;
+    }
+
+    public function get_penyakit()
+    {
+        $data = $this->db->get("v_10besar")->result();
 
         return $data;
     }

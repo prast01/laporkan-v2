@@ -137,14 +137,14 @@ class ServicesV2 extends MY_Controller
             $data[$no]['gmaps'] = $key->gmaps;
             $data[$no]['alamat'] = $key->alamat;
             $data[$no]['telp'] = $telp;
-            $data[$no]['kasus'] = array(
-                array('nama' => 'Suspek Dirawat', 'kasus' => $suspek),
-                array('nama' => 'Probable Dirawat', 'kasus' => $probable),
-                array('nama' => 'Konfirmasi Dirawat', 'kasus' => $konfirmasi)
-            );
-            // $data[$no]['suspek'] = $suspek;
-            // $data[$no]['probable'] = $probable;
-            // $data[$no]['konfirmasi'] = $konfirmasi;
+            // $data[$no]['kasus'] = array(
+            //     array('nama' => 'Suspek Dirawat', 'kasus' => $suspek),
+            //     array('nama' => 'Probable Dirawat', 'kasus' => $probable),
+            //     array('nama' => 'Konfirmasi Dirawat', 'kasus' => $konfirmasi)
+            // );
+            $data[$no]['suspek'] = $suspek;
+            $data[$no]['probable'] = $probable;
+            $data[$no]['konfirmasi'] = $konfirmasi;
             $no++;
         }
 
@@ -164,11 +164,23 @@ class ServicesV2 extends MY_Controller
                 "l_telp" => "x"
             )
         );
-        $data[$no]['kasus'] = array(
-            array('nama' => 'Suspek Dirawat', 'kasus' => $suspek2),
-            array('nama' => 'Probable Dirawat', 'kasus' => $probable2),
-            array('nama' => 'Konfirmasi Dirawat', 'kasus' => $konfirmasi2)
-        );
+        // $data[$no]['kasus'] = array(
+        //     array('nama' => 'Suspek Dirawat', 'kasus' => $suspek2),
+        //     array('nama' => 'Probable Dirawat', 'kasus' => $probable2),
+        //     array('nama' => 'Konfirmasi Dirawat', 'kasus' => $konfirmasi2)
+        // );
+        $data[$no]['suspek'] = $suspek2;
+        $data[$no]['probable'] = $probable2;
+        $data[$no]['konfirmasi'] = $konfirmasi2;
+
+        echo json_encode($data);
+    }
+
+    public function get_data_penyakit()
+    {
+        $model = $this->M_services;
+
+        $data = $model->get_penyakit();
 
         echo json_encode($data);
     }
