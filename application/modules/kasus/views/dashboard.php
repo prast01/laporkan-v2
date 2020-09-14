@@ -202,7 +202,7 @@
                                                 <option value="">Semua Status</option>
                                                 <option value="13">Suspek Dirawat</option>
                                                 <option value="14">Suspek Isolasi</option>
-                                                <option value="15">Suspek Discard</option>
+                                                <option value="15">Suspek Discarded</option>
                                                 <option value="16">Suspek Dirujuk</option>
                                                 <option value="17">Suspek Dirujuk Luar Jateng</option>
                                             </select>
@@ -257,7 +257,7 @@
                                             <select name="filterByStatusKontak" id="filterByStatusKontak" class="form-control select2" style="width: 100%">
                                                 <option value="">Semua Status</option>
                                                 <option value="18">Kontak Erat Isolasi</option>
-                                                <option value="19">Kontak Erat Discard</option>
+                                                <option value="19">Kontak Erat Discarded</option>
                                             </select>
                                         </div>
                                     </div>
