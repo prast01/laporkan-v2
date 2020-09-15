@@ -940,6 +940,7 @@ class Datatables extends MY_Controller
                                             <a class="dropdown-item" href="#" onclick="detail_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-eye"></span> Detail Data</a>
                                             <a class="dropdown-item text-primary" href="#" onclick="riwayat_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Riwayat Pasien</a>
                                             <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item text-danger" href="#" onclick="epid(\'' . $field->id_laporan . '\')"><span class="fa fa-search"></span> Entri PE</a>
                                             <a class="dropdown-item text-info" href="#" onclick="tracing(\'' . $field->id_laporan . '\')"><span class="fa fa-plus"></span> Tracing</a>
                                         </div>
                                     </button>';
@@ -951,6 +952,7 @@ class Datatables extends MY_Controller
                                                             <a class="dropdown-item" href="#" onclick="detail_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-eye"></span> Detail Data</a>
                                                             <a class="dropdown-item text-primary" href="#" onclick="riwayat_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Riwayat Pasien</a>
                                                             <div class="dropdown-divider"></div>
+                                                            <a class="dropdown-item text-danger" href="#" onclick="epid(\'' . $field->id_laporan . '\')"><span class="fa fa-search"></span> Entri PE</a>
                                                             <a class="dropdown-item text-info" href="#" onclick="tracing(\'' . $field->id_laporan . '\')"><span class="fa fa-plus"></span> Tracing</a>
                                                             <a class="dropdown-item text-success" href="#" onclick="selesai_isolasi(\'' . $field->id_laporan . '\', \'1\')"><span class="fa fa-check"></span> Selesai Isolasi</a>
                                                             <a class="dropdown-item text-danger" href="#" onclick="pasien_die(\'' . $field->id_laporan . '\', \'1\')"><span class="fa fa-check"></span> Meninggal</a>
@@ -965,6 +967,7 @@ class Datatables extends MY_Controller
                                             <a class="dropdown-item" href="#" onclick="detail_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-eye"></span> Detail Data</a>
                                             <a class="dropdown-item text-primary" href="#" onclick="riwayat_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Riwayat Pasien</a>
                                             <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item text-danger" href="#" onclick="epid(\'' . $field->id_laporan . '\')"><span class="fa fa-search"></span> Entri PE</a>
                                             <a class="dropdown-item text-info" href="#" onclick="tracing(\'' . $field->id_laporan . '\')"><span class="fa fa-plus"></span> Tracing</a>
                                         </div>
                                     </button>';
@@ -976,6 +979,7 @@ class Datatables extends MY_Controller
                                             <a class="dropdown-item" href="#" onclick="detail_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-eye"></span> Detail Data</a>
                                             <a class="dropdown-item text-primary" href="#" onclick="riwayat_kasus(\'' . $field->id_laporan . '\')"><span class="fa fa-arrow-right"></span> Riwayat Pasien</a>
                                             <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item text-danger" href="#" onclick="epid(\'' . $field->id_laporan . '\')"><span class="fa fa-search"></span> Entri PE</a>
                                             <a class="dropdown-item text-info" href="#" onclick="tracing(\'' . $field->id_laporan . '\')"><span class="fa fa-plus"></span> Tracing</a>
                                             <a class="dropdown-item text-success" href="#" onclick="selesai_isolasi(\'' . $field->id_laporan . '\', \'1\')"><span class="fa fa-check"></span> Selesai Isolasi</a>
                                             <a class="dropdown-item text-danger" href="#" onclick="pasien_die(\'' . $field->id_laporan . '\', \'1\')"><span class="fa fa-check"></span> Meninggal</a>

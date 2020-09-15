@@ -758,3 +758,11 @@ function tracing(id) {
     },
   });
 }
+
+function epid(id) {
+  var url = window.location.origin + "/laporkan-v2/kasus/epid/";
+  var cek = confirm("Entri data Penyelidikan Epidemiologi Pasien?");
+  if (cek) {
+    window.location = url + "step-1/" + id;
+  }
+}

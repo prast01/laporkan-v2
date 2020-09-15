@@ -28,6 +28,23 @@ class Kasus extends MY_Controller
         }
     }
 
+    public function epid($step, $id_laporan)
+    {
+        $model = $this->M_kasus;
+        $data['id_user'] = $this->session->userdata("id_user");
+        $data['level'] = $this->session->userdata("level");
+        $data['laporan'] = $model->get_data($id_laporan);
+        $data['step'] = $step;
+
+        if ($this->session->userdata('id_user') != '') {
+            if ($step == 'step-1') {
+                $this->template('step-1', $data);
+            }
+        } else {
+            redirect('../', 'refresh');
+        }
+    }
+
     // modal
     public function modal_tambah()
     {
@@ -536,7 +553,6 @@ class Kasus extends MY_Controller
     {
         $this->db->delete("tb_kontak", ["kontak" => $kontak, "id_laporan" => $id_laporan]);
     }
-
 
     public function data_tracing($id)
     {
