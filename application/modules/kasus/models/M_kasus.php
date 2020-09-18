@@ -281,7 +281,7 @@ class M_kasus extends CI_Model
         } else {
             $cek_nik = $this->_get_nik($post['nik']);
             if ($cek_nik['res']) {
-                $msg = array('res' => 0, 'msg' => $cek_nik['msg'] . " Pada kasus : " . $cek_nik['data'] . "di Faskes : " . $cek_nik['faskes']);
+                $msg = array('res' => 0, 'msg' => $cek_nik['msg'] . " Pada kasus : " . $cek_nik['data'] . " oleh : " . $cek_nik['faskes']);
                 return json_encode($msg);
             }
         }
@@ -384,7 +384,7 @@ class M_kasus extends CI_Model
             if ($post['nik'] != $post['nik_lama']) {
                 $cek_nik = $this->_get_nik($post['nik']);
                 if ($cek_nik['res']) {
-                    $msg = array('res' => 0, 'msg' => $cek_nik['msg'] . " Pada kasus : " . $cek_nik['data']);
+                    $msg = array('res' => 0, 'msg' => $cek_nik['msg'] . " Pada kasus : " . $cek_nik['data'] . " oleh : " . $cek_nik['faskes']);
                     return json_encode($msg);
                 }
             }

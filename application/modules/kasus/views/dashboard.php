@@ -11,11 +11,15 @@
                 </div>
                 <div class="col-lg-4 col-6">
                     <button type="button" class="btn btn-success text-white my-1" onclick="tambah_kasus()" title="Tambah Kasus"><i class="fa fa-plus"></i> Tambah Kasus</button>
-                    <?php //if ($this->session->userdata("level") == "2") : 
-                    ?>
                     <button type="button" class="btn btn-warning my-1" onclick="kasus_lama()" title="Kasus Lama"><i class="fa fa-plus"></i> Re-Infeksi</button>
-                    <button type="button" class="btn btn-primary my-1" onclick="transfer_kasus()" title="Transfer Kasus"><i class="fa fa-plus"></i> Transfer</button>
-                    <?php //endif; 
+                    <?php
+                    $nama_user = $this->session->userdata("nama_user");
+                    $nm = explode(" ", $nama_user);
+                    if ($nm[0] != "PKM") :
+                    ?>
+                        <button type="button" class="btn btn-primary my-1" onclick="transfer_kasus()" title="Transfer Kasus"><i class="fa fa-plus"></i> Transfer</button>
+                    <?php
+                    endif;
                     ?>
                 </div>
             </div>

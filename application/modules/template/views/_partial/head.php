@@ -63,7 +63,8 @@
 <link rel="stylesheet" href="<?php echo base_url('dist/css/adminlte.min.css') ?>">
 
 <script src="<?= site_url("../"); ?>dist/js/echarts.min.js"></script>
-
+<!-- jQuery -->
+<script src="<?php echo base_url('plugins/jquery/jquery.min.js'); ?>"></script>
 <style>
 	th,
 	td {

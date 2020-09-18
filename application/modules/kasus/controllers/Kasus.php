@@ -34,11 +34,26 @@ class Kasus extends MY_Controller
         $data['id_user'] = $this->session->userdata("id_user");
         $data['level'] = $this->session->userdata("level");
         $data['laporan'] = $model->get_data($id_laporan);
+        $data['kel'] = $model->get_kelurahan_by_id($data['laporan']->id_kelurahan);
+        $data['kec'] = $model->get_kecamatan_by_id($data['laporan']->id_kecamatan);
+        $data['status'] = $model->get_status_by_id($data['laporan']->status_baru);
+        $data['hubungan'] = $model->get_hubungan();
+        $data['jenis_kontak'] = $model->get_jenis_kontak();
         $data['step'] = $step;
 
         if ($this->session->userdata('id_user') != '') {
             if ($step == 'step-1') {
                 $this->template('step-1', $data);
+            } elseif ($step == 'step-2') {
+                $this->template('step-2', $data);
+            } elseif ($step == 'step-3') {
+                $this->template('step-3', $data);
+            } elseif ($step == 'step-4') {
+                $this->template('step-4', $data);
+            } elseif ($step == 'step-5') {
+                $this->template('step-5', $data);
+            } elseif ($step == 'step-6') {
+                $this->template('step-6', $data);
             }
         } else {
             redirect('../', 'refresh');
@@ -50,7 +65,7 @@ class Kasus extends MY_Controller
     {
         $model = $this->M_kasus;
         $data['kecamatan'] = $model->get_kecamatan();
-        $data['status'] = $model->get_status();
+        $data['status'] = $model->get_status("1");
         $data['created_by'] = $this->session->userdata('id_user');
 
         $this->load->view('modal-tambah', $data);
