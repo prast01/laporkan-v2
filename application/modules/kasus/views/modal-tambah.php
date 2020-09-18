@@ -347,7 +347,7 @@
                 },
                 cache: true
             },
-            placeholder: 'Masukkan Nama Pekerjaan',
+            placeholder: 'Masukkan Nama Tempat Kerja',
             minimumInputLength: 3,
             escapeMarkup: function(markup) {
                 return markup;

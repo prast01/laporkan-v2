@@ -33,7 +33,7 @@ class Kasus extends MY_Controller
     {
         $model = $this->M_kasus;
         $data['kecamatan'] = $model->get_kecamatan();
-        $data['status'] = $model->get_status();
+        $data['status'] = $model->get_status("1");
         $data['created_by'] = $this->session->userdata('id_user');
 
         $this->load->view('modal-tambah', $data);
