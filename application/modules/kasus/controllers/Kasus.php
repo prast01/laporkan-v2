@@ -34,6 +34,7 @@ class Kasus extends MY_Controller
         $data['id_user'] = $this->session->userdata("id_user");
         $data['level'] = $this->session->userdata("level");
         $data['laporan'] = $model->get_data($id_laporan);
+        $data['pe'] = $model->get_pe($id_laporan);
         $data['kel'] = $model->get_kelurahan_by_id($data['laporan']->id_kelurahan);
         $data['kec'] = $model->get_kecamatan_by_id($data['laporan']->id_kecamatan);
         $data['status'] = $model->get_status_by_id($data['laporan']->status_baru);
@@ -623,6 +624,21 @@ class Kasus extends MY_Controller
         }
 
         echo json_encode($hsl);
+    }
+
+    public function add_step($step, $id_laporan)
+    {
+        $model = $this->M_kasus;
+
+        $hasil = json_decode($model->save_step($step, $id_laporan), true);
+
+        if ($hasil['res']) {
+            $this->session->set_flashdata('success', $hasil['msg']);
+        } else {
+            $this->session->set_flashdata('gagal', $hasil['msg']);
+        }
+
+        redirect("../kasus/epid/" . $step . "/" . $id_laporan, 'refresh');
     }
 }
 
