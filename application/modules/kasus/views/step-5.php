@@ -8,6 +8,16 @@
                     <h4>Data Penyedikan Epidemiologi Covid-19</h4>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-6">
+                    <a href="<?= site_url('../kasus'); ?>" class="btn btn-warning">
+                        <i class="fa fa-arrow-left"></i> Kembali
+                    </a>
+                    <a href="<?= site_url('../kasus/cetak_pe/' . $laporan->id_laporan); ?>" target="_blank" class="btn btn-primary">
+                        <i class="fa fa-print"></i> Cetak PE
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
     <!-- /.content-header -->
@@ -60,25 +70,25 @@
                                     <div class="tab-content" id="vert-tabs-tabContent">
                                         <div class="tab-pane text-left fade show active" id="vert-tabs-home" role="tabpanel" aria-labelledby="vert-tabs-home-tab">
 
-                                            <form class="form-horizontal" method="POST" action="<?= site_url('../kasus/add_step/step-4/' . $laporan->id_laporan); ?>">
+                                            <form class="form-horizontal" method="POST" action="<?= site_url('../kasus/add_step/step-5/' . $laporan->id_laporan); ?>">
 
                                                 <div class="form-group row">
                                                     <label for="inputPassword3" class="col-sm-6 col-form-label">Dalam 14 hari sebelum sakit, apakah memiliki kontak dengan kasus suspek</label>
                                                     <div class="col-sm-2 pt-2">
                                                         <div class="custom-control custom-radio">
-                                                            <input class="custom-control-input" type="radio" id="kontak_suspek1" name="kontak_suspek" value="1">
+                                                            <input class="custom-control-input" type="radio" id="kontak_suspek1" name="kontak_suspek" value="1" <?= ($pe['kontak_suspek'] == '1') ? "checked" : ""; ?>>
                                                             <label for="kontak_suspek1" class="custom-control-label">Ya</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2 pt-2">
                                                         <div class="custom-control custom-radio">
-                                                            <input class="custom-control-input" type="radio" id="kontak_suspek2" name="kontak_suspek" value="2">
+                                                            <input class="custom-control-input" type="radio" id="kontak_suspek2" name="kontak_suspek" value="2" <?= ($pe['kontak_suspek'] == '2') ? "checked" : ""; ?>>
                                                             <label for="kontak_suspek2" class="custom-control-label">Tidak</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2 pt-2">
                                                         <div class="custom-control custom-radio">
-                                                            <input class="custom-control-input" type="radio" id="kontak_suspek3" name="kontak_suspek" value="3">
+                                                            <input class="custom-control-input" type="radio" id="kontak_suspek3" name="kontak_suspek" value="3" <?= ($pe['kontak_suspek'] == '3') ? "checked" : ""; ?>>
                                                             <label for="kontak_suspek3" class="custom-control-label">Tidak Tahu</label>
                                                         </div>
                                                     </div>
@@ -87,19 +97,19 @@
                                                     <label for="inputPassword3" class="col-sm-6 col-form-label">Dalam 14 hari sebelum sakit, apakah memiliki kontak dengan kasus konfirmasi atau probable</label>
                                                     <div class="col-sm-2 pt-2">
                                                         <div class="custom-control custom-radio">
-                                                            <input class="custom-control-input" type="radio" id="kontak_konfirmasi1" name="kontak_konfirmasi" value="1">
+                                                            <input class="custom-control-input" type="radio" id="kontak_konfirmasi1" name="kontak_konfirmasi" value="1" <?= ($pe['kontak_konfirmasi'] == '1') ? "checked" : ""; ?>>
                                                             <label for="kontak_konfirmasi1" class="custom-control-label">Ya</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2 pt-2">
                                                         <div class="custom-control custom-radio">
-                                                            <input class="custom-control-input" type="radio" id="kontak_konfirmasi2" name="kontak_konfirmasi" value="2">
+                                                            <input class="custom-control-input" type="radio" id="kontak_konfirmasi2" name="kontak_konfirmasi" value="2" <?= ($pe['kontak_konfirmasi'] == '2') ? "checked" : ""; ?>>
                                                             <label for="kontak_konfirmasi2" class="custom-control-label">Tidak</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2 pt-2">
                                                         <div class="custom-control custom-radio">
-                                                            <input class="custom-control-input" type="radio" id="kontak_konfirmasi3" name="kontak_konfirmasi" value="3">
+                                                            <input class="custom-control-input" type="radio" id="kontak_konfirmasi3" name="kontak_konfirmasi" value="3" <?= ($pe['kontak_konfirmasi'] == '3') ? "checked" : ""; ?>>
                                                             <label for="kontak_konfirmasi3" class="custom-control-label">Tidak Tahu</label>
                                                         </div>
                                                     </div>
@@ -108,19 +118,19 @@
                                                     <label for="inputPassword3" class="col-sm-6 col-form-label">Apakah pasien memiliki hewan peliharaan</label>
                                                     <div class="col-sm-2 pt-2">
                                                         <div class="custom-control custom-radio">
-                                                            <input class="custom-control-input" type="radio" id="hewan1" name="hewan" value="1">
+                                                            <input class="custom-control-input" type="radio" id="hewan1" name="hewan" value="1" <?= ($pe['hewan'] == '1') ? "checked" : ""; ?>>
                                                             <label for="hewan1" class="custom-control-label">Ya</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2 pt-2">
                                                         <div class="custom-control custom-radio">
-                                                            <input class="custom-control-input" type="radio" id="hewan2" name="hewan" value="2">
+                                                            <input class="custom-control-input" type="radio" id="hewan2" name="hewan" value="2" <?= ($pe['hewan'] == '2') ? "checked" : ""; ?>>
                                                             <label for="hewan2" class="custom-control-label">Tidak</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2 pt-2">
                                                         <div class="custom-control custom-radio">
-                                                            <input class="custom-control-input" type="radio" id="hewan3" name="hewan" value="3">
+                                                            <input class="custom-control-input" type="radio" id="hewan3" name="hewan" value="3" <?= ($pe['hewan'] == '3') ? "checked" : ""; ?>>
                                                             <label for="hewan3" class="custom-control-label">Tidak Tahu</label>
                                                         </div>
                                                     </div>

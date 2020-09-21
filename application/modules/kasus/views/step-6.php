@@ -8,6 +8,16 @@
                     <h4>Data Penyedikan Epidemiologi Covid-19</h4>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-6">
+                    <a href="<?= site_url('../kasus'); ?>" class="btn btn-warning">
+                        <i class="fa fa-arrow-left"></i> Kembali
+                    </a>
+                    <a href="<?= site_url('../kasus/cetak_pe/' . $laporan->id_laporan); ?>" target="_blank" class="btn btn-primary">
+                        <i class="fa fa-print"></i> Cetak PE
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
     <!-- /.content-header -->

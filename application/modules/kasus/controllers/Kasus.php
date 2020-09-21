@@ -61,6 +61,18 @@ class Kasus extends MY_Controller
         }
     }
 
+    public function cetak_pe($id_laporan)
+    {
+        $model = $this->M_kasus;
+        $data['laporan'] = $model->get_data($id_laporan);
+        $data['pe'] = $model->get_pe($id_laporan);
+        $data['kel'] = $model->get_kelurahan_by_id($data['laporan']->id_kelurahan);
+        $data['kec'] = $model->get_kecamatan_by_id($data['laporan']->id_kecamatan);
+        $data['status'] = $model->get_status_by_id($data['laporan']->status_baru);
+        $data['hubungan'] = $model->get_hubungan();
+        $data['jenis_kontak'] = $model->get_jenis_kontak();
+        $this->load->view('cetak_pe', $data);
+    }
     // modal
     public function modal_tambah()
     {

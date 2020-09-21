@@ -1001,6 +1001,14 @@ class Datatables extends MY_Controller
             //     $p = '';
             // }
 
+            $cek_pe = $this->M_datatable->cek_pe($field->id_laporan);
+            if ($cek_pe > 0) {
+                $pe = '<i class="fa fa-check text-success"></i>';
+            } else {
+                $pe = '';
+            }
+
+
             $no++;
             $row = array();
             // $row[] = $no;
@@ -1017,6 +1025,7 @@ class Datatables extends MY_Controller
             $row[] = $field->faskes_akhir;
             $row[] = $field->penyakit;
             $row[] = $field->kontak;
+            $row[] = $pe;
             $row[] = $html;
 
             $data[] = $row;

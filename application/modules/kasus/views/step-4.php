@@ -8,6 +8,16 @@
                     <h4>Data Penyedikan Epidemiologi Covid-19</h4>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-6">
+                    <a href="<?= site_url('../kasus'); ?>" class="btn btn-warning">
+                        <i class="fa fa-arrow-left"></i> Kembali
+                    </a>
+                    <a href="<?= site_url('../kasus/cetak_pe/' . $laporan->id_laporan); ?>" target="_blank" class="btn btn-primary">
+                        <i class="fa fa-print"></i> Cetak PE
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
     <!-- /.content-header -->
@@ -66,19 +76,19 @@
                                                     <label for="inputPassword3" class="col-sm-6 col-form-label">Dalam 14 hari sebelum sakit, apakah memiliki riwayat perjalanan dari luar negeri</label>
                                                     <div class="col-sm-2 pt-2">
                                                         <div class="custom-control custom-radio">
-                                                            <input class="custom-control-input" type="radio" id="luar_negeri1" name="luar_negeri" value="1">
+                                                            <input class="custom-control-input" type="radio" id="luar_negeri1" name="luar_negeri" value="1" <?= ($pe['luar_negeri'] == '1') ? "checked" : ""; ?>>
                                                             <label for="luar_negeri1" class="custom-control-label">Ya</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2 pt-2">
                                                         <div class="custom-control custom-radio">
-                                                            <input class="custom-control-input" type="radio" id="luar_negeri2" name="luar_negeri" value="2">
+                                                            <input class="custom-control-input" type="radio" id="luar_negeri2" name="luar_negeri" value="2" <?= ($pe['luar_negeri'] == '2') ? "checked" : ""; ?>>
                                                             <label for="luar_negeri2" class="custom-control-label">Tidak</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2 pt-2">
                                                         <div class="custom-control custom-radio">
-                                                            <input class="custom-control-input" type="radio" id="luar_negeri3" name="luar_negeri" value="3">
+                                                            <input class="custom-control-input" type="radio" id="luar_negeri3" name="luar_negeri" value="3" <?= ($pe['luar_negeri'] == '3') ? "checked" : ""; ?>>
                                                             <label for="luar_negeri3" class="custom-control-label">Tidak Tahu</label>
                                                         </div>
                                                     </div>
@@ -87,19 +97,19 @@
                                                     <label for="inputPassword3" class="col-sm-6 col-form-label">Dalam 14 hari sebelum sakit, apakah memiliki riwayat perjalanan dari area transmisi lokal</label>
                                                     <div class="col-sm-2 pt-2">
                                                         <div class="custom-control custom-radio">
-                                                            <input class="custom-control-input" type="radio" id="jalan_lokal1" name="jalan_lokal" value="1">
+                                                            <input class="custom-control-input" type="radio" id="jalan_lokal1" name="jalan_lokal" value="1" <?= ($pe['jalan_lokal'] == '1') ? "checked" : ""; ?>>
                                                             <label for="jalan_lokal1" class="custom-control-label">Ya</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2 pt-2">
                                                         <div class="custom-control custom-radio">
-                                                            <input class="custom-control-input" type="radio" id="jalan_lokal2" name="jalan_lokal" value="2">
+                                                            <input class="custom-control-input" type="radio" id="jalan_lokal2" name="jalan_lokal" value="2" <?= ($pe['jalan_lokal'] == '2') ? "checked" : ""; ?>>
                                                             <label for="jalan_lokal2" class="custom-control-label">Tidak</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2 pt-2">
                                                         <div class="custom-control custom-radio">
-                                                            <input class="custom-control-input" type="radio" id="jalan_lokal3" name="jalan_lokal" value="3">
+                                                            <input class="custom-control-input" type="radio" id="jalan_lokal3" name="jalan_lokal" value="3" <?= ($pe['jalan_lokal'] == '3') ? "checked" : ""; ?>>
                                                             <label for="jalan_lokal3" class="custom-control-label">Tidak Tahu</label>
                                                         </div>
                                                     </div>
@@ -108,19 +118,19 @@
                                                     <label for="inputPassword3" class="col-sm-6 col-form-label">Dalam 14 hari sebelum sakit, apakah memiliki riwayat tinggal di area transmisi lokal</label>
                                                     <div class="col-sm-2 pt-2">
                                                         <div class="custom-control custom-radio">
-                                                            <input class="custom-control-input" type="radio" id="tinggal_lokal1" name="tinggal_lokal" value="1">
+                                                            <input class="custom-control-input" type="radio" id="tinggal_lokal1" name="tinggal_lokal" value="1" <?= ($pe['tinggal_lokal'] == '1') ? "checked" : ""; ?>>
                                                             <label for="tinggal_lokal1" class="custom-control-label">Ya</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2 pt-2">
                                                         <div class="custom-control custom-radio">
-                                                            <input class="custom-control-input" type="radio" id="tinggal_lokal2" name="tinggal_lokal" value="2">
+                                                            <input class="custom-control-input" type="radio" id="tinggal_lokal2" name="tinggal_lokal" value="2" <?= ($pe['tinggal_lokal'] == '2') ? "checked" : ""; ?>>
                                                             <label for="tinggal_lokal2" class="custom-control-label">Tidak</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2 pt-2">
                                                         <div class="custom-control custom-radio">
-                                                            <input class="custom-control-input" type="radio" id="tinggal_lokal3" name="tinggal_lokal" value="3">
+                                                            <input class="custom-control-input" type="radio" id="tinggal_lokal3" name="tinggal_lokal" value="3" <?= ($pe['tinggal_lokal'] == '3') ? "checked" : ""; ?>>
                                                             <label for="tinggal_lokal3" class="custom-control-label">Tidak Tahu</label>
                                                         </div>
                                                     </div>

@@ -8,6 +8,16 @@
                     <h4>Data Penyedikan Epidemiologi Covid-19</h4>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-6">
+                    <a href="<?= site_url('../kasus'); ?>" class="btn btn-warning">
+                        <i class="fa fa-arrow-left"></i> Kembali
+                    </a>
+                    <a href="<?= site_url('../kasus/cetak_pe/' . $laporan->id_laporan); ?>" target="_blank" class="btn btn-primary">
+                        <i class="fa fa-print"></i> Cetak PE
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
     <!-- /.content-header -->
@@ -66,19 +76,19 @@
                                                     <label for="inputPassword3" class="col-sm-2 col-form-label">Pneumonia (Klinis atau Radiologi)</label>
                                                     <div class="col-sm-2 pt-2">
                                                         <div class="custom-control custom-radio">
-                                                            <input class="custom-control-input" type="radio" id="pneumonia1" name="pneumonia" value="1">
+                                                            <input class="custom-control-input" type="radio" id="pneumonia1" name="pneumonia" value="1" <?= ($pe['pneumonia'] == '1') ? "checked" : ""; ?>>
                                                             <label for="pneumonia1" class="custom-control-label">Ya</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2 pt-2">
                                                         <div class="custom-control custom-radio">
-                                                            <input class="custom-control-input" type="radio" id="pneumonia2" name="pneumonia" value="2">
+                                                            <input class="custom-control-input" type="radio" id="pneumonia2" name="pneumonia" value="2" <?= ($pe['pneumonia'] == '2') ? "checked" : ""; ?>>
                                                             <label for="pneumonia2" class="custom-control-label">Tidak</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2 pt-2">
                                                         <div class="custom-control custom-radio">
-                                                            <input class="custom-control-input" type="radio" id="pneumonia3" name="pneumonia" value="3">
+                                                            <input class="custom-control-input" type="radio" id="pneumonia3" name="pneumonia" value="3" <?= ($pe['pneumonia'] == '3') ? "checked" : ""; ?>>
                                                             <label for="pneumonia3" class="custom-control-label">Tidak Tahu</label>
                                                         </div>
                                                     </div>
@@ -87,19 +97,19 @@
                                                     <label for="inputPassword3" class="col-sm-2 col-form-label">ARDS (Acute Respiratory Distress Syndrome)</label>
                                                     <div class="col-sm-2 pt-2">
                                                         <div class="custom-control custom-radio">
-                                                            <input class="custom-control-input" type="radio" id="ards1" name="ards" value="1">
+                                                            <input class="custom-control-input" type="radio" id="ards1" name="ards" value="1" <?= ($pe['ards'] == '1') ? "checked" : ""; ?>>
                                                             <label for="ards1" class="custom-control-label">Ya</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2 pt-2">
                                                         <div class="custom-control custom-radio">
-                                                            <input class="custom-control-input" type="radio" id="ards2" name="ards" value="2">
+                                                            <input class="custom-control-input" type="radio" id="ards2" name="ards" value="2" <?= ($pe['ards'] == '2') ? "checked" : ""; ?>>
                                                             <label for="ards2" class="custom-control-label">Tidak</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2 pt-2">
                                                         <div class="custom-control custom-radio">
-                                                            <input class="custom-control-input" type="radio" id="ards3" name="ards" value="3">
+                                                            <input class="custom-control-input" type="radio" id="ards3" name="ards" value="3" <?= ($pe['ards'] == '3') ? "checked" : ""; ?>>
                                                             <label for="ards3" class="custom-control-label">Tidak Tahu</label>
                                                         </div>
                                                     </div>
@@ -107,7 +117,7 @@
                                                 <div class="form-group row">
                                                     <label for="inputPassword3" class="col-sm-2 col-form-label">Diagnosa Lainnya (jika ada)</label>
                                                     <div class="col-sm-5">
-                                                        <input type="text" name="diagnosa_lain" class="form-control">
+                                                        <input type="text" name="diagnosa_lain" class="form-control" value="<?= $pe['diagnosa_lain']; ?>">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
