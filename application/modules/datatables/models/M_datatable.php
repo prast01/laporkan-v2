@@ -1106,6 +1106,15 @@ class M_datatable extends CI_Model
 
         return $row;
     }
+
+
+    // cek PE
+    public function cek_pe($id)
+    {
+        $data = $this->db->get_where("tb_pe", ["id_laporan" => $id])->num_rows();
+
+        return $data;
+    }
 }
 
 /* End of file M_datatable.php */

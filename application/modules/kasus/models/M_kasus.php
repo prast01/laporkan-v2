@@ -232,6 +232,37 @@ class M_kasus extends CI_Model
         $this->db->update("tb_laporan_baru", $data, $where);
     }
 
+    public function get_pe($id)
+    {
+        $cek = $this->db->get_where("tb_pe", ["id_laporan" => $id]);
+
+        if ($cek->num_rows() > 0) {
+            $data = $cek->row_array();
+        } else {
+            $data = array(
+                "tgl_gejala" => "",
+                "demam" => "",
+                "riwayat_demam" => "",
+                "batuk" => "",
+                "pilek" => "",
+                "sakit_tenggorokan" => "",
+                "sesak_napas" => "",
+                "penyakit_lain" => "",
+                "pneumonia" => "",
+                "ards" => "",
+                "diagnosa_lain" => "",
+                "luar_negeri" => "",
+                "jalan_lokal" => "",
+                "tinggal_lokal" => "",
+                "kontak_suspek" => "",
+                "kontak_konfirmasi" => "",
+                "hewan" => "",
+            );
+        }
+
+        return $data;
+    }
+
     // CRUD
     public function save()
     {
@@ -281,7 +312,7 @@ class M_kasus extends CI_Model
         } else {
             $cek_nik = $this->_get_nik($post['nik']);
             if ($cek_nik['res']) {
-                $msg = array('res' => 0, 'msg' => $cek_nik['msg'] . " Pada kasus : " . $cek_nik['data'] . "di Faskes : " . $cek_nik['faskes']);
+                $msg = array('res' => 0, 'msg' => $cek_nik['msg'] . " Pada kasus : " . $cek_nik['data'] . " oleh : " . $cek_nik['faskes']);
                 return json_encode($msg);
             }
         }
@@ -384,7 +415,7 @@ class M_kasus extends CI_Model
             if ($post['nik'] != $post['nik_lama']) {
                 $cek_nik = $this->_get_nik($post['nik']);
                 if ($cek_nik['res']) {
-                    $msg = array('res' => 0, 'msg' => $cek_nik['msg'] . " Pada kasus : " . $cek_nik['data']);
+                    $msg = array('res' => 0, 'msg' => $cek_nik['msg'] . " Pada kasus : " . $cek_nik['data'] . " oleh : " . $cek_nik['faskes']);
                     return json_encode($msg);
                 }
             }
@@ -732,6 +763,85 @@ class M_kasus extends CI_Model
         $this->save_kontak($datax);
     }
 
+    public function save_step($step, $id)
+    {
+        $this->_cek_pe($id);
+
+        $post = $this->input->post();
+        $tgl_gejala = (isset($post['tgl_gejala'])) ? $post['tgl_gejala'] : null;
+        $demam = (isset($post['demam'])) ? $post['demam'] : null;
+        $riwayat_demam = (isset($post['riwayat_demam'])) ? $post['riwayat_demam'] : null;
+        $batuk = (isset($post['batuk'])) ? $post['batuk'] : null;
+        $pilek = (isset($post['pilek'])) ? $post['pilek'] : null;
+        $sakit_tenggorokan = (isset($post['sakit_tenggorokan'])) ? $post['sakit_tenggorokan'] : null;
+        $sesak_napas = (isset($post['sesak_napas'])) ? $post['sesak_napas'] : null;
+        $penyakit_lain = (isset($post['penyakit_lain'])) ? $post['penyakit_lain'] : null;
+        $pneumonia = (isset($post['pneumonia'])) ? $post['pneumonia'] : null;
+        $ards = (isset($post['ards'])) ? $post['ards'] : null;
+        $diagnosa_lain = (isset($post['diagnosa_lain'])) ? $post['diagnosa_lain'] : null;
+        $luar_negeri = (isset($post['luar_negeri'])) ? $post['luar_negeri'] : null;
+        $jalan_lokal = (isset($post['jalan_lokal'])) ? $post['jalan_lokal'] : null;
+        $tinggal_lokal = (isset($post['tinggal_lokal'])) ? $post['tinggal_lokal'] : null;
+        $kontak_suspek = (isset($post['kontak_suspek'])) ? $post['kontak_suspek'] : null;
+        $kontak_konfirmasi = (isset($post['kontak_konfirmasi'])) ? $post['kontak_konfirmasi'] : null;
+        $hewan = (isset($post['hewan'])) ? $post['hewan'] : null;
+
+        $data = array(
+            "tgl_gejala" => $tgl_gejala,
+            "demam" => $demam,
+            "riwayat_demam" => $riwayat_demam,
+            "batuk" => $batuk,
+            "pilek" => $pilek,
+            "sakit_tenggorokan" => $sakit_tenggorokan,
+            "sesak_napas" => $sesak_napas,
+        );
+        $data2 = array(
+            "penyakit_lain" => $penyakit_lain,
+        );
+        $data3 = array(
+            "pneumonia" => $pneumonia,
+            "ards" => $ards,
+            "diagnosa_lain" => $diagnosa_lain,
+        );
+        $data4 = array(
+            "luar_negeri" => $luar_negeri,
+            "jalan_lokal" => $jalan_lokal,
+            "tinggal_lokal" => $tinggal_lokal,
+        );
+        $data5 = array(
+            "kontak_suspek" => $kontak_suspek,
+            "kontak_konfirmasi" => $kontak_konfirmasi,
+            "hewan" => $hewan,
+        );
+
+        if ($this->session->userdata("id_user") != "") {
+            $where = array(
+                "id_laporan" => $id
+            );
+            if ($step == 'step-1') {
+                $cek = $this->db->update('tb_pe', $data, $where);
+            } elseif ($step == 'step-2') {
+                $cek = $this->db->update('tb_pe', $data2, $where);
+            } elseif ($step == 'step-3') {
+                $cek = $this->db->update('tb_pe', $data3, $where);
+            } elseif ($step == 'step-4') {
+                $cek = $this->db->update('tb_pe', $data4, $where);
+            } elseif ($step == 'step-5') {
+                $cek = $this->db->update('tb_pe', $data5, $where);
+            }
+        } else {
+            $cek = 0;
+        }
+
+        if ($cek) {
+            $msg = array('res' => 1, 'msg' => 'Berhasil Dientri');
+        } else {
+            $msg = array('res' => 0, 'msg' => 'Gagal Dientri');
+        }
+
+        return json_encode($msg);
+    }
+
     // private fungsi
     private function _get_nik($nik)
     {
@@ -785,6 +895,18 @@ class M_kasus extends CI_Model
         $data = $this->db->query("SELECT MAX(kasus) as kasus FROM tb_laporan_baru")->row();
 
         return $data->kasus + 1;
+    }
+
+    private function _cek_pe($id)
+    {
+        $cek = $this->db->get_where("tb_pe", ["id_laporan" => $id])->num_rows();
+        if ($cek == 0) {
+            $data = array(
+                "id_laporan" => $id
+            );
+
+            $this->db->insert("tb_pe", $data);
+        }
     }
 }
 
