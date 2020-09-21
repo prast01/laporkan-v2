@@ -7,6 +7,8 @@ function cek($var)
         $has = "Tidak";
     } elseif ($var == "3") {
         $has = "Tidak Tahu";
+    } else {
+        $has = "";
     }
 
     return $has;
@@ -88,6 +90,10 @@ function cek($var)
         th,
         td {
             font-size: 14px;
+        }
+
+        .text-uppercase {
+            font-weight: 700;
         }
     </style>
 </head>
