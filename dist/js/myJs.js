@@ -1,5 +1,16 @@
 $(function () {
-  var url = window.location.origin + "/laporkan-v2/datatables/";
+  // var url = window.location.origin + "/laporkan-v2/datatables/";
+
+  var base_url = $(location).attr("pathname");
+  base_url.indexOf(1);
+  base_url.toLowerCase();
+  base_url =
+    window.location.origin === "http://lapor-covid19.mi-kes.net"
+      ? ""
+      : base_url.split("/")[1] + "/";
+  var url = window.location.origin + "/" + base_url + "datatables/";
+
+  console.log(url);
 
   $(".datatable-odp").DataTable({
     processing: true,
@@ -554,10 +565,19 @@ function modalSwabEdit(id, id_lap) {
   });
 }
 
+var base_url = $(location).attr("pathname");
+base_url.indexOf(1);
+base_url.toLowerCase();
+base_url =
+  window.location.origin === "http://lapor-covid19.mi-kes.net"
+    ? ""
+    : base_url.split("/")[1] + "/";
+var url = window.location.origin + "/" + base_url;
+
 function tambah_kasus() {
   $("#modalku").modal();
   $(".modal-title").html("Tambah Kasus");
-  var origin = window.location.origin + "/laporkan-v2/kasus/modal_tambah";
+  var origin = url + "kasus/modal_tambah";
   $.ajax({
     type: "POST",
     url: origin,
@@ -570,7 +590,7 @@ function tambah_kasus() {
 function kasus_lama() {
   $("#modalku").modal();
   $(".modal-title").html("Tambah Kasus Lama");
-  var origin = window.location.origin + "/laporkan-v2/kasus/modal_tambah_lama";
+  var origin = url + "kasus/modal_tambah_lama";
   $.ajax({
     type: "POST",
     url: origin,
@@ -583,7 +603,7 @@ function kasus_lama() {
 function transfer_kasus() {
   $("#modalku").modal();
   $(".modal-title").html("Transfer Kasus");
-  var origin = window.location.origin + "/laporkan-v2/kasus/modal_transfer";
+  var origin = url + "kasus/modal_transfer";
   $.ajax({
     type: "POST",
     url: origin,
@@ -596,7 +616,7 @@ function transfer_kasus() {
 function ubah_kasus(id) {
   $("#modalku").modal();
   $(".modal-title").html("Ubah Kasus");
-  var origin = window.location.origin + "/laporkan-v2/kasus/modal_ubah/" + id;
+  var origin = url + "kasus/modal_ubah/" + id;
   $.ajax({
     type: "POST",
     url: origin,
@@ -609,7 +629,7 @@ function ubah_kasus(id) {
 function detail_kasus(id) {
   $("#modalku").modal();
   $(".modal-title").html("Detail Kasus");
-  var origin = window.location.origin + "/laporkan-v2/kasus/modal_detail/" + id;
+  var origin = url + "kasus/modal_detail/" + id;
   $.ajax({
     type: "POST",
     url: origin,
@@ -622,8 +642,7 @@ function detail_kasus(id) {
 function riwayat_kasus(id) {
   $("#modalku").modal();
   $(".modal-title").html("Riwayat Kasus");
-  var origin =
-    window.location.origin + "/laporkan-v2/kasus/modal_riwayat/" + id;
+  var origin = url + "kasus/modal_riwayat/" + id;
   $.ajax({
     type: "POST",
     url: origin,
@@ -634,8 +653,7 @@ function riwayat_kasus(id) {
 }
 
 function selesai_isolasi(id, kode) {
-  var url =
-    window.location.origin + "/laporkan-v2/kasus/selesai_isolasi/" + kode + "/";
+  var url = url + "kasus/selesai_isolasi/" + kode + "/";
   var cek = confirm("Yakin Pasien selesai isolasi?");
   if (cek) {
     window.location = url + id;
@@ -643,8 +661,7 @@ function selesai_isolasi(id, kode) {
 }
 
 function pasien_die(id, kode) {
-  var url =
-    window.location.origin + "/laporkan-v2/kasus/meninggal/" + kode + "/";
+  var url = url + "kasus/meninggal/" + kode + "/";
   var cek = confirm("Yakin Pasien Meninggal?");
   if (cek) {
     window.location = url + id;
@@ -652,14 +669,15 @@ function pasien_die(id, kode) {
 }
 
 function kasus_positif(id, kode) {
-  var url = window.location.origin + "/laporkan-v2/kasus/positif/";
+  var url = url + "kasus/positif/";
   var cek = confirm("Yakin Pasien Terkonfirmasi Positif?");
   if (cek) {
     window.location = url + id;
   }
 }
 
-var url_grafik = window.location.origin + "/laporkan-v2/servicesV2/";
+var url_grafik = url + "servicesV2/";
+
 get_chart_harian();
 // console.log(url_grafik);
 
@@ -748,8 +766,7 @@ function get_chart_harian() {
 function tracing(id) {
   $("#modalku").modal();
   $(".modal-title").html("Tracing Kasus");
-  var origin =
-    window.location.origin + "/laporkan-v2/kasus/modal_tracing/" + id;
+  var origin = url + "kasus/modal_tracing/" + id;
   $.ajax({
     type: "POST",
     url: origin,
@@ -760,7 +777,7 @@ function tracing(id) {
 }
 
 function epid(id) {
-  var url = window.location.origin + "/laporkan-v2/kasus/epid/";
+  var url = url + "kasus/epid/";
   var cek = confirm("Entri data Penyelidikan Epidemiologi Pasien?");
   if (cek) {
     window.location = url + "step-1/" + id;
