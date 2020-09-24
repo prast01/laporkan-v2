@@ -159,6 +159,16 @@ class M_services extends CI_Model
         return $data;
     }
 
+    // get data kelurahan ALL
+    public function get_kelurahan_all()
+    {
+        $this->db->where("kode_kec !=", 0);
+        $this->db->order_by("konfirmasi_total", "DESC");
+        $data = $this->db->get("tb_kelurahan_baru")->result();
+
+        return $data;
+    }
+
     // get first date
     public function get_first_date()
     {
@@ -303,6 +313,19 @@ class M_services extends CI_Model
         $data = $this->db->get("v_10besar")->result();
 
         return $data;
+    }
+
+    public function get_update_rs()
+    {
+        $this->db->from("tb_laporan_baru");
+        $status = array("1", "7", "13");
+        $this->db->where("id_kecamatan !=", '17');
+        $this->db->where_in("status_baru", $status);
+        $this->db->order_by("updated_at", "DESC");
+
+        $data = $this->db->get()->row();
+
+        return $data->updated_at;
     }
 }
 

@@ -653,26 +653,47 @@ function riwayat_kasus(id) {
 }
 
 function selesai_isolasi(id, kode) {
-  var url = url + "kasus/selesai_isolasi/" + kode + "/";
+  var origin = url + "kasus/selesai_isolasi/" + kode + "/";
   var cek = confirm("Yakin Pasien selesai isolasi?");
   if (cek) {
-    window.location = url + id;
+    window.location = origin + id;
   }
 }
 
 function pasien_die(id, kode) {
-  var url = url + "kasus/meninggal/" + kode + "/";
+  var origin = url + "kasus/meninggal/" + kode + "/";
   var cek = confirm("Yakin Pasien Meninggal?");
   if (cek) {
-    window.location = url + id;
+    window.location = origin + id;
   }
 }
 
 function kasus_positif(id, kode) {
-  var url = url + "kasus/positif/";
+  var origin = url + "kasus/positif/";
   var cek = confirm("Yakin Pasien Terkonfirmasi Positif?");
   if (cek) {
-    window.location = url + id;
+    window.location = origin + id;
+  }
+}
+
+function tracing(id) {
+  $("#modalku").modal();
+  $(".modal-title").html("Tracing Kasus");
+  var origin = url + "kasus/modal_tracing/" + id;
+  $.ajax({
+    type: "POST",
+    url: origin,
+    success: function (data) {
+      $(".modal-body").html(data);
+    },
+  });
+}
+
+function epid(id) {
+  var origin = url + "kasus/epid/";
+  var cek = confirm("Entri data Penyelidikan Epidemiologi Pasien?");
+  if (cek) {
+    window.location = origin + "step-1/" + id;
   }
 }
 
@@ -761,25 +782,4 @@ function get_chart_harian() {
       chart_harian_covid_sum.resize();
     }, 200);
   });
-}
-
-function tracing(id) {
-  $("#modalku").modal();
-  $(".modal-title").html("Tracing Kasus");
-  var origin = url + "kasus/modal_tracing/" + id;
-  $.ajax({
-    type: "POST",
-    url: origin,
-    success: function (data) {
-      $(".modal-body").html(data);
-    },
-  });
-}
-
-function epid(id) {
-  var url = url + "kasus/epid/";
-  var cek = confirm("Entri data Penyelidikan Epidemiologi Pasien?");
-  if (cek) {
-    window.location = url + "step-1/" + id;
-  }
 }

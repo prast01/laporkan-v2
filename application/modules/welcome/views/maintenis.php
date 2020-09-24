@@ -43,7 +43,7 @@
 
 			<div class="error-content mt-5">
 				<p><i class="fas fa-exclamation-triangle text-danger"></i> Error 502</p>
-				<h4>Oops! Aplikasi Sedang Maintenis</h4>
+				<h4>Oops! Aplikasi Sedang Maintenance</h4>
 
 				<p>Dinas Kesehatan Kabupaten Jepara</p>
 			</div>

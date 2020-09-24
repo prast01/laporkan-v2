@@ -38,6 +38,14 @@ class ServicesV2 extends MY_Controller
         echo json_encode($data);
     }
 
+    public function get_data_kelurahan_all()
+    {
+        $model = $this->M_services;
+        $data = $model->get_kelurahan_all();
+
+        echo json_encode($data);
+    }
+
     public function get_data_harian()
     {
         $model = $this->M_services;
@@ -126,25 +134,22 @@ class ServicesV2 extends MY_Controller
 
         $rs = $model->get_rs();
         $no = 0;
+        $tgl = $model->get_update_rs();
+        $data['tgl_update'] = $tgl;
         foreach ($rs as $key) {
             $telp = $model->getFaskesTelp($key->id_faskes);
             $suspek = $model->get_pasien_by($key->nama_faskes, "13");
             $probable = $model->get_pasien_by($key->nama_faskes, "7");
             $konfirmasi = $model->get_pasien_by($key->nama_faskes, "1");
 
-            $data[$no]['id_faskes'] = $key->id_faskes;
-            $data[$no]['nama_faskes'] = $key->nama_faskes;
-            $data[$no]['gmaps'] = $key->gmaps;
-            $data[$no]['alamat'] = $key->alamat;
-            $data[$no]['telp'] = $telp;
-            // $data[$no]['kasus'] = array(
-            //     array('nama' => 'Suspek Dirawat', 'kasus' => $suspek),
-            //     array('nama' => 'Probable Dirawat', 'kasus' => $probable),
-            //     array('nama' => 'Konfirmasi Dirawat', 'kasus' => $konfirmasi)
-            // );
-            $data[$no]['suspek'] = $suspek;
-            $data[$no]['probable'] = $probable;
-            $data[$no]['konfirmasi'] = $konfirmasi;
+            $data['data'][$no]['id_faskes'] = $key->id_faskes;
+            $data['data'][$no]['nama_faskes'] = $key->nama_faskes;
+            $data['data'][$no]['gmaps'] = $key->gmaps;
+            $data['data'][$no]['alamat'] = $key->alamat;
+            $data['data'][$no]['telp'] = $telp;
+            $data['data'][$no]['suspek'] = $suspek;
+            $data['data'][$no]['probable'] = $probable;
+            $data['data'][$no]['konfirmasi'] = $konfirmasi;
             $no++;
         }
 
@@ -152,11 +157,11 @@ class ServicesV2 extends MY_Controller
         $probable2 = $model->get_pasien_luar("11");
         $konfirmasi2 = $model->get_pasien_luar("5");
 
-        $data[$no]['id_faskes'] = 99;
-        $data[$no]['nama_faskes'] = "RS LUAR DAERAH";
-        $data[$no]['gmaps'] = "x";
-        $data[$no]['alamat'] = "x";
-        $data[$no]['telp'] = array(
+        $data['data'][$no]['id_faskes'] = 99;
+        $data['data'][$no]['nama_faskes'] = "RS LUAR DAERAH";
+        $data['data'][$no]['gmaps'] = "x";
+        $data['data'][$no]['alamat'] = "x";
+        $data['data'][$no]['telp'] = array(
             array(
                 "id_faskel_telp" => 99,
                 "id_faskes" => 99,
@@ -164,14 +169,9 @@ class ServicesV2 extends MY_Controller
                 "l_telp" => "x"
             )
         );
-        // $data[$no]['kasus'] = array(
-        //     array('nama' => 'Suspek Dirawat', 'kasus' => $suspek2),
-        //     array('nama' => 'Probable Dirawat', 'kasus' => $probable2),
-        //     array('nama' => 'Konfirmasi Dirawat', 'kasus' => $konfirmasi2)
-        // );
-        $data[$no]['suspek'] = $suspek2;
-        $data[$no]['probable'] = $probable2;
-        $data[$no]['konfirmasi'] = $konfirmasi2;
+        $data['data'][$no]['suspek'] = $suspek2;
+        $data['data'][$no]['probable'] = $probable2;
+        $data['data'][$no]['konfirmasi'] = $konfirmasi2;
 
         echo json_encode($data);
     }
