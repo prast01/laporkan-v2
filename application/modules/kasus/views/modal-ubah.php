@@ -15,6 +15,7 @@
                                     <label for="inputEmail3" class="col-sm-2 col-form-label">Tanggal Pemeriksaan</label>
                                     <div class="col-sm-4">
                                         <input type="date" class="form-control" name="tgl_periksa" placeholder="Tanggal Pemeriksaan" required value="<?= $laporan->tgl_periksa; ?>">
+                                        <input type="hidden" name="status" value="<?= $laporan->status_baru; ?>">
                                     </div>
                                     <div style="display: <?= ($laporan->kasus != "" || ($laporan->status_baru >= "1" && $laporan->status_baru <= "6")) ? "block" : "none"; ?>;" class="col-6">
                                         <div class="row">

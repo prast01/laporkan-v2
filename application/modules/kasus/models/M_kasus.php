@@ -317,7 +317,7 @@ class M_kasus extends CI_Model
             }
         }
 
-        if ($post['status'] == '1') {
+        if ($post['status'] == '1' || $post['status'] == '2' || $post['status'] == '5' || $post['status'] == '6') {
             if ($post['kasus'] == '') {
                 $msg = array('res' => 0, 'msg' => 'Nomor Kasus Harus Diisi dengan BENAR karena statusnya TERKONFIRMASI.');
                 return json_encode($msg);
@@ -421,6 +421,17 @@ class M_kasus extends CI_Model
             }
         }
 
+        if ($post['status'] == '1' || $post['status'] == '2' || $post['status'] == '5' || $post['status'] == '6') {
+            if ($post['kasus'] == '') {
+                $msg = array('res' => 0, 'msg' => 'Nomor Kasus Harus Diisi dengan BENAR karena statusnya TERKONFIRMASI.');
+                return json_encode($msg);
+            } else {
+                $kasus = $post['kasus'];
+            }
+        } else {
+            $kasus = NULL;
+        }
+
         if ($post['job'] != "") {
             $pd = $this->get_job_by($post['job']);
             $pk = $pd->pekerjaan;
@@ -440,7 +451,7 @@ class M_kasus extends CI_Model
             'umur' => $post['umur'],
             'no_telp' => $post['no_telp'],
             'id_kelurahan' => $post['id_kelurahan'],
-            'kasus' => $post['kasus'],
+            'kasus' => $kasus,
             'nakes' => $post['nakes'],
             "id_pekerjaan" => $post['job'],
             "pekerjaan" => $pk,
@@ -501,7 +512,7 @@ class M_kasus extends CI_Model
             }
         }
 
-        if ($post['status'] == '1' || $post['status'] == '2') {
+        if ($post['status'] == '1' || $post['status'] == '2' || $post['status'] == '5' || $post['status'] == '6') {
             $kasus = $this->_get_last_case();
         } else {
             $kasus = null;
@@ -592,23 +603,8 @@ class M_kasus extends CI_Model
     public function add_transfer()
     {
         $post = $this->input->post();
-
-        // if ($post['status'] == '1' || $post['status'] == '7' || $post['status'] == '13') {
-        //     if ($post['faskes_akhir'] == '') {
-        //         $msg = array('res' => 0, 'msg' => 'Rumah Sakit Harus Diisi dengan BENAR');
-        //         return json_encode($msg);
-        //     } else {
-        //         $faskes = $post['faskes_akhir'];
-        //     }
-        // } else {
-        //     if ($post['status'] == '') {
-        //         $msg = array('res' => 0, 'msg' => 'Status Harus Diisi dengan BENAR');
-        //         return json_encode($msg);
-        //     } else {
         $nama_user = $this->session->userdata("nama_user");
         $faskes = $nama_user;
-        //     }
-        // }
 
         if ($post['status'] == '1' || $post['status'] == '2' || $post['status'] == '5' || $post['status'] == '6') {
             $kasus = $this->_get_last_case();
