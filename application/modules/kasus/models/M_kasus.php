@@ -421,7 +421,7 @@ class M_kasus extends CI_Model
             }
         }
 
-        if ($post['status'] == '1' || $post['status'] == '2' || $post['status'] == '5' || $post['status'] == '6') {
+        if (isset($post['status']) and $post['status'] <= 6) {
             if ($post['kasus'] == '') {
                 $msg = array('res' => 0, 'msg' => 'Nomor Kasus Harus Diisi dengan BENAR karena statusnya TERKONFIRMASI.');
                 return json_encode($msg);

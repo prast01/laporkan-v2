@@ -23,7 +23,7 @@ class M_jateng extends CI_Model
         $this->db->where_in("status_baru", $status);
 
         if ($id == "1") {
-            $this->db->where("data_id !=", null);
+            $this->db->where("data_id", null);
             $this->db->order_by("kasus", "DESC");
         } else {
             $this->db->order_by("tgl_periksa", "DESC");

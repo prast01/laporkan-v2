@@ -15,7 +15,8 @@
     <table border="1" style="border-collapse: collapse;" width="100%">
         <thead>
             <tr>
-                <th>No Kasus</th>
+                <th>No</th>
+                <th>NIK</th>
                 <th>Nama</th>
                 <th>Kecamatan</th>
                 <th>Kelurahan</th>
@@ -24,13 +25,14 @@
                 <th>Status</th>
                 <th>Cek NIK</th>
                 <th>Aksi</th>
-                <th>Data ID</th>
             </tr>
         </thead>
         <tbody>
+            <?php $no = 1; ?>
             <?php foreach ($data as $key) : ?>
                 <tr>
-                    <td><?= $key->kasus; ?></td>
+                    <td><?= $no++; ?></td>
+                    <td><?= $key->nik; ?></td>
                     <td><?= $key->nama; ?></td>
                     <td><?= $key->nama_kecamatan; ?></td>
                     <td><?= $key->nama_kelurahan; ?></td>
@@ -41,7 +43,6 @@
                         <a href="<?= site_url("../jateng/cek_nik/" . $key->nik . "/" . $token); ?>" target="_blank" rel="noopener noreferrer">CEK</a>
                     </td>
                     <td></td>
-                    <td><?= $key->data_id; ?></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
