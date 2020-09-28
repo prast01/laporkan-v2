@@ -89,6 +89,24 @@
                                         </select>
                                     </div>
                                 </div>
+
+                                <div class="form-group row">
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label">RT</label required>
+                                    <div class="col-sm-4">
+                                        <input type="number" name="rt" class="form-control" placeholder="RT">
+                                    </div>
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label">RW</label required>
+                                    <div class="col-sm-4">
+                                        <input type="number" name="rw" class="form-control" placeholder="RW">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Alamat Domisili</label required>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" name="alamat_domisili" required></textarea>
+                                    </div>
+                                </div>
                                 <div class="form-group row">
                                     <div id="f_akhir" style="display: none;" class="col-6">
                                         <div class="row">
@@ -109,12 +127,6 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
-                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Alamat Domisili</label required>
-                                    <div class="col-sm-10">
-                                        <textarea class="form-control" name="alamat_domisili" required></textarea>
-                                    </div>
-                                </div>
                                 <div class="form-group row">
                                     <label for="inputEmail3" class="col-sm-2 col-form-label">Kondisi Umum</label>
                                     <div class="col-sm-10">

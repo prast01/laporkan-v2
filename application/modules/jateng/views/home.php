@@ -12,7 +12,12 @@
     <a href="<?= site_url("../jateng/cek_nik_all_k/" . $token); ?>" target="_blank">
         <button style="cursor: pointer;">CEK NIK DAN UPDATE ID JATENG KE LOKAL</button>
     </a>
-    <table border="1" style="border-collapse: collapse;" width="100%">
+    &nbsp;&nbsp;
+    <a href="<?= site_url("../jateng/get_data_all/" . $token); ?>" target="_blank">
+        <button style="cursor: pointer;">GET DATA JATENG ALL</button>
+    </a>
+    <br>
+    <table border="1" style="border-collapse: collapse; margin-top: 10px" width="100%">
         <thead>
             <tr>
                 <th>No</th>
@@ -24,7 +29,7 @@
                 <th>Faskes Akhir</th>
                 <th>Status</th>
                 <th>Cek NIK</th>
-                <th>Aksi</th>
+                <th>CEK ID Manual</th>
             </tr>
         </thead>
         <tbody>
@@ -42,7 +47,9 @@
                     <td>
                         <a href="<?= site_url("../jateng/cek_nik/" . $key->nik . "/" . $token); ?>" target="_blank" rel="noopener noreferrer">CEK</a>
                     </td>
-                    <td></td>
+                    <td>
+                        <a href="<?= site_url("../jateng/cek_id/" . $key->nik . "/" . $token); ?>" target="_blank" rel="noopener noreferrer">CEK ID</a>
+                    </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

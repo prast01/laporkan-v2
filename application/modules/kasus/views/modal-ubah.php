@@ -93,6 +93,18 @@
                                         </select>
                                     </div>
                                 </div>
+
+                                <div class="form-group row">
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label">RT</label required>
+                                    <div class="col-sm-4">
+                                        <input type="number" name="rt" class="form-control" placeholder="RT" value="<?= $laporan->rt; ?>">
+                                    </div>
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label">RW</label required>
+                                    <div class="col-sm-4">
+                                        <input type="number" name="rw" class="form-control" placeholder="RW" value="<?= $laporan->rw; ?>">
+                                    </div>
+                                </div>
+
                                 <div class="form-group row">
                                     <label for="inputEmail3" class="col-sm-2 col-form-label">Alamat Domisili</label required>
                                     <div class="col-sm-10">

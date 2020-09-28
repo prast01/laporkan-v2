@@ -95,7 +95,7 @@ class M_jateng extends CI_Model
     public function get_nik($id)
     {
         if ($id == "1") {
-            $data = $this->db->query("SELECT nik FROM view_data_laporan WHERE cek_nik='0' AND status_baru IN ('1', '2', '3', '4', '5', '6') AND id_kecamatan != '17' LIMIT 1");
+            $data = $this->db->query("SELECT nik FROM view_data_laporan WHERE cek_nik='0' AND status_baru IN ('1', '2', '3', '4', '5', '6') AND id_kecamatan != '17' AND data_id is null LIMIT 1");
         } elseif ($id == "2") {
             $data = $this->db->query("SELECT nik FROM view_data_laporan WHERE cek_nik='0' AND status_baru IN ('7', '8', '9', '10', '11', '12') AND id_kecamatan != '17' LIMIT 1");
         } elseif ($id == "3") {
@@ -107,11 +107,50 @@ class M_jateng extends CI_Model
         return $data;
     }
 
+    // CEK ID
+    public function cek_id($id)
+    {
+        $data = $this->db->get_where("view_data_laporan", ["data_id" => $id]);
+
+        return $data;
+    }
+
+    // CEK NIK
+    public function cek_nik($nik)
+    {
+        $data = $this->db->get_where("view_data_laporan", ["nik" => $nik]);
+
+        return $data;
+    }
+
+    // GET FASKES
+    public function get_faskes($id)
+    {
+        $data = $this->db->get_where("tb_hospital", ["id_prov_hospital" => $id])->row();
+
+        return $data->nama_hospital;
+    }
+
+    // GET STATUS
+    public function get_status($id)
+    {
+        $data = $this->db->get_where("tb_status_2", ["id_status_jateng" => $id])->row();
+
+        return $data->nama_status;
+    }
+
     // CRUD
     public function update_id($nik, $id_jateng)
     {
         $where = array("nik" => $nik);
         $data = array("data_id" => $id_jateng);
+
+        $this->db->update("tb_laporan_baru", $data, $where);
+    }
+    public function update_id_manual($nik, $nik2, $id_jateng)
+    {
+        $where = array("nik" => $nik);
+        $data = array("data_id" => $id_jateng, "nik" => $nik2);
 
         $this->db->update("tb_laporan_baru", $data, $where);
     }
