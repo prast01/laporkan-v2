@@ -44,14 +44,14 @@
 							<ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
 								<!-- Level two dropdown-->
 								<li class="dropdown-submenu dropdown-hover">
-									<a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">ODP</a>
+									<a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Kasus Suspek</a>
 									<ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
 
 										<li class="dropdown-submenu dropdown-hover">
 											<a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Kecamatan</a>
 											<ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
 												<li>
-													<a tabindex="-1" href="<?php echo site_url('../data/odp/kecamatan/all'); ?>" class="dropdown-item">Semua Kecamatan</a>
+													<a tabindex="-1" href="<?php echo site_url('../data/suspek/kecamatan/all'); ?>" class="dropdown-item">Semua Kecamatan</a>
 												</li>
 												<?php
 												foreach ($kecamatan as $key) {
@@ -59,11 +59,11 @@
 													<li class="dropdown-submenu">
 														<a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle"><?php echo $key->nama_kecamatan; ?></a>
 														<ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
-															<li><a href="<?php echo site_url('../data/odp/kecamatan/' . $key->id_kecamatan); ?>" class="dropdown-item">Semua Desa</a></li>
+															<li><a href="<?php echo site_url('../data/suspek/kecamatan/' . $key->id_kecamatan); ?>" class="dropdown-item">Semua Desa</a></li>
 															<?php
 															foreach ($kel[$key->kode] as $key => $value) {
 															?>
-																<li><a href="<?php echo site_url('../data/odp/desa/' . $value['id_kel']); ?>" class="dropdown-item"><?php echo $value['nama_kel']; ?></a></li>
+																<li><a href="<?php echo site_url('../data/suspek/desa/' . $value['id_kel']); ?>" class="dropdown-item"><?php echo $value['nama_kel']; ?></a></li>
 															<?php
 															}
 															?>
@@ -74,28 +74,25 @@
 												?>
 											</ul>
 										</li>
-										<li class="dropdown-submenu dropdown-hover">
+										<!-- <li class="dropdown-submenu dropdown-hover">
 											<a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Faskes</a>
 											<ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
 												<li>
-													<a tabindex="-1" href="<?php echo site_url('../data/odp/faskes/all'); ?>" class="dropdown-item">Semua Faskes</a>
+													<a tabindex="-1" href="<?php echo site_url('../data/suspek/faskes/all'); ?>" class="dropdown-item">Semua Faskes</a>
 												</li>
-
-												<!-- Level three dropdown-->
 												<li class="dropdown-submenu">
 													<a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Rumah Sakit</a>
 													<ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
-														<li><a href="<?php echo site_url('../data/odp/faskes/rs'); ?>" class="dropdown-item">Semua RS</a></li>
+														<li><a href="<?php echo site_url('../data/suspek/faskes/rs'); ?>" class="dropdown-item">Semua RS</a></li>
 														<?php
 														foreach ($rs as $key) {
 														?>
-															<li><a href="<?php echo site_url('../data/odp/rs/' . $key->id_user); ?>" class="dropdown-item"><?php echo $key->nama_user; ?></a></li>
+															<li><a href="<?php echo site_url('../data/suspek/rs/' . $key->id_user); ?>" class="dropdown-item"><?php echo $key->nama_user; ?></a></li>
 														<?php
 														}
 														?>
 													</ul>
 												</li>
-												<!-- Level three dropdown-->
 												<li class="dropdown-submenu">
 													<a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Puskesmas</a>
 													<ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
@@ -110,10 +107,144 @@
 													</ul>
 												</li>
 											</ul>
-										</li>
+										</li> -->
 									</ul>
 								</li>
 								<li class="dropdown-submenu dropdown-hover">
+									<a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Kasus Probable</a>
+									<ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+
+										<li class="dropdown-submenu dropdown-hover">
+											<a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Kecamatan</a>
+											<ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+												<li>
+													<a tabindex="-1" href="<?php echo site_url('../data/probable/kecamatan/all'); ?>" class="dropdown-item">Semua Kecamatan</a>
+												</li>
+												<?php
+												foreach ($kecamatan as $key) {
+												?>
+													<li class="dropdown-submenu">
+														<a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle"><?php echo $key->nama_kecamatan; ?></a>
+														<ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
+															<li><a href="<?php echo site_url('../data/probable/kecamatan/' . $key->id_kecamatan); ?>" class="dropdown-item">Semua Desa</a></li>
+															<?php
+															foreach ($kel[$key->kode] as $key => $value) {
+															?>
+																<li><a href="<?php echo site_url('../data/probable/desa/' . $value['id_kel']); ?>" class="dropdown-item"><?php echo $value['nama_kel']; ?></a></li>
+															<?php
+															}
+															?>
+														</ul>
+													</li>
+												<?php
+												}
+												?>
+											</ul>
+										</li>
+										<!-- <li class="dropdown-submenu dropdown-hover">
+											<a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Faskes</a>
+											<ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+												<li>
+													<a tabindex="-1" href="<?php echo site_url('../data/suspek/faskes/all'); ?>" class="dropdown-item">Semua Faskes</a>
+												</li>
+												<li class="dropdown-submenu">
+													<a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Rumah Sakit</a>
+													<ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
+														<li><a href="<?php echo site_url('../data/suspek/faskes/rs'); ?>" class="dropdown-item">Semua RS</a></li>
+														<?php
+														foreach ($rs as $key) {
+														?>
+															<li><a href="<?php echo site_url('../data/suspek/rs/' . $key->id_user); ?>" class="dropdown-item"><?php echo $key->nama_user; ?></a></li>
+														<?php
+														}
+														?>
+													</ul>
+												</li>
+												<li class="dropdown-submenu">
+													<a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Puskesmas</a>
+													<ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
+														<li><a href="<?php echo site_url('../data/odp/faskes/puskesmas'); ?>" class="dropdown-item">Semua Puskesmas</a></li>
+														<?php
+														foreach ($pkm as $key) {
+														?>
+															<li><a href="<?php echo site_url('../data/odp/puskesmas/' . $key->id_user); ?>" class="dropdown-item"><?php echo $key->nama_user; ?></a></li>
+														<?php
+														}
+														?>
+													</ul>
+												</li>
+											</ul>
+										</li> -->
+									</ul>
+								</li>
+								<li class="dropdown-submenu dropdown-hover">
+									<a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Kasus Terkonfirmasi</a>
+									<ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+
+										<li class="dropdown-submenu dropdown-hover">
+											<a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Kecamatan</a>
+											<ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+												<li>
+													<a tabindex="-1" href="<?php echo site_url('../data/konfirmasi/kecamatan/all'); ?>" class="dropdown-item">Semua Kecamatan</a>
+												</li>
+												<?php
+												foreach ($kecamatan as $key) {
+												?>
+													<li class="dropdown-submenu">
+														<a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle"><?php echo $key->nama_kecamatan; ?></a>
+														<ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
+															<li><a href="<?php echo site_url('../data/konfirmasi/kecamatan/' . $key->id_kecamatan); ?>" class="dropdown-item">Semua Desa</a></li>
+															<?php
+															foreach ($kel[$key->kode] as $key => $value) {
+															?>
+																<li><a href="<?php echo site_url('../data/konfirmasi/desa/' . $value['id_kel']); ?>" class="dropdown-item"><?php echo $value['nama_kel']; ?></a></li>
+															<?php
+															}
+															?>
+														</ul>
+													</li>
+												<?php
+												}
+												?>
+											</ul>
+										</li>
+										<!-- <li class="dropdown-submenu dropdown-hover">
+											<a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Faskes</a>
+											<ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+												<li>
+													<a tabindex="-1" href="<?php echo site_url('../data/suspek/faskes/all'); ?>" class="dropdown-item">Semua Faskes</a>
+												</li>
+												<li class="dropdown-submenu">
+													<a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Rumah Sakit</a>
+													<ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
+														<li><a href="<?php echo site_url('../data/suspek/faskes/rs'); ?>" class="dropdown-item">Semua RS</a></li>
+														<?php
+														foreach ($rs as $key) {
+														?>
+															<li><a href="<?php echo site_url('../data/suspek/rs/' . $key->id_user); ?>" class="dropdown-item"><?php echo $key->nama_user; ?></a></li>
+														<?php
+														}
+														?>
+													</ul>
+												</li>
+												<li class="dropdown-submenu">
+													<a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Puskesmas</a>
+													<ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
+														<li><a href="<?php echo site_url('../data/odp/faskes/puskesmas'); ?>" class="dropdown-item">Semua Puskesmas</a></li>
+														<?php
+														foreach ($pkm as $key) {
+														?>
+															<li><a href="<?php echo site_url('../data/odp/puskesmas/' . $key->id_user); ?>" class="dropdown-item"><?php echo $key->nama_user; ?></a></li>
+														<?php
+														}
+														?>
+													</ul>
+												</li>
+											</ul>
+										</li> -->
+									</ul>
+								</li>
+								<!-- <li class="dropdown-submenu dropdown-hover">
 									<a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">PDP</a>
 									<ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
 
@@ -139,11 +270,9 @@
 													<a tabindex="-1" href="<?php echo site_url('../data/pdp/rajal/all'); ?>" class="dropdown-item">Semua Faskes</a>
 												</li>
 
-												<!-- Level three dropdown-->
 												<li class="dropdown-submenu">
 													<a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Rumah Sakit</a>
 													<ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
-														<!-- <li><a href="<?php echo site_url('../data/pdp/faskes/all&gol=1'); ?>" class="dropdown-item">Semua RS</a></li> -->
 														<?php
 														foreach ($rs as $key) {
 														?>
@@ -153,11 +282,9 @@
 														?>
 													</ul>
 												</li>
-												<!-- Level three dropdown-->
 												<li class="dropdown-submenu">
 													<a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Puskesmas</a>
 													<ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
-														<!-- <li><a href="<?php echo site_url('../data/pdp/rajal/all'); ?>" class="dropdown-item">Semua Puskesmas</a></li> -->
 														<?php
 														foreach ($pkm as $key) {
 														?>
@@ -190,7 +317,7 @@
 										<li><a href="<?php echo site_url('../data/covid/sembuh'); ?>" class="dropdown-item">Sembuh</a></li>
 										<li><a href="<?php echo site_url('../data/covid/meninggal'); ?>" class="dropdown-item">Meninggal</a></li>
 									</ul>
-								</li>
+								</li> -->
 							</ul>
 						</li>
 						<li class="nav-item dropdown">

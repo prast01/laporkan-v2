@@ -10,6 +10,7 @@ class Data extends MY_Controller
         parent::__construct();
         $this->load->model("M_data");
     }
+
     public function index()
     {
         $model = $this->M_data;
@@ -30,8 +31,24 @@ class Data extends MY_Controller
         }
         $data['id_user'] = $this->session->userdata("id_user");
         $data['level'] = $this->session->userdata("level");
-        $this->template('tes3', $data);
+
+
+        $api = $model->get_realtime();
+        $api2 = $model->get_cut_off();
+
+        $data['update_at_realtime'] = $api['updated_at'];
+        $data['suspek'] = $api['suspek'];
+        $data['probable'] = $api['probable'];
+        $data['konfirmasi'] = $api['konfirmasi'];
+
+        $data['update_at_cutoff'] = $api2['updated_at'];
+        $data['suspek_cut'] = $api2['suspek'];
+        $data['probable_cut'] = $api2['probable'];
+        $data['konfirmasi_cut'] = $api2['konfirmasi'];
+
+        $this->template('dashboard', $data);
     }
+
     public function odp($kondisi, $d)
     {
         $model = $this->M_data;
@@ -70,6 +87,7 @@ class Data extends MY_Controller
         }
         $this->template('odp', $data);
     }
+
     public function pdp($kondisi, $d = "")
     {
         $model = $this->M_data;
@@ -115,6 +133,7 @@ class Data extends MY_Controller
         }
         $this->template('pdp', $data);
     }
+
     public function covid($kondisi, $d = "")
     {
         error_reporting(E_ALL ^ E_NOTICE);
@@ -191,6 +210,108 @@ class Data extends MY_Controller
         }
         $data['laporan'] = $model->get_penyakit($kondisi);
         $this->template("penyakit", $data);
+    }
+
+    public function suspek($posisi, $d)
+    {
+        $model = $this->M_data;
+        $data['id_user'] = $this->session->userdata("id_user");
+        $data['level'] = $this->session->userdata("level");
+        $data['kecamatan'] = $model->getKecamatan();
+        foreach ($data['kecamatan'] as $key) {
+            $kel = $model->getKelurahan($key->kode);
+            $no = 0;
+            foreach ($kel as $key2) {
+                $data['kel'][$key->kode][$no] = array(
+                    "id_kel" => $key2->id_kelurahan,
+                    "nama_kel" => $key2->nama_kelurahan
+                );
+                $no++;
+            }
+        }
+
+        if ($posisi == "kecamatan") {
+            if ($d == "all") {
+                $data['nama_lap'] = "SEMUA KECAMATAN";
+            } else {
+                $data['nama_lap'] = "KECAMATAN " . $model->get_nama_kec($d);
+            }
+
+            $data['laporan'] = $model->get_suspek("1", $d);
+        } else {
+            $data['nama_lap'] = "DESA/KELURAHAN " . $model->get_nama_kel($d);
+            $data['laporan'] = $model->get_suspek("2", $d);
+        }
+
+        $this->template('suspek', $data);
+    }
+
+    public function probable($posisi, $d)
+    {
+        $model = $this->M_data;
+        $data['id_user'] = $this->session->userdata("id_user");
+        $data['level'] = $this->session->userdata("level");
+        $data['kecamatan'] = $model->getKecamatan();
+        foreach ($data['kecamatan'] as $key) {
+            $kel = $model->getKelurahan($key->kode);
+            $no = 0;
+            foreach ($kel as $key2) {
+                $data['kel'][$key->kode][$no] = array(
+                    "id_kel" => $key2->id_kelurahan,
+                    "nama_kel" => $key2->nama_kelurahan
+                );
+                $no++;
+            }
+        }
+
+        if ($posisi == "kecamatan") {
+            if ($d == "all") {
+                $data['nama_lap'] = "SEMUA KECAMATAN";
+            } else {
+                $data['nama_lap'] = "KECAMATAN " . $model->get_nama_kec($d);
+            }
+
+            $data['laporan'] = $model->get_probable("1", $d);
+        } else {
+            $data['nama_lap'] = "DESA/KELURAHAN " . $model->get_nama_kel($d);
+            $data['laporan'] = $model->get_probable("2", $d);
+        }
+
+        $this->template('probable', $data);
+    }
+
+    public function konfirmasi($posisi, $d)
+    {
+        $model = $this->M_data;
+        $data['id_user'] = $this->session->userdata("id_user");
+        $data['level'] = $this->session->userdata("level");
+        $data['kecamatan'] = $model->getKecamatan();
+        foreach ($data['kecamatan'] as $key) {
+            $kel = $model->getKelurahan($key->kode);
+            $no = 0;
+            foreach ($kel as $key2) {
+                $data['kel'][$key->kode][$no] = array(
+                    "id_kel" => $key2->id_kelurahan,
+                    "nama_kel" => $key2->nama_kelurahan
+                );
+                $no++;
+            }
+        }
+
+        if ($posisi == "kecamatan") {
+            if ($d == "all") {
+                $data['nama_lap'] = "SEMUA KECAMATAN";
+            } else {
+                $data['nama_lap'] = "KECAMATAN " . $model->get_nama_kec($d);
+            }
+
+            $data['laporan'] = $model->get_konfirmasi("1", $d);
+        } else {
+            $data['nama_lap'] = "DESA/KELURAHAN " . $model->get_nama_kel($d);
+            $data['laporan'] = $model->get_konfirmasi("2", $d);
+        }
+
+        $this->template('konfirmasi', $data);
     }
 }
 

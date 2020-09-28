@@ -31,7 +31,11 @@ class Dashboard extends MY_Controller
             $data['probable_cut'] = $api2['probable'];
             $data['konfirmasi_cut'] = $api2['konfirmasi'];
 
-            $this->template('dashboard', $data);
+            if ($data['level'] == '5') {
+                redirect('../data', 'refresh');
+            } else {
+                $this->template('dashboard', $data);
+            }
 
             // echo json_encode($api);
         } else {
