@@ -202,6 +202,7 @@ class Kasus extends MY_Controller
                 $data['data']['kecamatan'] = $model->get_kecamatan_by_id($data2->id_kecamatan);
                 $data['data']['kelurahan'] = $model->get_kelurahan_by_id($data2->id_kelurahan);
                 $data['data']['alamat_domisili'] = $data2->alamat_domisili;
+                $data['data']['kasus'] = $data2->kasus;
                 $data['cek'] = "1";
                 $data['msg'] = "NIK : " . $nik . " ditemukan !";
             } else {
@@ -246,6 +247,7 @@ class Kasus extends MY_Controller
                 $data['data']['kelurahan'] = $model->get_kelurahan_by_id($data2->id_kelurahan);
                 $data['data']['alamat_domisili'] = $data2->alamat_domisili;
                 $data['data']['faskes_akhir'] = $data2->faskes_akhir;
+                $data['data']['kasus'] = $data2->kasus;
                 $data['data']['penyakit'] = $data2->penyakit . " (" . $data2->kdiag . ")";
                 $data['cek'] = "1";
                 $data['msg'] = "NIK : " . $nik . " ditemukan !";

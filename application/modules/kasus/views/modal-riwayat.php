@@ -93,6 +93,7 @@ endforeach;
                                     <form class="form-horizontal" method="post" action="<?php echo site_url('../kasus/add_riwayat/' . $laporan->id_laporan); ?>" enctype="multipart/form-data">
                                         <div class="form-group">
                                             <label for="inputEmail3" class="form-label">Status Pasien</label>
+                                            <input type="hidden" name="kasus_lama" value="<?= $laporan->kasus; ?>">
                                             <select name="status" class="form-control select2" id="status" style="width: 100%" required>
                                                 <option selected disabled>Pilih</option>
                                                 <?php

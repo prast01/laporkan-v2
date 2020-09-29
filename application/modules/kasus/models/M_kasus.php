@@ -517,7 +517,11 @@ class M_kasus extends CI_Model
         }
 
         if ($post['status'] == '1' || $post['status'] == '2' || $post['status'] == '5' || $post['status'] == '6') {
-            $kasus = $this->_get_last_case();
+            if ($post['kasus_lama'] == "") {
+                $kasus = $this->_get_last_case();
+            } else {
+                $kasus = $post['kasus_lama'];
+            }
         } else {
             $kasus = null;
         }
@@ -571,7 +575,11 @@ class M_kasus extends CI_Model
         }
 
         if ($post['status'] == '1' || $post['status'] == '2' || $post['status'] == '5' || $post['status'] == '6') {
-            $kasus = $this->_get_last_case();
+            if ($post['kasus_lama'] == "") {
+                $kasus = $this->_get_last_case();
+            } else {
+                $kasus = $post['kasus_lama'];
+            }
         } else {
             $kasus = null;
         }
@@ -611,7 +619,11 @@ class M_kasus extends CI_Model
         $faskes = $nama_user;
 
         if ($post['status'] == '1' || $post['status'] == '2' || $post['status'] == '5' || $post['status'] == '6') {
-            $kasus = $this->_get_last_case();
+            if ($post['kasus_lama'] == "") {
+                $kasus = $this->_get_last_case();
+            } else {
+                $kasus = $post['kasus_lama'];
+            }
         } else {
             $kasus = null;
         }

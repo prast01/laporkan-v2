@@ -63,6 +63,7 @@
                                     <input type="hidden" name="id_laporan" id="id_laporan">
                                     <div class="form-group">
                                         <label for="inputEmail3" class="form-label">Status Pasien</label>
+                                        <input type="hidden" name="kasus_lama" id="kasus_lama">
                                         <select name="status" id="status_form" class="form-control select2" style="width: 100%" disabled>
                                             <option selected disabled>Pilih</option>
                                             <?php
@@ -168,6 +169,7 @@
                         $("#kecamatan").val(pasien.kecamatan);
                         $("#kelurahan").val(pasien.kelurahan);
                         $("#alamat_domisili").val(pasien.alamat_domisili);
+                        $("#kasus_lama").val(pasien.kasus);
                     } else {
                         alert(data.msg);
                         enabled(0)
@@ -177,6 +179,7 @@
                         $("#kecamatan").val("");
                         $("#kelurahan").val("");
                         $("#alamat_domisili").val("");
+                        $("#kasus_lama").val("");
                     }
                 }
             })
