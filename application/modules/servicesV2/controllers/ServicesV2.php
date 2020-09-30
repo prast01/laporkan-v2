@@ -11,6 +11,7 @@ class ServicesV2 extends MY_Controller
     {
         parent::__construct();
         $this->load->model('M_services');
+        $this->load->model('M_peta');
     }
 
     public function get_data_cut_off()
@@ -42,6 +43,36 @@ class ServicesV2 extends MY_Controller
     {
         $model = $this->M_services;
         $data = $model->get_kelurahan_all();
+
+        echo json_encode($data);
+    }
+
+    public function get_peta()
+    {
+        $model = $this->M_services;
+        $peta = $this->M_peta;
+        $kel = $model->get_kelurahan_all();
+
+        $data['type'] = "FeatureCollection";
+
+        $i = 0;
+        foreach ($kel as $key) {
+            $geo = $peta->get_desa($key->kode_capil);
+            if ($geo != 0) {
+                $data['features'][$i]['type'] = "Feature";
+                $data['features'][$i]['properties'] = array(
+                    "id_kelurahan" => $key->id_kelurahan2,
+                    "kode_capil" => $key->kode_capil,
+                    "name" => $key->nama_kelurahan,
+                    "suspek" => $key->suspek_dirawat + $key->suspek_isolasi,
+                    "probable" => $key->probable_dirawat + $key->probable_isolasi,
+                    "konfirmasi" => $key->konfirmasi_dirawat + $key->konfirmasi_isolasi,
+                );
+                $data['features'][$i]['geometry'] = $geo;
+
+                $i++;
+            }
+        }
 
         echo json_encode($data);
     }
