@@ -49,6 +49,7 @@ class ServicesV2 extends MY_Controller
 
     public function get_peta()
     {
+        header('Access-Control-Allow-Origin: *');
         $model = $this->M_services;
         $peta = $this->M_peta;
         $kel = $model->get_kelurahan_all();

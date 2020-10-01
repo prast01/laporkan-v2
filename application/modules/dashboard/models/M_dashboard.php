@@ -536,6 +536,7 @@ class M_dashboard extends CI_Model
     {
         $this->db->select('id_laporan');
         $this->db->from('tb_laporan_baru');
+        $this->db->where(["validasi" => 1]);
         $this->db->where(["id_kelurahan" => $id]);
         if ($kondisi == "dirawat") {
             $status = array("13", "16", "17");
@@ -556,6 +557,7 @@ class M_dashboard extends CI_Model
     {
         $this->db->select('id_laporan');
         $this->db->from('tb_laporan_baru');
+        $this->db->where(["validasi" => 1]);
         $this->db->where(["id_kelurahan" => $id]);
         if ($kondisi == "dirawat") {
             $status = array("7", "11", "12");
@@ -578,6 +580,7 @@ class M_dashboard extends CI_Model
     {
         $this->db->select('id_laporan');
         $this->db->from('tb_laporan_baru');
+        $this->db->where(["validasi" => 1]);
         $this->db->where(["id_kelurahan" => $id]);
         if ($kondisi == "dirawat") {
             $status = array("1", "5", "6");
