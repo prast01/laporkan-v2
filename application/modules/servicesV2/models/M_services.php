@@ -327,6 +327,13 @@ class M_services extends CI_Model
 
         return $data->updated_at;
     }
+
+    public function get_kecamatan_by($kode)
+    {
+        $data = $this->db->get_where("tb_kecamatan_baru", ["kode" => $kode])->row();
+
+        return $data;
+    }
 }
 
 /* End of file M_services.php */

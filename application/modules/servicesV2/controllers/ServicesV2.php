@@ -78,6 +78,69 @@ class ServicesV2 extends MY_Controller
         echo json_encode($data);
     }
 
+    public function get_peta_by($id_kec, $jenis)
+    {
+        header('Access-Control-Allow-Origin: *');
+        $model = $this->M_services;
+        $peta = $this->M_peta;
+        $kec = $model->get_kecamatan_by($id_kec);
+        $kel = $model->get_kelurahan($id_kec);
+
+        if ($jenis == "konfirmasi") {
+            $data['jenis'] = 1;
+        } elseif ($jenis == "probable") {
+            $data['jenis'] = 2;
+        } elseif ($jenis == "suspek") {
+            $data['jenis'] = 3;
+        }
+        $data['lat'] = floatval($kec->lat);
+        $data['long'] = floatval($kec->long);
+        $data['zoom'] = floatval($kec->zoom);
+        $data['type'] = "FeatureCollection";
+
+        $i = 0;
+        foreach ($kel as $key) {
+            $geo = $peta->get_desa($key->kode_capil);
+            if ($geo != 0) {
+                $data['features'][$i]['type'] = "Feature";
+
+                if ($jenis == "konfirmasi") {
+                    $data['features'][$i]['properties'] = array(
+                        "id_kelurahan" => $key->id_kelurahan2,
+                        "kode_capil" => $key->kode_capil,
+                        "name" => $key->nama_kelurahan,
+                        "saat_ini" => $key->konfirmasi_dirawat + $key->konfirmasi_isolasi,
+                        "sembuh" => $key->konfirmasi_sembuh,
+                        "meninggal" => $key->konfirmasi_meninggal,
+                    );
+                } elseif ($jenis == "probable") {
+                    $data['features'][$i]['properties'] = array(
+                        "id_kelurahan" => $key->id_kelurahan2,
+                        "kode_capil" => $key->kode_capil,
+                        "name" => $key->nama_kelurahan,
+                        "saat_ini" => $key->probable_dirawat + $key->probable_isolasi,
+                        "sembuh" => $key->probable_sembuh,
+                        "meninggal" => $key->probable_meninggal,
+                    );
+                } elseif ($jenis == "suspek") {
+                    $data['features'][$i]['properties'] = array(
+                        "id_kelurahan" => $key->id_kelurahan2,
+                        "kode_capil" => $key->kode_capil,
+                        "name" => $key->nama_kelurahan,
+                        "saat_ini" => $key->suspek_dirawat + $key->suspek_isolasi,
+                        "discarded" => $key->suspek_discard,
+                    );
+                }
+
+                $data['features'][$i]['geometry'] = $geo;
+
+                $i++;
+            }
+        }
+
+        echo json_encode($data);
+    }
+
     public function get_data_harian()
     {
         $model = $this->M_services;
