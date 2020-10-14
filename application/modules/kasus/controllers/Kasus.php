@@ -538,6 +538,8 @@ class Kasus extends MY_Controller
                             'wn' => $value['wn'],
                             'nik' => $value['nik'],
                             'nama' => $value['nama'],
+                            'rt' => $value['rt'],
+                            'rw' => $value['rw'],
                             'alamat_domisili' => $value['alamat_domisili'],
                             'validasi' => 0,
                             'created_at' => date("Y-m-d"),

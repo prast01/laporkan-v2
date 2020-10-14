@@ -66,8 +66,13 @@ class ServicesV2 extends MY_Controller
                     "kode_capil" => $key->kode_capil,
                     "name" => $key->nama_kelurahan,
                     "suspek" => $key->suspek_dirawat + $key->suspek_isolasi,
+                    "suspek_discarded" => $key->suspek_discard,
                     "probable" => $key->probable_dirawat + $key->probable_isolasi,
+                    "probable_sembuh" => $key->probable_sembuh,
+                    "probable_meninggal" => $key->probable_meninggal,
                     "konfirmasi" => $key->konfirmasi_dirawat + $key->konfirmasi_isolasi,
+                    "konfirmasi_sembuh" => $key->konfirmasi_sembuh,
+                    "konfirmasi_meninggal" => $key->konfirmasi_meninggal,
                 );
                 $data['features'][$i]['geometry'] = $geo;
 
