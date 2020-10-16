@@ -74,6 +74,12 @@ class M_jateng extends CI_Model
 
         return $data;
     }
+    public function get_data_nik_2($nik)
+    {
+        $data = $this->db->get_where("view_data_laporan", ["nik" => $nik])->row();
+
+        return $data;
+    }
 
     // GET NAMA KECAMATAN
     public function get_kecamatan($kode)
@@ -160,6 +166,23 @@ class M_jateng extends CI_Model
         $data = array("data_id" => $id_jateng, "cek_nik" => 1);
 
         $this->db->update("tb_laporan_baru", $data, $where);
+    }
+
+    // get_pekerjaan
+    public function get_pekerjaan($id)
+    {
+        $data = $this->db->get_where("tb_pekerjaan", ["id_pekerjaan" => $id])->row();
+
+        $hsl = ($id == '') ? '3' : $data->id_job_jateng;
+
+        return $hsl;
+    }
+    // get_pekerjaan
+    public function get_hospital($id)
+    {
+        $data = $this->db->get_where("tb_hospital", ["nama_hospital" => $id])->row();
+
+        return $data->id_prov_hospital;
     }
 }
 
