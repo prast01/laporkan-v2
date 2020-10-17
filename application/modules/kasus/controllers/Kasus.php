@@ -366,6 +366,68 @@ class Kasus extends MY_Controller
         redirect('../kasus', 'refresh');
     }
 
+    public function add2()
+    {
+        $post = $this->input->post();
+        if (strlen($post['nik']) < "16") {
+            $msg = array('res' => 0, 'msg' => 'NIK Harus Diisi dengan BENAR');
+            return json_encode($msg);
+        }
+
+        $data = array(
+            'id_kecamatan' => $post['id_kecamatan'],
+            'tgl_periksa' => $post['tgl_periksa'],
+            'nik' => $post['nik'],
+            'nama' => $post['nama'],
+            'alamat_domisili' => $post['alamat_domisili'],
+            'rt' => $post['rt'],
+            'rw' => $post['rw'],
+            'created_at' => $post['created_at'],
+            'wn' => $post['wn'],
+            'keterangan' => $post['keterangan'],
+            'created_by' => $post['created_by'],
+            'jekel' => $post['jekel'],
+            'umur' => $post['umur'],
+            'no_telp' => $post['no_telp'],
+            'id_kelurahan' => $post['id_kelurahan'],
+            'kasus' => $post['kasus'],
+            'nakes' => $post['nakes'],
+            'kdiag' => $post['kdiag'],
+            'penyakit' => $post['penyakit'],
+            "faskes_akhir" => $post['faskes_akhir'],
+            "id_pekerjaan" => $post['id_pekerjaan'],
+            "pekerjaan" => $post['pekerjaan'],
+            "tempat_kerja" => $post['tempat_kerja'],
+            "updated_at" => $post['updated_at'],
+            'status_baru' => $post['status_baru']
+        );
+
+        $cek = $this->db->insert('tb_laporan_baru', $data);
+        $this->_add_riwayat($post['nik']);
+
+        if ($cek) {
+            $msg = array('res' => 1, 'msg' => 'Laporan Berhasil Dibuat');
+        } else {
+            $msg = array('res' => 0, 'msg' => 'Laporan Gagal Dibuat');
+        }
+
+        echo json_encode($msg);
+    }
+
+    private function _add_riwayat($nik)
+    {
+        $d = $this->db->get_where("tb_laporan_baru", ['nik' => $nik])->row();
+
+        $data = array(
+            "id_laporan" => $d->id_laporan,
+            "id_status" => $d->status_baru,
+            "kondisi_umum" => $d->keterangan,
+            "lokasi_rs" => $d->faskes_akhir,
+            "updated_at" => date("Y-m-d H:i:s")
+        );
+        $this->db->insert('tb_riwayat', $data);
+    }
+
     public function edit($id)
     {
         $model = $this->M_kasus;

@@ -97,6 +97,22 @@ class M_jateng extends CI_Model
         return $data['nama_kelurahan'];
     }
 
+    // GET NAMA KECAMATAN
+    public function get_kecamatan_id($kode)
+    {
+        $data = $this->db->get_where("tb_kecamatan_baru", ["kode2" => $kode])->row_array();
+
+        return $data['id_kecamatan'];
+    }
+
+    // GET NAMA KELURAHAN
+    public function get_kelurahan_id($kode)
+    {
+        $data = $this->db->get_where("tb_kelurahan_baru", ["id_kelurahan2" => $kode])->row_array();
+
+        return $data['id_kelurahan'];
+    }
+
     // GET NIK
     public function get_nik($id)
     {
@@ -145,6 +161,14 @@ class M_jateng extends CI_Model
         return $data->nama_status;
     }
 
+    // GET STATUS
+    public function get_status_id($id)
+    {
+        $data = $this->db->get_where("tb_status_2", ["id_status_jateng" => $id])->row();
+
+        return $data->id_status_2;
+    }
+
     // CRUD
     public function update_id($nik, $id_jateng)
     {
@@ -177,12 +201,29 @@ class M_jateng extends CI_Model
 
         return $hsl;
     }
+
+
+    // get_pekerjaan
+    public function get_pekerjaan_id($id)
+    {
+        $data = $this->db->get_where("tb_pekerjaan", ["id_job_jateng" => $id])->row();
+        return $data;
+    }
+
     // get_pekerjaan
     public function get_hospital($id)
     {
         $data = $this->db->get_where("tb_hospital", ["nama_hospital" => $id])->row();
 
         return $data->id_prov_hospital;
+    }
+
+    // get_pekerjaan
+    public function get_job_place($id)
+    {
+        $data = $this->db->get_where("tb_job_place", ["id_place_jateng" => $id])->row();
+
+        return $data->place;
     }
 }
 

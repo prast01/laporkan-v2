@@ -199,7 +199,7 @@ class Jateng extends MY_Controller
 
     public function get_data_all($status, $token)
     {
-
+        $model = $this->M_jateng;
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -223,9 +223,54 @@ class Jateng extends MY_Controller
         curl_close($curl);
         $hsl = json_decode($response, true);
 
-        echo "<pre>";
-        print_r($hsl);
-        echo "</pre>";
+        if ($status == 1) {
+            $st = "TERKONFIRMASI DIRAWAT RS LUAR DAERAH";
+        } elseif ($status == 2) {
+            $st = "TERKONFIRMASI ISOLASI";
+        } elseif ($status == 14) {
+            $st = "TERKONFIRMASI DIRUJUK RS LUAR";
+        } elseif ($status == 3) {
+            $st = "TERKONFIRMASI SEMBUH";
+        } elseif ($status == 4) {
+            $st = "TERKONFIRMASI MENINGGAL";
+        }
+
+
+        $hasil['status'] = $st;
+        $hasil['token'] = $token;
+
+        $no = 0;
+        foreach ($hsl['data'] as $key => $val) {
+            $case_id = $val['last_case_id'];
+            foreach ($val['cases'] as $key => $val2) {
+                if ($val2['case_id'] == $case_id) {
+                    $id_status = $val2['status_id'];
+                    $status = $model->get_status($id_status);
+                    $faskes_akhir = $model->get_faskes($val2['treatment_place_id']);
+                    break;
+                }
+            }
+
+            $cek_nik = $this->cek_nik_lokal($val['nik'], $val['patient_id']);
+
+            if ($cek_nik) {
+                $hasil['data'][$no] = array(
+                    "nik" => $val['nik'],
+                    "nama" => $val['name'],
+                    "alamat" => $model->get_kecamatan($val['sub_district_id']) . ", " . $model->get_kelurahan($val['village_id']) . ", " . $val['rt'] . "/" . $val['rw'],
+                    "status" => $status,
+                    "faskes" => $faskes_akhir,
+                    "id" => $val['patient_id'],
+                );
+                $no++;
+            }
+        }
+
+        // echo $response;
+        // echo "<pre>";
+        // print_r($hsl['data']);
+        // echo "</pre>";
+        $this->load->view('data_jateng', $hasil);
     }
 
     public function get_data($token)
@@ -438,20 +483,18 @@ class Jateng extends MY_Controller
 
                 curl_close($curl);
                 $hsl = json_decode($response, true);
-                // if ($hsl['status'] == "success") {
                 if ($hsl['message'] != "Data Duplicate !") {
                     $this->update_id_all($nik, $hsl['data']['id']);
-                    // echo "SUKSES KIRIM DATA<br>";
                     echo $response;
                 } else {
                     echo $response;
-                    // echo "GAGAL KIRIM DATA, HUBUNGI IT<br>";
                 }
             } else {
                 echo $cek_nar;
             }
         } else {
-            echo "HARUS ADA SYMTON, RW dan RT <br><pre>";
+            echo "HARUS ADA SYMTON, RW dan RT <br>";
+            echo "<pre>";
             print_r($data);
             echo "</pre>";
         }
@@ -463,7 +506,7 @@ class Jateng extends MY_Controller
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://admin.corona.jatengprov.go.id/api/people/job/list",
+            CURLOPT_URL => "https://admin.corona.jatengprov.go.id/api/people/job/place",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -484,16 +527,133 @@ class Jateng extends MY_Controller
         $data = json_decode($response, true);
 
         foreach ($data['data'] as $key) {
-            $dt = array(
-                "id_job_jateng" => $key['id']
-            );
-            $where = array(
-                "pekerjaan" => $key['name'],
-                "id_job_jateng" => NULL
-            );
+            // $dt = array(
+            //     "id_job_jateng" => $key['id']
+            // );
+            // $where = array(
+            //     "pekerjaan" => $key['name'],
+            //     "id_job_jateng" => NULL
+            // );
 
-            $this->db->update("tb_pekerjaan", $dt, $where);
+            // $this->db->update("tb_pekerjaan", $dt, $where);
+
+            // $dt = array(
+            //     'id_place_jateng' => $key['id'],
+            //     'place' => $key['name']
+            // );
+            // $this->db->insert("tb_job_place", $dt);
         }
+    }
+
+    // cek NIK LOKAL]
+    private function cek_nik_lokal($nik, $id)
+    {
+        $data = $this->db->get_where("view_data_laporan", ["nik" => $nik])->num_rows();
+        $data2 = $this->db->get_where("view_data_laporan", ["data_id" => $id])->num_rows();
+
+        $cek = ($data > 0 || $data2 > 0) ? 0 : 1;
+
+        return $cek;
+    }
+
+    // AMBIL DATA JATENG
+    public function ambil_jateng($nik, $token)
+    {
+        $model = $this->M_jateng;
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://admin.corona.jatengprov.go.id/api/people/nik?nik=" . $nik,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "Authorization: Bearer " . $token,
+                "Accept: application/json",
+                "Content-Transfer-Encoding: application/json"
+            ),
+        ));
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        $hsl = json_decode($response, true);
+
+        $case_id = $hsl['data'][0]['last_case_id'];
+        foreach ($hsl['data'][0]['cases'] as $key => $val2) {
+            if ($val2['case_id'] == $case_id) {
+                $id_status = $val2['status_id'];
+                $tgl_lapor = $val2['tgl_lapor'];
+                $status = $model->get_status_id($id_status);
+                $faskes_akhir = $model->get_faskes($val2['treatment_place_id']);
+                break;
+            }
+        }
+
+        $kasus = $this->_get_last_case();
+        $sex = ($hsl['data'][0]['sex'] == 'L') ? 1 : 2;
+
+        $data2 = array(
+            'id_kecamatan' => $model->get_kecamatan_id($hsl['data'][0]['sub_district_id']),
+            'tgl_periksa' => $tgl_lapor,
+            'nik' => $hsl['data'][0]['nik'],
+            'nama' => $hsl['data'][0]['name'],
+            'alamat_domisili' => $hsl['data'][0]['address'],
+            'rt' => $hsl['data'][0]['rt'],
+            'rw' => $hsl['data'][0]['rw'],
+            'created_at' => $hsl['data'][0]['created_at'],
+            'wn' => 1,
+            'keterangan' => 'GET DATA DARI JATENG',
+            'created_by' => 2,
+            'jekel' => $sex,
+            'umur' => $hsl['data'][0]['age'],
+            'no_telp' => $hsl['data'][0]['phone_number'],
+            'id_kelurahan' => $model->get_kelurahan_id($hsl['data'][0]['village_id']),
+            'kasus' => $kasus,
+            'nakes' => 0,
+            'kdiag' => 'BLM',
+            'penyakit' => 'BELUM DIISI',
+            "faskes_akhir" => $faskes_akhir,
+            "id_pekerjaan" => $model->get_pekerjaan_id($hsl['data'][0]['job_id'])->id_pekerjaan,
+            "pekerjaan" => $model->get_pekerjaan_id($hsl['data'][0]['job_id'])->pekerjaan,
+            "tempat_kerja" => $model->get_job_place($hsl['data'][0]['job_place_id']),
+            "updated_at" => date("Y-m-d H:i:s"),
+            'status_baru' => $status
+        );
+
+        $curl2 = curl_init();
+
+        curl_setopt_array($curl2, array(
+            CURLOPT_URL => "http://lapor-covid19.mi-kes.net/kasus/add2",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => $data2,
+        ));
+
+        $response2 = curl_exec($curl2);
+
+        curl_close($curl2);
+
+        echo $response2;
+        // echo "<pre>";
+        // print_r($data2);
+        // echo "</pre>";
+    }
+
+    private function _get_last_case()
+    {
+        $data = $this->db->query("SELECT MAX(kasus) as kasus FROM tb_laporan_baru")->row();
+
+        return $data->kasus + 1;
     }
 }
 

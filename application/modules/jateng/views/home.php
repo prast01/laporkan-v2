@@ -7,12 +7,13 @@
     <title>BRIDGING JATENG</title>
 </head>
 
-<body style="padding: 0 20px; width: 1000px;">
+<body style="padding: 0 20px;">
     <h4>DATA TERKONFIRMASI</h4>
     <a href="<?= site_url("../jateng/cek_nik_all_k/" . $token); ?>" target="_blank">
         <button style="cursor: pointer;">CEK NIK DAN UPDATE ID JATENG KE LOKAL</button>
     </a>
     &nbsp;&nbsp;
+    <br><br>
     <a href="<?= site_url("../jateng/get_data_all/1/" . $token); ?>" target="_blank">
         <button style="cursor: pointer;">GET DATA JATENG DIRAWAT</button>
     </a>
@@ -23,6 +24,14 @@
     &nbsp;&nbsp;
     <a href="<?= site_url("../jateng/get_data_all/14/" . $token); ?>" target="_blank">
         <button style="cursor: pointer;">GET DATA JATENG DIRUJUK</button>
+    </a>
+    &nbsp;&nbsp;
+    <a href="<?= site_url("../jateng/get_data_all/3/" . $token); ?>" target="_blank">
+        <button style="cursor: pointer;">GET DATA JATENG SEMBUH</button>
+    </a>
+    &nbsp;&nbsp;
+    <a href="<?= site_url("../jateng/get_data_all/4/" . $token); ?>" target="_blank">
+        <button style="cursor: pointer;">GET DATA JATENG MENINGGAL</button>
     </a>
     <br>
     <table border="1" style="border-collapse: collapse; margin-top: 10px" width="100%">
