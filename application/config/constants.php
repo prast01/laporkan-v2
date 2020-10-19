@@ -93,4 +93,5 @@ define('LOGO_JEPARA', 'dist/logo/jepara.png');
 define('COPY', 'Dinas Kesehatan Kab. Jepara &copy; 2020');
 define('VER', '2.0.0');
 define('PUSHER', 'vendor/autoload.php');
-define('BASE_JATENG', 'https://dev.corona.jatengprov.go.id/api/');
+define('BASE_JATENG', 'https://admin.corona.jatengprov.go.id/api/');
+// define('BASE_JATENG', 'https://dev.corona.jatengprov.go.id/api/');
