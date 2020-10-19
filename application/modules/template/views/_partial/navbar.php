@@ -355,6 +355,9 @@
 						<li class="nav-item">
 							<a href="<?php echo site_url('../kasus'); ?>" class="nav-link">Data Baru</a>
 						</li>
+						<li class="nav-item">
+							<a href="<?php echo site_url('../jateng'); ?>" class="nav-link">Bridging</a>
+						</li>
 					<?php
 					}
 

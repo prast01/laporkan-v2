@@ -374,39 +374,40 @@ class Kasus extends MY_Controller
             return json_encode($msg);
         }
 
-        $data = array(
-            'id_kecamatan' => $post['id_kecamatan'],
-            'tgl_periksa' => $post['tgl_periksa'],
-            'nik' => $post['nik'],
-            'nama' => $post['nama'],
-            'alamat_domisili' => $post['alamat_domisili'],
-            'rt' => $post['rt'],
-            'rw' => $post['rw'],
-            'created_at' => $post['created_at'],
-            'wn' => $post['wn'],
-            'keterangan' => $post['keterangan'],
-            'created_by' => $post['created_by'],
-            'jekel' => $post['jekel'],
-            'umur' => $post['umur'],
-            'no_telp' => $post['no_telp'],
-            'id_kelurahan' => $post['id_kelurahan'],
-            'kasus' => $post['kasus'],
-            'nakes' => $post['nakes'],
-            'kdiag' => $post['kdiag'],
-            'penyakit' => $post['penyakit'],
-            "faskes_akhir" => $post['faskes_akhir'],
-            "id_pekerjaan" => $post['id_pekerjaan'],
-            "pekerjaan" => $post['pekerjaan'],
-            "tempat_kerja" => $post['tempat_kerja'],
-            "updated_at" => $post['updated_at'],
-            'status_baru' => $post['status_baru']
-        );
+        // $data = array(
+        //     'id_kecamatan' => $post['id_kecamatan'],
+        //     'tgl_periksa' => $post['tgl_periksa'],
+        //     'nik' => $post['nik'],
+        //     'nama' => $post['nama'],
+        //     'alamat_domisili' => $post['alamat_domisili'],
+        //     'rt' => $post['rt'],
+        //     'rw' => $post['rw'],
+        //     'created_at' => $post['created_at'],
+        //     'wn' => $post['wn'],
+        //     'keterangan' => $post['keterangan'],
+        //     'created_by' => $post['created_by'],
+        //     'jekel' => $post['jekel'],
+        //     'umur' => $post['umur'],
+        //     'no_telp' => $post['no_telp'],
+        //     'id_kelurahan' => $post['id_kelurahan'],
+        //     'kasus' => $post['kasus'],
+        //     'nakes' => $post['nakes'],
+        //     'kdiag' => $post['kdiag'],
+        //     'penyakit' => $post['penyakit'],
+        //     "faskes_akhir" => $post['faskes_akhir'],
+        //     "id_pekerjaan" => $post['id_pekerjaan'],
+        //     "pekerjaan" => $post['pekerjaan'],
+        //     "tempat_kerja" => $post['tempat_kerja'],
+        //     "updated_at" => $post['updated_at'],
+        //     "data_id" => $post['data_id'],
+        //     'status_baru' => $post['status_baru']
+        // );
 
-        $cek = $this->db->insert('tb_laporan_baru', $data);
+        $cek = $this->db->insert('tb_laporan_baru', $post);
         $this->_add_riwayat($post['nik']);
 
         if ($cek) {
-            $msg = array('res' => 1, 'msg' => 'Laporan Berhasil Dibuat');
+            $msg = array('res' => 1, 'msg' => 'Laporan Berhasil Dibuat', 'data' => $post);
         } else {
             $msg = array('res' => 0, 'msg' => 'Laporan Gagal Dibuat');
         }

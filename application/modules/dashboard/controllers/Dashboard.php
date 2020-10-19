@@ -76,6 +76,31 @@ class Dashboard extends MY_Controller
             redirect('../dashboard', 'refresh');
         }
     }
+
+    public function update_kec()
+    {
+        $model = $this->M_dashboard;
+
+        $kec = $model->_get_kecamatan2();
+        if ($kec->num_rows() > 0) {
+            $kel = $kec->row();
+            $dt = $model->_update_kec2($kel->id_kecamatan);
+            $data['nama_kec'] = $kel->nama_kecamatan;
+            $data['suspek_dirawat'] = $dt['suspek_dirawat'];
+            $data['suspek_discard'] = $dt['suspek_discard'];
+            $data['probable_dirawat'] = $dt['probable_dirawat'];
+            $data['probable_sembuh'] = $dt['probable_sembuh'];
+            $data['probable_meninggal'] = $dt['probable_meninggal'];
+            $data['konfirmasi_dirawat'] = $dt['konfirmasi_dirawat'];
+            $data['konfirmasi_sembuh'] = $dt['konfirmasi_sembuh'];
+            $data['konfirmasi_meninggal'] = $dt['konfirmasi_meninggal'];
+            $this->load->view('v_kec', $data);
+        } else {
+            $this->db->query("UPDATE tb_kecamatan_baru SET updated='0'");
+            $this->session->set_flashdata('success', 'Berhasil Dipublish');
+            redirect('../dashboard', 'refresh');
+        }
+    }
 }
 
 /* End of file Dashboard.php */

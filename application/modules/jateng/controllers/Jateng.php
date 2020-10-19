@@ -17,12 +17,49 @@ class Jateng extends MY_Controller
         $this->_base = "https://admin.corona.jatengprov.go.id/api";
     }
 
-    public function index()
+    public function refresh()
+    {
+        $model = $this->M_jateng;
+        $data['token'] = $model->get_refresh_token();
+        $this->session->set_userdata('token', $data['token']);
+        redirect('../jateng', 'refresh');
+    }
+
+    public function home()
     {
         $model = $this->M_jateng;
         $data['data'] = $model->get_data("1");
-        $data['token'] = $model->get_token();
+        $token = $this->session->userdata("token");
+        if ($token == '') {
+            $data['token'] = $model->get_refresh_token();
+            $this->session->set_userdata('token', $data['token']);
+        } else {
+            $data['token'] = $token;
+        }
+
         $this->load->view('home', $data);
+    }
+
+    public function index()
+    {
+        $model = $this->M_jateng;
+        $data['id_user'] = $this->session->userdata("id_user");
+        $data['level'] = $this->session->userdata("level");
+        $data['konfirmasi'] = $model->get_data("1");
+        $data['suspek'] = $model->get_data("3");
+        $token = $this->session->userdata("token");
+        if ($token == '') {
+            $data['token'] = $model->get_token();
+            $this->session->set_userdata('token', $data['token']);
+        } else {
+            $data['token'] = $token;
+        }
+
+        if ($this->session->userdata('id_user') != '') {
+            $this->template("dashboard", $data);
+        } else {
+            redirect('../', 'refresh');
+        }
     }
 
     public function suspek()
@@ -54,7 +91,7 @@ class Jateng extends MY_Controller
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://admin.corona.jatengprov.go.id/api/people/nik?nik=" . $nik,
+            CURLOPT_URL => BASE_JATENG . "people/nik?nik=" . $nik,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -101,7 +138,7 @@ class Jateng extends MY_Controller
             $curl = curl_init();
 
             curl_setopt_array($curl, array(
-                CURLOPT_URL => "https://admin.corona.jatengprov.go.id/api/people/nik?nik=" . $nik->nik,
+                CURLOPT_URL => BASE_JATENG . "people/nik?nik=" . $nik->nik,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
@@ -155,7 +192,7 @@ class Jateng extends MY_Controller
             $curl = curl_init();
 
             curl_setopt_array($curl, array(
-                CURLOPT_URL => "https://admin.corona.jatengprov.go.id/api/people/nik?nik=" . $nik->nik,
+                CURLOPT_URL => BASE_JATENG . "people/nik?nik=" . $nik->nik,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
@@ -203,7 +240,7 @@ class Jateng extends MY_Controller
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://admin.corona.jatengprov.go.id/api/people/all?is_patient_district=1&is_hospital_district=0&status_id=" . $status,
+            CURLOPT_URL => BASE_JATENG . "people/all?is_patient_district=1&is_hospital_district=0&status_id=" . $status,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -279,7 +316,7 @@ class Jateng extends MY_Controller
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://admin.corona.jatengprov.go.id/api/people/all",
+            CURLOPT_URL => BASE_JATENG . "people/all",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -459,39 +496,39 @@ class Jateng extends MY_Controller
         );
 
         if ($cek_rt_rw && $cek_status) {
-            $cek_nar = $this->cek_nar_2($nik, $token);
-            if ($cek_nar == 1) {
-                $curl = curl_init();
+            // $cek_nar = $this->cek_nar_2($nik, $token);
+            // if ($cek_nar == 1) {
+            $curl = curl_init();
 
-                curl_setopt_array($curl, array(
-                    CURLOPT_URL => "https://admin.corona.jatengprov.go.id/api/people/old",
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_ENCODING => "",
-                    CURLOPT_MAXREDIRS => 10,
-                    CURLOPT_TIMEOUT => 0,
-                    CURLOPT_FOLLOWLOCATION => true,
-                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_CUSTOMREQUEST => "POST",
-                    CURLOPT_POSTFIELDS => $data,
-                    CURLOPT_HTTPHEADER => array(
-                        "Authorization: Bearer " . $token,
-                        "Accept: application/json"
-                    ),
-                ));
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => BASE_JATENG . "people/old",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_POSTFIELDS => $data,
+                CURLOPT_HTTPHEADER => array(
+                    "Authorization: Bearer " . $token,
+                    "Accept: application/json"
+                ),
+            ));
 
-                $response = curl_exec($curl);
+            $response = curl_exec($curl);
 
-                curl_close($curl);
-                $hsl = json_decode($response, true);
-                if ($hsl['message'] != "Data Duplicate !") {
-                    $this->update_id_all($nik, $hsl['data']['id']);
-                    echo $response;
-                } else {
-                    echo $response;
-                }
+            curl_close($curl);
+            $hsl = json_decode($response, true);
+            if ($hsl['message'] != "Data Duplicate !" || $hsl['message'] != "The given data was invalid.") {
+                $this->update_id_all($nik, $hsl['data']['id']);
+                echo $response;
             } else {
-                echo $cek_nar;
+                echo $response;
             }
+            // } else {
+            //     echo $cek_nar;
+            // }
         } else {
             echo "HARUS ADA SYMTON, RW dan RT <br>";
             echo "<pre>";
@@ -506,7 +543,7 @@ class Jateng extends MY_Controller
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://admin.corona.jatengprov.go.id/api/people/job/place",
+            CURLOPT_URL => BASE_JATENG . "people/job/place",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -564,7 +601,7 @@ class Jateng extends MY_Controller
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://admin.corona.jatengprov.go.id/api/people/nik?nik=" . $nik,
+            CURLOPT_URL => BASE_JATENG . "people/nik?nik=" . $nik,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -622,6 +659,7 @@ class Jateng extends MY_Controller
             "pekerjaan" => $model->get_pekerjaan_id($hsl['data'][0]['job_id'])->pekerjaan,
             "tempat_kerja" => $model->get_job_place($hsl['data'][0]['job_place_id']),
             "updated_at" => date("Y-m-d H:i:s"),
+            'data_id' => $hsl['data'][0]['patient_id'],
             'status_baru' => $status
         );
 
@@ -642,11 +680,11 @@ class Jateng extends MY_Controller
         $response2 = curl_exec($curl2);
 
         curl_close($curl2);
-
-        echo $response2;
-        // echo "<pre>";
-        // print_r($data2);
-        // echo "</pre>";
+        $hsl2 = json_decode($response2, true);
+        // echo $response2;
+        echo "<pre>";
+        print_r($hsl2);
+        echo "</pre>";
     }
 
     private function _get_last_case()
@@ -654,6 +692,92 @@ class Jateng extends MY_Controller
         $data = $this->db->query("SELECT MAX(kasus) as kasus FROM tb_laporan_baru")->row();
 
         return $data->kasus + 1;
+    }
+
+    public function get_pasien($status, $token)
+    {
+        $model = $this->M_jateng;
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => BASE_JATENG . "people/all?is_patient_district=1&is_hospital_district=0&status_id=" . $status,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "Authorization: Bearer " . $token,
+                "Accept: application/json",
+                "Content-Type: application/json"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        $hsl = json_decode($response, true);
+        $no = 0;
+        $no2 = 1;
+        foreach ($hsl['data'] as $key => $val) {
+            $case_id = $val['last_case_id'];
+            foreach ($val['cases'] as $key => $val2) {
+                if ($val2['case_id'] == $case_id) {
+                    $id_status = $val2['status_id'];
+                    $tgl_lapor = $val2['tgl_lapor'];
+                    $status = $model->get_status($id_status);
+                    $faskes_akhir = $model->get_faskes($val2['treatment_place_id']);
+                    break;
+                }
+            }
+
+            $cek_nik = $this->cek_nik_lokal($val['nik'], $val['patient_id']);
+
+            if ($cek_nik) {
+                $hasil['data'][$no] = array(
+                    "no" => $no2,
+                    "nik" => $val['nik'],
+                    "tgl_lapor" => $tgl_lapor,
+                    "nama" => $val['name'],
+                    "alamat" => $model->get_kecamatan($val['sub_district_id']) . ", " . $model->get_kelurahan($val['village_id']) . ", " . $val['rt'] . "/" . $val['rw'],
+                    "status" => $status,
+                    "faskes" => $faskes_akhir,
+                    "id" => $val['patient_id'],
+                );
+                $no++;
+                $no2++;
+            }
+
+            if ($no > 0) {
+                $hsl = array("res" => 1, "data" => $hasil['data']);
+            } else {
+                $hsl = array("res" => 0);
+            }
+        }
+
+
+        return $hsl;
+    }
+
+    public function ambil_data()
+    {
+        $model = $this->M_jateng;
+        $data['id_user'] = $this->session->userdata("id_user");
+        $data['level'] = $this->session->userdata("level");
+        $token = $this->session->userdata("token");
+        $data['konfirmasi_rawat'] = $this->get_pasien("1", $token);
+        $data['konfirmasi_isolasi'] = $this->get_pasien("2", $token);
+        $data['konfirmasi_md'] = $this->get_pasien("4", $token);
+        if ($token == '') {
+            $data['token'] = $model->get_refresh_token();
+            $this->session->set_userdata('token', $data['token']);
+        } else {
+            $data['token'] = $token;
+        }
+
+        $this->template("dashboard-2", $data);
     }
 }
 

@@ -13,6 +13,10 @@
         <button style="cursor: pointer;">CEK NIK DAN UPDATE ID JATENG KE LOKAL</button>
     </a>
     &nbsp;&nbsp;
+    <a href="<?= site_url("../jateng/refresh"); ?>">
+        <button style="cursor: pointer;">REFRESH TOKEN</button>
+    </a>
+    &nbsp;&nbsp;
     <br><br>
     <a href="<?= site_url("../jateng/get_data_all/1/" . $token); ?>" target="_blank">
         <button style="cursor: pointer;">GET DATA JATENG DIRAWAT</button>

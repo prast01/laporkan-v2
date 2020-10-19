@@ -44,6 +44,7 @@ class Welcome extends MY_Controller
 			$this->session->set_userdata('id_user', $hasil['data']['id_user']);
 			$this->session->set_userdata('nama_user', $hasil['data']['nama_user']);
 			$this->session->set_userdata('level', $hasil['data']['level_user']);
+			$this->session->set_userdata('token', $hasil['token']);
 
 			if ($hasil['data']['level_user'] == '5') {
 				redirect('../data', 'refresh');

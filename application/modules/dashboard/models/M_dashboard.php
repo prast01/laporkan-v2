@@ -398,14 +398,14 @@ class M_dashboard extends CI_Model
     }
 
     // update kecamatan
-    private function _get_kecamatan()
+    public function _get_kecamatan()
     {
-        $data = $this->db->get("tb_kecamatan")->result();
+        $data = $this->db->get("tb_kecamatan_baru")->result();
 
         return $data;
     }
 
-    private function _update_kec($id)
+    public function _update_kec($id)
     {
         $where = array(
             "id_kecamatan" => $id
@@ -431,11 +431,49 @@ class M_dashboard extends CI_Model
         $this->db->update("tb_kecamatan_baru", $data, $where);
     }
 
+    // update kecamatan
+    public function _get_kecamatan2()
+    {
+        $data = $this->db->query("SELECT * FROM tb_kecamatan_baru WHERE updated='0' LIMIT 1");
+
+        return $data;
+    }
+
+    public function _update_kec2($id)
+    {
+        $where = array(
+            "id_kecamatan" => $id
+        );
+
+        $data = array(
+            "suspek_total" => $this->_cek_suspek("dirawat", $id) + $this->_cek_suspek("discard", $id) + $this->_cek_suspek("isolasi", $id),
+            "suspek_dirawat" => $this->_cek_suspek("dirawat", $id),
+            "suspek_isolasi" => $this->_cek_suspek("isolasi", $id),
+            "suspek_discard" => $this->_cek_suspek("discard", $id),
+            "probable_total" => $this->_cek_probable("dirawat", $id) + $this->_cek_probable("sembuh", $id) + $this->_cek_probable("meninggal", $id) + $this->_cek_probable("isolasi", $id),
+            "probable_dirawat" => $this->_cek_probable("dirawat", $id),
+            "probable_isolasi" => $this->_cek_probable("isolasi", $id),
+            "probable_sembuh" => $this->_cek_probable("sembuh", $id),
+            "probable_meninggal" => $this->_cek_probable("meninggal", $id),
+            "konfirmasi_total" => $this->_cek_konfirmasi("dirawat", $id) + $this->_cek_konfirmasi("sembuh", $id) + $this->_cek_konfirmasi("meninggal", $id) + $this->_cek_konfirmasi("isolasi", $id),
+            "konfirmasi_dirawat" => $this->_cek_konfirmasi("dirawat", $id),
+            "konfirmasi_isolasi" => $this->_cek_konfirmasi("isolasi", $id),
+            "konfirmasi_sembuh" => $this->_cek_konfirmasi("sembuh", $id),
+            "konfirmasi_meninggal" => $this->_cek_konfirmasi("meninggal", $id),
+            "updated" => 1,
+        );
+
+        $this->db->update("tb_kecamatan_baru", $data, $where);
+
+        return $data;
+    }
+
     private function _cek_suspek($kondisi, $id)
     {
         $this->db->select('id_laporan');
         $this->db->from('tb_laporan_baru');
         $this->db->where(["id_kecamatan" => $id]);
+        $this->db->where(["validasi" => 1]);
         if ($kondisi == "dirawat") {
             $status = array("13", "16", "17");
             $this->db->where_in("status_baru", $status);
@@ -456,6 +494,7 @@ class M_dashboard extends CI_Model
         $this->db->select('id_laporan');
         $this->db->from('tb_laporan_baru');
         $this->db->where(["id_kecamatan" => $id]);
+        $this->db->where(["validasi" => 1]);
         if ($kondisi == "dirawat") {
             $status = array("7", "11", "12");
             $this->db->where_in("status_baru", $status);
@@ -478,6 +517,7 @@ class M_dashboard extends CI_Model
         $this->db->select('id_laporan');
         $this->db->from('tb_laporan_baru');
         $this->db->where(["id_kecamatan" => $id]);
+        $this->db->where(["validasi" => 1]);
         if ($kondisi == "dirawat") {
             $status = array("1", "5", "6");
             $this->db->where_in("status_baru", $status);

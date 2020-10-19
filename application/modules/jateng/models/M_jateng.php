@@ -21,7 +21,7 @@ class M_jateng extends CI_Model
         $this->db->from("view_data_laporan");
         $this->db->where("id_kecamatan !=", 17);
         $this->db->where_in("status_baru", $status);
-
+        $this->db->where("validasi", 1);
         if ($id == "1") {
             $this->db->where("data_id", null);
             $this->db->order_by("kasus", "DESC");
@@ -63,6 +63,42 @@ class M_jateng extends CI_Model
         $hsl = json_decode($response, true);
         // $token = $hsl['token_type'] . " " . $hsl['access_token'];
         $token = $hsl['access_token'];
+
+        return $token;
+    }
+
+    // GET TOKEN
+    public function get_refresh_token()
+    {
+        $token = $this->session->userdata("token");
+        // if ($token != "") {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://admin.corona.jatengprov.go.id/api/refresh",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_HTTPHEADER => array(
+                "Authorization: Bearer " . $token,
+                "Accept: application/json"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+        $hsl = json_decode($response, true);
+        // $token = $hsl['token_type'] . " " . $hsl['access_token'];
+        $token = $hsl['access_token'];
+        // } else {
+        //     $token = $this->get_token();
+        // }
 
         return $token;
     }
