@@ -286,8 +286,16 @@ class M_services extends CI_Model
         $this->db->from("tb_laporan_baru");
         $this->db->where("id_kecamatan !=", '17');
         $this->db->where("faskes_akhir", $nama);
-        // $status = array("1", "7", "13");
-        $this->db->where("status_baru", $status);
+
+        if ($status == "1") {
+            $status = array("1", "5", "6");
+        } elseif ($status == "2") {
+            $status = array("7", "11", "12");
+        } elseif ($status == "3") {
+            $status = array("13", "16", "17");
+        }
+
+        $this->db->where_in("status_baru", $status);
 
         $data = $this->db->get()->num_rows();
 
@@ -297,11 +305,20 @@ class M_services extends CI_Model
     public function get_pasien_luar($status)
     {
         $this->db->from("tb_laporan_baru");
-        // $faskes = array("RSUD R.A KARTINI", "RSUD REHATTA", "RSI SULTAN HADLIRIN", "RS GRAHA HUSADA", "RS PKU AISYIYAH", "RS PKU MUHAMMADIYAH MAYONG");
-        // $this->db->where_not_in("faskes_akhir", $faskes);
-        // $status = array("1", "7", "13");
         $this->db->where("id_kecamatan !=", '17');
-        $this->db->where("status_baru", $status);
+        $faskes = array("RSUD R.A KARTINI", "RSUD REHATTA", "RSI SULTAN HADLIRIN", "RS GRAHA HUSADA", "RS PKU AISYIYAH", "RS PKU MUHAMMADIYAH MAYONG");
+        $this->db->where_not_in("faskes_akhir", $faskes);
+        // $status = array("1", "7", "13");
+
+        if ($status == "1") {
+            $status = array("1", "5", "6");
+        } elseif ($status == "2") {
+            $status = array("7", "11", "12");
+        } elseif ($status == "3") {
+            $status = array("13", "16", "17");
+        }
+
+        $this->db->where_in("status_baru", $status);
 
         $data = $this->db->get()->num_rows();
 

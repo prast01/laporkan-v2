@@ -274,6 +274,11 @@ class M_kasus extends CI_Model
             return json_encode($msg);
         }
 
+        if ($post['rt'] == "" || $post['rw'] == "") {
+            $msg = array('res' => 0, 'msg' => 'RT RW harus Diisi dengan BENAR');
+            return json_encode($msg);
+        }
+
         if ($post['umur'] == '') {
             $msg = array('res' => 0, 'msg' => 'Umur Harus Diisi dengan BENAR');
             return json_encode($msg);
@@ -328,6 +333,14 @@ class M_kasus extends CI_Model
             $kasus = NULL;
         }
 
+        if ($post['status'] == "1" || $post['status'] == "7" || $post['status'] == "13") {
+            $id_gejala = $post['id_gejala'];
+            $tgl_gejala = $post['tgl_gejala'];
+        } else {
+            $id_gejala = NULL;
+            $tgl_gejala = NULL;
+        }
+
         $p = $this->get_penyakit_by($post['penyakit']);
         if ($post['job'] != "") {
             $pd = $this->get_job_by($post['job']);
@@ -337,6 +350,8 @@ class M_kasus extends CI_Model
         }
 
         $data = array(
+            'id_gejala' => $id_gejala,
+            'tgl_gejala' => $tgl_gejala,
             'id_kecamatan' => $post['id_kecamatan'],
             'tgl_periksa' => $post['tgl_periksa'],
             'nik' => $post['nik'],
@@ -367,6 +382,7 @@ class M_kasus extends CI_Model
         if ($this->session->userdata("id_user") != "") {
             $cek = $this->db->insert('tb_laporan_baru', $data);
             $this->_add_riwayat($post['nik']);
+            $this->insert_jateng($post['nik']);
         } else {
             $cek = 0;
         }
@@ -387,6 +403,11 @@ class M_kasus extends CI_Model
         $telp = explode("-", $post['no_telp']);
         if ($telp[1] == "____" || substr($telp[0], 0, 2) != "08") {
             $msg = array('res' => 0, 'msg' => 'Nomor Telp Harus Diisi dengan BENAR');
+            return json_encode($msg);
+        }
+
+        if ($post['rt'] == "" || $post['rw'] == "") {
+            $msg = array('res' => 0, 'msg' => 'RT RW harus Diisi dengan BENAR');
             return json_encode($msg);
         }
 
@@ -434,6 +455,14 @@ class M_kasus extends CI_Model
             $kasus = NULL;
         }
 
+        if ($post['status'] == "1" || $post['status'] == "7" || $post['status'] == "13") {
+            $id_gejala = $post['id_gejala'];
+            $tgl_gejala = $post['tgl_gejala'];
+        } else {
+            $id_gejala = NULL;
+            $tgl_gejala = NULL;
+        }
+
         if ($post['job'] != "") {
             $pd = $this->get_job_by($post['job']);
             $pk = $pd->pekerjaan;
@@ -442,6 +471,8 @@ class M_kasus extends CI_Model
         }
 
         $data = array(
+            'id_gejala' => $id_gejala,
+            'tgl_gejala' => $tgl_gejala,
             'id_kecamatan' => $post['id_kecamatan'],
             'tgl_periksa' => $post['tgl_periksa'],
             'nik' => $post['nik'],
@@ -487,6 +518,7 @@ class M_kasus extends CI_Model
 
         if ($cek) {
             $this->_del_riwayat($id);
+            $this->delete_jateng($id);
             $msg = array('res' => 1, 'msg' => 'Laporan Berhasil Dihapus');
         } else {
             $msg = array('res' => 0, 'msg' => 'Laporan Gagal Dihapus');
@@ -773,6 +805,9 @@ class M_kasus extends CI_Model
         );
 
         $this->save_kontak($datax);
+
+
+        $this->insert_jateng($data2['nik']);
     }
 
     public function save_step($step, $id)
@@ -894,7 +929,10 @@ class M_kasus extends CI_Model
             "lokasi_rs" => $d->faskes_akhir,
             "updated_at" => date("Y-m-d H:i:s")
         );
-        $this->db->insert('tb_riwayat', $data);
+        $cek = $this->db->insert('tb_riwayat', $data);
+        if ($cek && $d->data_id != "") {
+            $this->status_jateng($d->nik);
+        }
     }
 
     private function _del_riwayat($id)
@@ -919,6 +957,223 @@ class M_kasus extends CI_Model
 
             $this->db->insert("tb_pe", $data);
         }
+    }
+
+
+    public function insert_jateng($nik)
+    {
+        $token = $this->session->userdata("token");
+        $ps = $this->get_data_nik_2($nik);
+
+        $sex = ($ps->jekel == '1') ? "L" : "P";
+        $phone = ($ps->no_telp != '') ? $ps->no_telp : '0800-0000-0000';
+        $job_place = ($ps->tempat_kerja == '') ? 'TIDAK TAHU' : $ps->tempat_kerja;
+        $ket = ($ps->keterangan == "") ? "-" : $ps->keterangan;
+
+        $cek_rt_rw = ($ps->rt == '' && $ps->rw == '') ? false : true;
+        $cek_status = ($ps->status_baru == '1' || $ps->status_baru == '5' || $ps->status_baru == '6' || $ps->status_baru == '7' || $ps->status_baru == '11' || $ps->status_baru == '12' || $ps->status_baru == '13' || $ps->status_baru == '16' || $ps->status_baru == '17') ? false : true;
+
+        if ($cek_status) {
+            $data = array(
+                'nik' => $nik,
+                'name' => $ps->nama,
+                'age' => $ps->umur,
+                'sex' => $sex,
+                'phone_number' => $phone,
+                'kdc' => $ps->kode_capil,
+                'job_id' => $this->get_pekerjaan($ps->id_pekerjaan),
+                'job_place_name' => $job_place,
+                'address' => $ps->alamat_domisili,
+                'rt' => $ps->rt,
+                'rw' => $ps->rw,
+                'common_condition' => $ket,
+                'treatment' => $ket,
+                'hospital_id' => $this->get_hospital($ps->faskes_akhir),
+                'status_id' => $ps->id_status_jateng,
+                'reported_date' => date("Y-m-d", strtotime($ps->tgl_periksa)),
+                'patient_created_at' => date("Y-m-d H:i:s", strtotime($ps->updated_at)),
+                'case_created_at' => date("Y-m-d H:i:s", strtotime($ps->updated_at))
+            );
+        } else {
+            $tgl_gejala = ($ps->tgl_gejala == "") ? date('Y-m-d', strtotime('-7 days', date("Y-m-d", strtotime($ps->tgl_periksa)))) : date("Y-m-d", strtotime($ps->tgl_gejala));
+
+            $data = array(
+                'symptom[0]' => $ps->id_gejala,
+                'symptom_date' => $tgl_gejala,
+                'nik' => $nik,
+                'name' => $ps->nama,
+                'age' => $ps->umur,
+                'sex' => $sex,
+                'phone_number' => $phone,
+                'kdc' => $ps->kode_capil,
+                'job_id' => $this->get_pekerjaan($ps->id_pekerjaan),
+                'job_place_name' => $job_place,
+                'address' => $ps->alamat_domisili,
+                'rt' => $ps->rt,
+                'rw' => $ps->rw,
+                'common_condition' => $ket,
+                'treatment' => $ket,
+                'hospital_id' => $this->get_hospital($ps->faskes_akhir),
+                'status_id' => $ps->id_status_jateng,
+                'reported_date' => date("Y-m-d", strtotime($ps->tgl_periksa)),
+                'patient_created_at' => date("Y-m-d H:i:s", strtotime($ps->updated_at)),
+                'case_created_at' => date("Y-m-d H:i:s", strtotime($ps->updated_at))
+            );
+        }
+
+        if ($cek_rt_rw) {
+            // $cek_nar = $this->cek_nar_2($nik, $token);
+            // if ($cek_nar == 1) {
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => BASE_JATENG . "people/new",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_POSTFIELDS => $data,
+                CURLOPT_HTTPHEADER => array(
+                    "Authorization: Bearer " . $token,
+                    "Accept: application/json"
+                ),
+            ));
+
+            $response = curl_exec($curl);
+
+            curl_close($curl);
+            $hsl = json_decode($response, true);
+            $cek_error = (isset($hsl['errors'])) ? 0 : 1;
+            if ($hsl['message'] != "Data Duplicate !" || $hsl['message'] != "The given data was invalid.") {
+                $this->update_id($nik, $hsl['data']['id']);
+            } else {
+                $this->update_id($nik, null);
+            }
+        }
+    }
+
+    public function status_jateng($nik)
+    {
+        $token = $this->session->userdata("token");
+        $ps = $this->get_data_nik_2($nik);
+
+        $ket = ($ps->keterangan == "") ? "-" : $ps->keterangan;
+
+        $cek_status = ($ps->status_baru == '3' || $ps->status_baru == '4' || $ps->status_baru == '5' || $ps->status_baru == '6' || $ps->status_baru == '9' || $ps->status_baru == '10' || $ps->status_baru == '11' || $ps->status_baru == '12' || $ps->status_baru == '15' || $ps->status_baru == '16' || $ps->status_baru == '17') ? false : true;
+
+        if ($cek_status) {
+            $data = array(
+                'patient_id' => $ps->data_id,
+                'common_condition' => $ket,
+                'treatment' => $ket,
+                'status_id' => $ps->id_status_jateng,
+                'hospital_id' => $this->get_hospital($ps->faskes_akhir),
+                'case_created_at' => date("Y-m-d H:i:s")
+            );
+        } else {
+            $data = array(
+                'patient_id' => $ps->data_id,
+                'common_condition' => $ket,
+                'treatment' => $ket,
+                'status_id' => $ps->id_status_jateng,
+                'hospital_id' => $this->get_hospital($ps->faskes_akhir),
+                'date_out' => date("Y-m-d"),
+                'case_created_at' => date("Y-m-d H:i:s")
+            );
+        }
+
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => BASE_JATENG . "people/case/new",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => $data,
+            CURLOPT_HTTPHEADER => array(
+                "Authorization: Bearer " . $token,
+                "Accept: application/json",
+                "Content-Type: application/json"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+    }
+
+    public function delete_jateng($id)
+    {
+        $token = $this->session->userdata("token");
+        $ps = $this->get_data($id);
+        if ($ps->data_id != "") {
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => BASE_JATENG . "people?patient_id=" . $ps->data_id,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "DELETE",
+                CURLOPT_HTTPHEADER => array(
+                    "Authorization: Bearer " . $token,
+                    "Accept: application/json",
+                    "Content-Type: application/json"
+                ),
+            ));
+
+            $response = curl_exec($curl);
+
+            curl_close($curl);
+        }
+    }
+    public function get_data_nik_2($nik)
+    {
+        $data = $this->db->get_where("view_data_laporan", ["nik" => $nik])->row();
+
+        return $data;
+    }
+
+    public function get_pekerjaan($id)
+    {
+        $data = $this->db->get_where("tb_pekerjaan", ["id_pekerjaan" => $id])->row();
+
+        $hsl = ($id == '') ? '3' : $data->id_job_jateng;
+
+        return $hsl;
+    }
+
+    public function get_hospital($id)
+    {
+        $data = $this->db->get_where("tb_hospital", ["nama_hospital" => $id])->row();
+
+        return $data->id_prov_hospital;
+    }
+
+    public function update_id($nik, $id_jateng)
+    {
+        $where = array("nik" => $nik);
+        $data = array("data_id" => $id_jateng);
+
+        $this->db->update("tb_laporan_baru", $data, $where);
+    }
+
+    public function get_gejala()
+    {
+        $data = $this->db->get("tb_gejala")->result();
+
+        return $data;
     }
 }
 

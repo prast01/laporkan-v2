@@ -111,6 +111,32 @@
                                         <textarea class="form-control" name="alamat_domisili" required><?= $laporan->alamat_domisili; ?></textarea>
                                     </div>
                                 </div>
+
+                                <?php if ($laporan->id_gejala != "") : ?>
+                                    <div class="form-group row">
+                                        <div class="col-6">
+                                            <div class="row">
+                                                <label for="inputEmail3" class="col-sm-4 col-form-label">Gejala</label>
+                                                <div class="col-sm-8">
+                                                    <select name="id_gejala" class="form-control select2" style="width: 100%;" placeholder="Pilih Gejala">
+                                                        <option value="" disabled>Pilih Gejala</option>
+                                                        <?php foreach ($gejala as $key) : ?>
+                                                            <option <?= ($key->id_gejala == $laporan->id_gejala) ? "selected" : ""; ?> value="<?= $key->id_gejala; ?>"><?= $key->gejala; ?></option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row">
+                                                <label for="inputEmail3" class="col-sm-4 col-form-label">Tgl Mulai Gejala</label>
+                                                <div class="col-sm-8">
+                                                    <input type="date" class="form-control" name="tgl_gejala" value="<?= $laporan->tgl_gejala; ?>">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
                                 <div class="form-group row">
                                     <label for="inputEmail3" class="col-sm-2 col-form-label">Kondisi Umum</label>
                                     <div class="col-sm-10">

@@ -32,8 +32,11 @@
                                 </div>
                                 <div class="form-group row">
                                     <label for="inputEmail3" class="col-sm-2 col-form-label">NIK</label>
-                                    <div class="col-sm-4">
-                                        <input type="number" class="form-control" name="nik" placeholder="NIK" required>
+                                    <div class="col-sm-3">
+                                        <input type="number" class="form-control" name="nik" id="nik" placeholder="NIK" required>
+                                    </div>
+                                    <div class="col-sm-1 text-center">
+                                        <button id="btn_generate" type="button" class="btn btn-success" title="Generate NIK"><span class="fa fa-sync"></span></button>
                                     </div>
                                     <label for="inputEmail3" class="col-sm-2 col-form-label">Nama</label>
                                     <div class="col-sm-4">
@@ -122,6 +125,29 @@
                                             <label for="inputEmail3" class="col-sm-4 col-form-label">Kasus Ke</label>
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control" name="kasus" placeholder="Hanya untuk Kasus Terkonfirmasi">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="gejala" class="form-group row" style="display: none;">
+                                    <div class="col-6">
+                                        <div class="row">
+                                            <label for="inputEmail3" class="col-sm-4 col-form-label">Gejala</label>
+                                            <div class="col-sm-8">
+                                                <select name="id_gejala" class="form-control select2" style="width: 100%;" placeholder="Pilih Gejala">
+                                                    <option value="" selected disabled>Pilih Gejala</option>
+                                                    <?php foreach ($gejala as $key) : ?>
+                                                        <option value="<?= $key->id_gejala; ?>"><?= $key->gejala; ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="row">
+                                            <label for="inputEmail3" class="col-sm-4 col-form-label">Tgl Mulai Gejala</label>
+                                            <div class="col-sm-8">
+                                                <input type="date" class="form-control" name="tgl_gejala">
                                             </div>
                                         </div>
                                     </div>
@@ -221,8 +247,10 @@
             var id = $(this).val();
             if (id == 1 || id == 7 || id == 13) {
                 $("#f_akhir").show();
+                $("#gejala").show();
             } else {
                 $("#f_akhir").hide();
+                $("#gejala").hide();
             }
             if (id == 1 || id == 2) {
                 $("#kas").show();
@@ -370,6 +398,17 @@
             templateSelection: function(data) {
                 return data.text;
             }
+        });
+
+        $('#btn_generate').click(function() {
+            $.ajax({
+                url: "<?php echo site_url("../servicesV2/generate_nik"); ?>",
+                dataType: 'json',
+                success: function(data) {
+                    $("#nik").val(data.nik);
+                    console.log(data.nik);
+                }
+            });
         });
 
     });

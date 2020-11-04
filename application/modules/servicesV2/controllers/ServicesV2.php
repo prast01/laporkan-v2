@@ -238,8 +238,8 @@ class ServicesV2 extends MY_Controller
         $data['tgl_update'] = $tgl;
         foreach ($rs as $key) {
             $telp = $model->getFaskesTelp($key->id_faskes);
-            $suspek = $model->get_pasien_by($key->nama_faskes, "13");
-            $probable = $model->get_pasien_by($key->nama_faskes, "7");
+            $suspek = $model->get_pasien_by($key->nama_faskes, "3");
+            $probable = $model->get_pasien_by($key->nama_faskes, "2");
             $konfirmasi = $model->get_pasien_by($key->nama_faskes, "1");
 
             $data['data'][$no]['id_faskes'] = $key->id_faskes;
@@ -253,9 +253,9 @@ class ServicesV2 extends MY_Controller
             $no++;
         }
 
-        $suspek2 = $model->get_pasien_luar("16");
-        $probable2 = $model->get_pasien_luar("11");
-        $konfirmasi2 = $model->get_pasien_luar("5");
+        $suspek2 = $model->get_pasien_luar("3");
+        $probable2 = $model->get_pasien_luar("2");
+        $konfirmasi2 = $model->get_pasien_luar("1");
 
         $data['data'][$no]['id_faskes'] = 99;
         $data['data'][$no]['nama_faskes'] = "RS LUAR DAERAH";
@@ -283,6 +283,33 @@ class ServicesV2 extends MY_Controller
         $data = $model->get_penyakit();
 
         echo json_encode($data);
+    }
+
+    public function generate_nik()
+    {
+        $token = $this->session->userdata("token");
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => BASE_JATENG . "people/generate-nik",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "Authorization: Bearer " . $token,
+                "Accept: application/json",
+                "Content-Type: application/json"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        echo $response;
     }
 }
 

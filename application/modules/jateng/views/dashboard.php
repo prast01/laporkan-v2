@@ -14,9 +14,9 @@
                         <div class="col-md-12 mb-2">
                             <a href="<?= site_url("../jateng/refresh"); ?>" class="btn btn-success"><span class="fa fa-sync"></span> Refresh Token</a>
                         </div>
-                        <div class="col-md-12">
+                        <!-- <div class="col-md-12">
                             <a href="<?= site_url("../jateng/ambil_data"); ?>" target="_blank" class="btn btn-warning"><span class="fa fa-sync"></span> Ambil Data JATENG</a>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -62,6 +62,12 @@
                             <br>
                             <div class="tab-content" id="custom-tabs-one-tabContent">
                                 <div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <a href="<?= site_url("../jateng/ambil_data"); ?>" target="_blank" class="btn btn-warning mb-3"><span class="fa fa-sync"></span> Ambil Data JATENG</a>
+                                            <a href="<?= site_url("../jateng/cek_nik_all_k/" . $token); ?>" target="_blank" class="btn btn-success mb-3"><span class="fa fa-sync"></span> CEK NIK KE JATENG</a>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="table-responsive">
@@ -120,6 +126,12 @@
                                 </div>
                                 <div class="tab-pane fade" id="custom-tabs-one-contact" role="tabpanel" aria-labelledby="custom-tabs-one-contact-tab">
                                     <div class="row">
+                                        <div class="col-12">
+                                            <a href="<?= site_url("../jateng/ambil_data_2"); ?>" target="_blank" class="btn btn-warning mb-3"><span class="fa fa-sync"></span> Ambil Data JATENG</a>
+                                            <a href="<?= site_url("../jateng/cek_nik_all_s/" . $token); ?>" target="_blank" class="btn btn-success mb-3"><span class="fa fa-sync"></span> CEK NIK KE JATENG</a>
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-md-12">
                                             <div class="table-responsive">
                                                 <table class="table table-bordered datatable" width="100%">
@@ -156,7 +168,15 @@
                                                                 <td><?= $row->no_telp; ?></td>
                                                                 <td><?= $row->nama_status; ?></td>
                                                                 <td><?= $row->faskes_akhir; ?></td>
-                                                                <td></td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                                                        Aksi </button>
+                                                                    <div class="dropdown-menu">
+                                                                        <a class="dropdown-item" target="_blank" href="<?= site_url("../jateng/cek_nik/" . $row->nik . "/" . $token); ?>"><span class="fa fa-check"></span> Cek NIK</a>
+                                                                        <a class="dropdown-item" target="_blank" href="<?= site_url("../jateng/cek_nar/" . $row->nik . "/" . $token); ?>"><span class="fa fa-check"></span> Cek NAR</a>
+                                                                        <a class="dropdown-item" target="_blank" href="<?= site_url("../jateng/insert_jateng/" . $row->nik . "/" . $token); ?>"><span class="fa fa-share-square"></span> Kirim Data</a>
+                                                                    </div>
+                                                                </td>
                                                             </tr>
                                                         <?php endforeach; ?>
                                                     </tbody>

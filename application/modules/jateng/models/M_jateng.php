@@ -26,6 +26,9 @@ class M_jateng extends CI_Model
             $this->db->where("data_id", null);
             $this->db->order_by("kasus", "DESC");
         } else {
+            $this->db->where("rt !=", null);
+            $this->db->where("rw !=", null);
+            $this->db->where("data_id", null);
             $this->db->order_by("tgl_periksa", "DESC");
         }
 
@@ -153,14 +156,33 @@ class M_jateng extends CI_Model
     public function get_nik($id)
     {
         if ($id == "1") {
-            $data = $this->db->query("SELECT nik FROM view_data_laporan WHERE cek_nik='0' AND status_baru IN ('1', '2', '3', '4', '5', '6') AND id_kecamatan != '17' AND data_id is null LIMIT 1");
+            $status = array("1", "2", "3", "4", "5", "6");
         } elseif ($id == "2") {
-            $data = $this->db->query("SELECT nik FROM view_data_laporan WHERE cek_nik='0' AND status_baru IN ('7', '8', '9', '10', '11', '12') AND id_kecamatan != '17' LIMIT 1");
+            $status = array("7", "8", "9", "10", "11", "12");
         } elseif ($id == "3") {
-            $data = $this->db->query("SELECT nik FROM view_data_laporan WHERE cek_nik='0' AND status_baru IN ('13', '14', '15', '16', '17') AND id_kecamatan != '17' LIMIT 1");
+            $status = array("13", "14", "15", "16", "17");
         } elseif ($id == "4") {
-            $data = $this->db->query("SELECT nik FROM view_data_laporan WHERE cek_nik='0' AND status_baru IN ('18', '19') AND id_kecamatan != '17' LIMIT 1");
+            $status = array("18", "19");
         }
+
+        $this->db->from("view_data_laporan");
+        $this->db->where("id_kecamatan !=", 17);
+        $this->db->where_in("status_baru", $status);
+        $this->db->where("validasi", 1);
+        if ($id == "1") {
+            $this->db->where("cek_nik", 0);
+            $this->db->where("data_id", null);
+            $this->db->order_by("kasus", "DESC");
+        } else {
+            $this->db->where("rt !=", null);
+            $this->db->where("rw !=", null);
+            $this->db->where("data_id", null);
+            $this->db->where("cek_nik", 0);
+            $this->db->order_by("tgl_periksa", "DESC");
+        }
+
+
+        $data = $this->db->get();
 
         return $data;
     }
@@ -220,6 +242,7 @@ class M_jateng extends CI_Model
 
         $this->db->update("tb_laporan_baru", $data, $where);
     }
+
     public function update_id_all($nik, $id_jateng)
     {
         $where = array("nik" => $nik);
