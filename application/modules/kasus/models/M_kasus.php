@@ -76,7 +76,7 @@ class M_kasus extends CI_Model
 
     public function get_data($id)
     {
-        $data = $this->db->get_where("tb_laporan_baru", ["id_laporan" => $id])->row();
+        $data = $this->db->get_where("view_data_laporan", ["id_laporan" => $id])->row();
 
         return $data;
     }
@@ -337,7 +337,7 @@ class M_kasus extends CI_Model
             $id_gejala = $post['id_gejala'];
             $tgl_gejala = $post['tgl_gejala'];
         } else {
-            $id_gejala = NULL;
+            $id_gejala = 13;
             $tgl_gejala = NULL;
         }
 
@@ -459,7 +459,7 @@ class M_kasus extends CI_Model
             $id_gejala = $post['id_gejala'];
             $tgl_gejala = $post['tgl_gejala'];
         } else {
-            $id_gejala = NULL;
+            $id_gejala = 13;
             $tgl_gejala = NULL;
         }
 
@@ -504,6 +504,7 @@ class M_kasus extends CI_Model
         }
 
         if ($cek) {
+            $this->update_jateng($id);
             $msg = array('res' => 1, 'msg' => 'Laporan Berhasil Diubah');
         } else {
             $msg = array('res' => 0, 'msg' => 'Laporan Gagal Diubah');
@@ -1055,6 +1056,37 @@ class M_kasus extends CI_Model
         }
     }
 
+    public function update_jateng($id)
+    {
+        $token = $this->session->userdata("token");
+        $ps = $this->get_data($id);
+        if ($ps->data_id != "") {
+            $jk = ($ps->jekel == 1) ? "L" : "P";
+            $data = "patient_id=" . $ps->data_id . "&nik=" . $ps->nik . "&name=" . $ps->nama . "&age=" . $ps->umur . "&sex=" . $jk . "&phone_number=" . $ps->no_telp . "&kdc=" . $ps->kode_capil . "&rt=" . $ps->rt . "&rw=" . $ps->rw;
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => BASE_JATENG . "people?" . $data,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "PUT",
+                CURLOPT_HTTPHEADER => array(
+                    "Authorization: Bearer " . $token,
+                    "Accept: application/json",
+                    "Content-Type: application/json"
+                ),
+            ));
+
+            $response = curl_exec($curl);
+
+            curl_close($curl);
+        }
+    }
+
     public function status_jateng($nik)
     {
         $token = $this->session->userdata("token");
@@ -1138,6 +1170,7 @@ class M_kasus extends CI_Model
             curl_close($curl);
         }
     }
+
     public function get_data_nik_2($nik)
     {
         $data = $this->db->get_where("view_data_laporan", ["nik" => $nik])->row();
