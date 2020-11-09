@@ -444,6 +444,7 @@ class Kasus extends MY_Controller
         }
 
         redirect('../kasus', 'refresh');
+        // echo $hasil['r'];
     }
 
     public function delete($id)
@@ -459,6 +460,7 @@ class Kasus extends MY_Controller
         }
 
         redirect('../kasus', 'refresh');
+        // echo $hasil['r'];
     }
 
     public function add_riwayat($id)
@@ -474,6 +476,7 @@ class Kasus extends MY_Controller
         }
 
         redirect('../kasus', 'refresh');
+        // echo $hasil['r'];
     }
 
     public function add_riwayat_lama()

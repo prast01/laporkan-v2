@@ -982,7 +982,7 @@ class M_datatable extends CI_Model
             $this->db->order_by($column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
         } else {
             // $order = $order;
-            $this->db->order_by('kasus', 'desc');
+            $this->db->order_by('id_laporan', 'desc');
         }
     }
 

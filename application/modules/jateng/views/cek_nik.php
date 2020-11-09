@@ -57,7 +57,7 @@
 
     <?php if ($jateng != 0) : ?>
         <br><br>
-        <a href="<?= site_url("../jateng/update_id/" . $laporan['nik'] . "/" . $jateng['patient_id'] . "/" . $token); ?>">
+        <a href="<?= site_url("../jateng/update_id/" . $laporan['nik'] . "/" . $jateng['patient_id'] . "/" . $token . "/1"); ?>">
             <button style="cursor: pointer;">UPDATE PASIEN ID JATENG</button>
         </a>
     <?php endif; ?>

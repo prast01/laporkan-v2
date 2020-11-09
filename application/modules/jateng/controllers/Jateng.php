@@ -392,12 +392,14 @@ class Jateng extends MY_Controller
     }
 
     // CRUD
-    public function update_id($nik, $id_jateng, $token)
+    public function update_id($nik, $id_jateng, $token, $id)
     {
         $model = $this->M_jateng;
         $model->update_id($nik, $id_jateng);
 
-        redirect('../jateng/cek_nik/' . $nik . "/" . $token, 'refresh');
+        if ($id == 1) {
+            redirect('../jateng/cek_nik/' . $nik . "/" . $token, 'refresh');
+        }
     }
 
     public function update_id_all($nik, $id_jateng)
@@ -469,6 +471,7 @@ class Jateng extends MY_Controller
     // insert jateng data baru
     public function insert_jateng($nik, $token)
     {
+        error_reporting(E_ALL ^ E_NOTICE);
         $model = $this->M_jateng;
         $ps = $model->get_data_nik_2($nik);
 
@@ -554,13 +557,13 @@ class Jateng extends MY_Controller
 
             curl_close($curl);
             $hsl = json_decode($response, true);
-            $cek_error = (count($hsl['errors']) > 0) ? 0 : 1;
+            $cek_error = (count($hsl['errors']) > 0 || !isset($hsl['errors'])) ? 0 : 1;
             // if ($hsl['message'] != "Data Duplicate !" || $hsl['message'] != "The given data was invalid.") {
             if ($cek_error || $hsl['message'] != "Data Duplicate !") {
-                $this->update_id($nik, $hsl['data']['id'], $token);
+                $this->update_id($nik, $hsl['data']['id'], $token, 0);
                 echo $response;
             } else {
-                $this->update_id($nik, null, $token);
+                $this->update_id($nik, null, $token, 0);
                 echo $response;
             }
             // } else {

@@ -504,8 +504,8 @@ class M_kasus extends CI_Model
         }
 
         if ($cek) {
-            $this->update_jateng($id);
-            $msg = array('res' => 1, 'msg' => 'Laporan Berhasil Diubah');
+            $a = $this->update_jateng($id);
+            $msg = array('res' => 1, 'msg' => 'Laporan Berhasil Diubah', 'r' => $a);
         } else {
             $msg = array('res' => 0, 'msg' => 'Laporan Gagal Diubah');
         }
@@ -515,11 +515,11 @@ class M_kasus extends CI_Model
 
     public function delete($id)
     {
+        $this->delete_jateng($id);
         $cek = $this->db->delete("tb_laporan_baru", ["id_laporan" => $id]);
 
         if ($cek) {
             $this->_del_riwayat($id);
-            $this->delete_jateng($id);
             $msg = array('res' => 1, 'msg' => 'Laporan Berhasil Dihapus');
         } else {
             $msg = array('res' => 0, 'msg' => 'Laporan Gagal Dihapus');
@@ -577,8 +577,8 @@ class M_kasus extends CI_Model
         $cek = $this->db->update("tb_laporan_baru", $data, $where);
 
         if ($cek) {
-            $this->_add_riwayat_baru($id);
-            $msg = array('res' => 1, 'msg' => 'Laporan Berhasil Diubah');
+            $r = $this->_add_riwayat_baru($id);
+            $msg = array('res' => 1, 'msg' => 'Laporan Berhasil Diubah', 'r' => $r);
         } else {
             $msg = array('res' => 0, 'msg' => 'Laporan Gagal Diubah');
         }
@@ -932,7 +932,7 @@ class M_kasus extends CI_Model
         );
         $cek = $this->db->insert('tb_riwayat', $data);
         if ($cek && $d->data_id != "") {
-            $this->status_jateng($d->nik);
+            return $this->status_jateng($d->nik);
         }
     }
 
@@ -963,6 +963,7 @@ class M_kasus extends CI_Model
 
     public function insert_jateng($nik)
     {
+        error_reporting(E_ALL ^ E_NOTICE);
         $token = $this->session->userdata("token");
         $ps = $this->get_data_nik_2($nik);
 
@@ -1047,7 +1048,7 @@ class M_kasus extends CI_Model
 
             curl_close($curl);
             $hsl = json_decode($response, true);
-            $cek_error = (isset($hsl['errors'])) ? 0 : 1;
+            $cek_error = (count($hsl['errors']) > 0 || !isset($hsl['errors'])) ? 0 : 1;
             if ($hsl['message'] != "Data Duplicate !" || $hsl['message'] != "The given data was invalid.") {
                 $this->update_id($nik, $hsl['data']['id']);
             } else {
@@ -1061,8 +1062,10 @@ class M_kasus extends CI_Model
         $token = $this->session->userdata("token");
         $ps = $this->get_data($id);
         if ($ps->data_id != "") {
+            $nama = str_replace(" ", '%20', $ps->nama);
+            $alamat_domisili = str_replace(" ", '%20', $ps->alamat_domisili);
             $jk = ($ps->jekel == 1) ? "L" : "P";
-            $data = "patient_id=" . $ps->data_id . "&nik=" . $ps->nik . "&name=" . $ps->nama . "&age=" . $ps->umur . "&sex=" . $jk . "&phone_number=" . $ps->no_telp . "&kdc=" . $ps->kode_capil . "&rt=" . $ps->rt . "&rw=" . $ps->rw;
+            $data = "patient_id=" . $ps->data_id . "&nik=" . $ps->nik . "&name=" . $nama . "&age=" . $ps->umur . "&sex=" . $jk . "&phone_number=" . $ps->no_telp . "&kdc=" . $ps->kode_capil . "&rt=" . $ps->rt . "&rw=" . $ps->rw . "&address=" . $alamat_domisili;
             $curl = curl_init();
 
             curl_setopt_array($curl, array(
@@ -1084,6 +1087,8 @@ class M_kasus extends CI_Model
             $response = curl_exec($curl);
 
             curl_close($curl);
+
+            return $response;
         }
     }
 
@@ -1140,6 +1145,9 @@ class M_kasus extends CI_Model
         $response = curl_exec($curl);
 
         curl_close($curl);
+
+        // return json_encode($data);
+        return $response;
     }
 
     public function delete_jateng($id)
@@ -1168,7 +1176,9 @@ class M_kasus extends CI_Model
             $response = curl_exec($curl);
 
             curl_close($curl);
+            $hsl = json_decode($response, true);
         }
+        // return json_encode($ps->data_id);
     }
 
     public function get_data_nik_2($nik)
