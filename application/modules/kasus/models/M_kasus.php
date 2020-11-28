@@ -532,7 +532,7 @@ class M_kasus extends CI_Model
     {
         $post = $this->input->post();
 
-        if ($post['status'] == '1' || $post['status'] == '7' || $post['status'] == '13') {
+        if ($post['status'] == '1' || $post['status'] == '5' || $post['status'] == '7' || $post['status'] == '11' || $post['status'] == '13' || $post['status'] == '16') {
             if ($post['faskes_akhir'] == '') {
                 $msg = array('res' => 0, 'msg' => 'Rumah Sakit Harus Diisi dengan BENAR');
                 return json_encode($msg);

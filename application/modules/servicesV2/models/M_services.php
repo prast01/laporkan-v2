@@ -284,7 +284,7 @@ class M_services extends CI_Model
     public function get_pasien_by($nama, $status)
     {
         $this->db->from("tb_laporan_baru");
-        $this->db->where("id_kecamatan !=", '17');
+        // $this->db->where("id_kecamatan !=", '17');
         $this->db->where("faskes_akhir", $nama);
 
         if ($status == "1") {
