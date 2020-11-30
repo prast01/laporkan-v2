@@ -538,7 +538,7 @@ class Jateng extends MY_Controller
             $curl = curl_init();
 
             curl_setopt_array($curl, array(
-                CURLOPT_URL => BASE_JATENG . "people/old",
+                CURLOPT_URL => BASE_JATENG . "people/new",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
