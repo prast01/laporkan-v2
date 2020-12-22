@@ -614,7 +614,11 @@ class M_kasus extends CI_Model
                 $kasus = $post['kasus_lama'];
             }
         } else {
-            $kasus = null;
+            if ($post['kasus_lama'] == "") {
+                $kasus = null;
+            } else {
+                $kasus = $post['kasus_lama'];
+            }
         }
 
 
@@ -658,7 +662,11 @@ class M_kasus extends CI_Model
                 $kasus = $post['kasus_lama'];
             }
         } else {
-            $kasus = null;
+            if ($post['kasus_lama'] == "") {
+                $kasus = null;
+            } else {
+                $kasus = $post['kasus_lama'];
+            }
         }
 
 
@@ -993,8 +1001,8 @@ class M_kasus extends CI_Model
                 'hospital_id' => $this->get_hospital($ps->faskes_akhir),
                 'status_id' => $ps->id_status_jateng,
                 'reported_date' => date("Y-m-d", strtotime($ps->tgl_periksa)),
-                'patient_created_at' => date("Y-m-d H:i:s", strtotime($ps->updated_at)),
-                'case_created_at' => date("Y-m-d H:i:s", strtotime($ps->updated_at))
+                'patient_created_at' => date("Y-m-d H:i:s"),
+                'case_created_at' => date("Y-m-d H:i:s")
             );
         } else {
             $tgl_gejala = ($ps->tgl_gejala == "") ? date('Y-m-d', strtotime('-7 days', date("Y-m-d", strtotime($ps->tgl_periksa)))) : date("Y-m-d", strtotime($ps->tgl_gejala));
@@ -1018,8 +1026,8 @@ class M_kasus extends CI_Model
                 'hospital_id' => $this->get_hospital($ps->faskes_akhir),
                 'status_id' => $ps->id_status_jateng,
                 'reported_date' => date("Y-m-d", strtotime($ps->tgl_periksa)),
-                'patient_created_at' => date("Y-m-d H:i:s", strtotime($ps->updated_at)),
-                'case_created_at' => date("Y-m-d H:i:s", strtotime($ps->updated_at))
+                'patient_created_at' => date("Y-m-d H:i:s"),
+                'case_created_at' => date("Y-m-d H:i:s")
             );
         }
 
