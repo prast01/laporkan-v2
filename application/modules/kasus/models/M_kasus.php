@@ -556,7 +556,11 @@ class M_kasus extends CI_Model
                 $kasus = $post['kasus_lama'];
             }
         } else {
-            $kasus = null;
+            if ($post['kasus_lama'] == "") {
+                $kasus = null;
+            } else {
+                $kasus = $post['kasus_lama'];
+            }
         }
 
 
