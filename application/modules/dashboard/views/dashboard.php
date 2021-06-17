@@ -301,7 +301,60 @@ $bln = array(01 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli"
             </div>
 
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <p class="mb-0">DATA NAKES REAL TIME</p>
+                                    <p class="mb-3">update terakhir : <br><?= $update_at_realtime; ?></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="card card-outline card-danger">
+                                        <div class="card-header" style="background-color: #ffeded;">
+                                            <p class="text-center text-danger mb-0">Terkonfirmasi</p>
+                                            <h1 class="text-center text-danger mb-0"><?= $konfirmasi_nakes['total']; ?></h1>
+                                            <p class="text-center text-danger mb-0">Total Kasus Nakes</p>
+                                            <!-- /.card-tools -->
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="pt-2 pb-2">
+                                            <p class="text-center mb-0">Dirawat</p>
+                                            <h3 class="text-center mb-0 text-danger">
+                                                <?= $konfirmasi_nakes['dirawat']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $konfirmasi_nakes['dirawat']['baru']; ?></span>
+                                            </h3>
+                                            <hr class="my-md-0">
+                                            <p class="text-center mb-0">Isolasi</p>
+                                            <h3 class="text-center mb-0 text-danger">
+                                                <?= $konfirmasi_nakes['isolasi']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $konfirmasi_nakes['isolasi']['baru']; ?></span>
+                                            </h3>
+                                            <hr class="my-md-0">
+                                            <p class="text-center mb-0">Sembuh</p>
+                                            <h3 class="text-center mb-0 text-danger">
+                                                <?= $konfirmasi_nakes['sembuh']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $konfirmasi_nakes['sembuh']['baru']; ?></span>
+                                            </h3>
+                                            <hr class="my-md-0">
+                                            <p class="text-center mb-0">Meninggal</p>
+                                            <h3 class="text-center mb-0 text-danger">
+                                                <?= $konfirmasi_nakes['meninggal']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $konfirmasi_nakes['meninggal']['baru']; ?></span>
+                                            </h3>
+                                            <!-- <hr class="my-md-0">
+                                            <p class="text-center mb-0">Luar Daerah</p>
+                                            <h3 class="text-center mb-0 text-danger">
+                                                <?= $konfirmasi['luar']['total']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $konfirmasi['luar']['baru']; ?></span>
+                                            </h3> -->
+                                        </div>
+                                        <!-- /.card-body -->
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-10">
                     <div class="card">
                         <div class="card-header">
                             <p class="mb-0">Grafik Pertumbuhan Kasus Terkonfirmasi di Kab. Jepara</p>

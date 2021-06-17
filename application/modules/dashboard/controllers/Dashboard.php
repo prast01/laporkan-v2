@@ -25,6 +25,7 @@ class Dashboard extends MY_Controller
             $data['suspek'] = $api['suspek'];
             $data['probable'] = $api['probable'];
             $data['konfirmasi'] = $api['konfirmasi'];
+            $data['konfirmasi_nakes'] = $api['konfirmasi_nakes'];
 
             $data['update_at_cutoff'] = $api2['updated_at'];
             $data['suspek_cut'] = $api2['suspek'];

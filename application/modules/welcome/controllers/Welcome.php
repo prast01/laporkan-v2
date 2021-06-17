@@ -75,4 +75,11 @@ class Welcome extends MY_Controller
 	{
 		$this->load->view('maintenis');
 	}
+
+	public function cek_jateng()
+	{
+		$data["data"] = $this->db->get("xx_jateng")->result();
+
+		$this->load->view('cek_jateng', $data);
+	}
 }

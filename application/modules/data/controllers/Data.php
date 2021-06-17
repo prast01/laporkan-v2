@@ -313,6 +313,70 @@ class Data extends MY_Controller
 
         $this->template('konfirmasi', $data);
     }
+
+
+    public function ambilData()
+    {
+        $data["bulan"] = array(
+            "03" => "Maret",
+            "04" => "April",
+            "05" => "Mei",
+            "06" => "Juni",
+            "07" => "Juli",
+            "08" => "Agustus",
+            "09" => "September",
+            "10" => "Oktober",
+            "11" => "November",
+            "12" => "Desember",
+        );
+
+        $this->load->view('ambilData', $data);
+    }
+
+    public function cetakData($bln, $tgl, $tgl2)
+    {
+        $model = $this->M_data;
+        $bulan = array(
+            "03" => "Maret",
+            "04" => "April",
+            "05" => "Mei",
+            "06" => "Juni",
+            "07" => "Juli",
+            "08" => "Agustus",
+            "09" => "September",
+            "10" => "Oktober",
+            "11" => "November",
+            "12" => "Desember",
+        );
+
+        $data['bulan'] = $bulan[$bln];
+        $data['bln'] = $bln;
+
+        if ($bln <= "07") {
+            $data['kasus_1'] = $model->ambilLama("1", $tgl, $tgl2)->result();
+            $data['kasus_2'] = $model->ambilLama("2", $tgl, $tgl2)->result();
+            $data['kasus_3'] = $model->ambilLama("3", $tgl, $tgl2)->result();
+
+            $data['rekap'] = array(
+                "ODP" => $model->ambilLama("1", $tgl, $tgl2)->num_rows(),
+                "PDP" => $model->ambilLama("2", $tgl, $tgl2)->num_rows(),
+                "POSITIF" => $model->ambilLama("3", $tgl, $tgl2)->num_rows(),
+            );
+        } else {
+            $data['kasus_1'] = $model->ambilBaru("1", $tgl, $tgl2)->result();
+            $data['kasus_2'] = $model->ambilBaru("2", $tgl, $tgl2)->result();
+            $data['kasus_3'] = $model->ambilBaru("3", $tgl, $tgl2)->result();
+
+            $data['rekap'] = array(
+                "SUSPEK" => $model->ambilBaru("1", $tgl, $tgl2)->num_rows(),
+                "PROBABEL" => $model->ambilBaru("2", $tgl, $tgl2)->num_rows(),
+                "TERKONFIRMASI" => $model->ambilBaru("3", $tgl, $tgl2)->num_rows(),
+            );
+        }
+
+
+        $this->load->view('cetakData', $data);
+    }
 }
 
 /* End of file Data.php */

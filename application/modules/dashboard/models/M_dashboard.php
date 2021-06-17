@@ -69,6 +69,30 @@ class M_dashboard extends CI_Model
             ),
         );
 
+        $data['konfirmasi_nakes'] = array(
+            "total" => $this->cek_konfirmasi_nakes("all"),
+            "dirawat" => array(
+                "total" => $this->cek_konfirmasi_nakes("dirawat"),
+                "baru" => $this->cek_konfirmasi_nakes("dirawat baru"),
+            ),
+            "isolasi" => array(
+                "total" => $this->cek_konfirmasi_nakes("isolasi"),
+                "baru" => $this->cek_konfirmasi_nakes("isolasi baru"),
+            ),
+            "sembuh" => array(
+                "total" => $this->cek_konfirmasi_nakes("sembuh"),
+                "baru" => $this->cek_konfirmasi_nakes("sembuh baru"),
+            ),
+            "meninggal" => array(
+                "total" => $this->cek_konfirmasi_nakes("meninggal"),
+                "baru" => $this->cek_konfirmasi_nakes("meninggal baru"),
+            ),
+            "luar" => array(
+                "total" => $this->cek_konfirmasi_nakes("luar"),
+                "baru" => $this->cek_konfirmasi_nakes("luar baru"),
+            ),
+        );
+
         $data['updated_at'] = $this->cek_last_update();
 
         return $data;
@@ -193,6 +217,63 @@ class M_dashboard extends CI_Model
             $this->db->where(["status_baru >=" => 1]);
             $this->db->where(["status_baru <=" => 6]);
         }
+
+        $data = $this->db->get();
+
+        return $data->num_rows();
+    }
+
+    // cek konfirmasi NAKES
+    private function cek_konfirmasi_nakes($kondisi)
+    {
+        $this->db->select('id_laporan');
+        $this->db->from('tb_laporan_baru');
+        if ($kondisi == "all") {
+            $this->db->where(["id_kecamatan !=" => 17]);
+            $this->db->where(["status_baru >=" => 1]);
+            $this->db->where(["status_baru <=" => 6]);
+        } elseif ($kondisi == "dirawat") {
+            $this->db->where(["id_kecamatan !=" => 17]);
+            $status = array("1", "5", "6");
+            $this->db->where_in("status_baru", $status);
+        } elseif ($kondisi == "dirawat baru") {
+            $this->db->where(["id_kecamatan !=" => 17]);
+            $this->db->where(["validasi" => 0]);
+            $status = array("1", "5", "6");
+            $this->db->where_in("status_baru", $status);
+        } elseif ($kondisi == "isolasi") {
+            $this->db->where(["id_kecamatan !=" => 17]);
+            $this->db->where(["status_baru" => 2]);
+        } elseif ($kondisi == "isolasi baru") {
+            $this->db->where(["id_kecamatan !=" => 17]);
+            $this->db->where(["validasi" => 0]);
+            $this->db->where(["status_baru" => 2]);
+        } elseif ($kondisi == "sembuh") {
+            $this->db->where(["id_kecamatan !=" => 17]);
+            $this->db->where(["status_baru" => 3]);
+        } elseif ($kondisi == "sembuh baru") {
+            $this->db->where(["id_kecamatan !=" => 17]);
+            $this->db->where(["validasi" => 0]);
+            $this->db->where(["status_baru" => 3]);
+        } elseif ($kondisi == "meninggal") {
+            $this->db->where(["id_kecamatan !=" => 17]);
+            $this->db->where(["status_baru" => 4]);
+        } elseif ($kondisi == "meninggal baru") {
+            $this->db->where(["id_kecamatan !=" => 17]);
+            $this->db->where(["validasi" => 0]);
+            $this->db->where(["status_baru" => 4]);
+        } elseif ($kondisi == "luar") {
+            $this->db->where(["id_kecamatan" => 17]);
+            $this->db->where(["status_baru >=" => 1]);
+            $this->db->where(["status_baru <=" => 6]);
+        } elseif ($kondisi == "luar baru") {
+            $this->db->where(["id_kecamatan" => 17]);
+            $this->db->where(["validasi" => 0]);
+            $this->db->where(["status_baru >=" => 1]);
+            $this->db->where(["status_baru <=" => 6]);
+        }
+
+        $this->db->where("nakes", "nakes");
 
         $data = $this->db->get();
 

@@ -601,6 +601,56 @@ class M_data extends CI_Model
 
         return $data;
     }
+
+    public function ambilLama($jns, $tgl, $tgl2)
+    {
+        $this->db->select("nama, nama_kecamatan, alamat_domisili");
+        $this->db->from("tb_laporan_baru");
+        $this->db->join('tb_kecamatan_baru', 'tb_laporan_baru.id_kecamatan = tb_kecamatan_baru.id_kecamatan');
+        $this->db->join('tb_kelurahan_baru', 'tb_laporan_baru.id_kelurahan = tb_kelurahan_baru.id_kelurahan');
+
+        $this->db->where('tb_laporan_baru.tgl_periksa >=', $tgl);
+        $this->db->where('tb_laporan_baru.tgl_periksa <=', $tgl2);
+        $this->db->where('tb_laporan_baru.validasi', 1);
+
+        if ($jns == "1") {
+            $this->db->where('tb_laporan_baru.kondisi', 1);
+        } elseif ($jns == "2") {
+            $this->db->where('tb_laporan_baru.kondisi', 2);
+            $this->db->where('tb_laporan_baru.covid', 0);
+        } elseif ($jns == "3") {
+            $this->db->where('tb_laporan_baru.kondisi', 2);
+            $this->db->where('tb_laporan_baru.covid', 1);
+        }
+
+        return $this->db->get();
+    }
+
+    public function ambilBaru($jns, $tgl, $tgl2)
+    {
+        $this->db->select("nama, nama_kecamatan, alamat_domisili");
+        $this->db->from("tb_laporan_baru");
+        $this->db->join('tb_kecamatan_baru', 'tb_laporan_baru.id_kecamatan = tb_kecamatan_baru.id_kecamatan');
+        $this->db->join('tb_kelurahan_baru', 'tb_laporan_baru.id_kelurahan = tb_kelurahan_baru.id_kelurahan');
+
+        $this->db->where('tb_laporan_baru.tgl_periksa >=', $tgl);
+        $this->db->where('tb_laporan_baru.tgl_periksa <=', $tgl2);
+        $this->db->where('tb_laporan_baru.validasi', 1);
+        $this->db->where('tb_laporan_baru.id_kecamatan !=', 17);
+
+        if ($jns == "1") {
+            $this->db->where('tb_laporan_baru.status_baru >=', 13);
+            $this->db->where('tb_laporan_baru.status_baru <=', 17);
+        } elseif ($jns == "2") {
+            $this->db->where('tb_laporan_baru.status_baru >=', 7);
+            $this->db->where('tb_laporan_baru.status_baru <=', 12);
+        } elseif ($jns == "3") {
+            $this->db->where('tb_laporan_baru.status_baru >=', 1);
+            $this->db->where('tb_laporan_baru.status_baru <=', 6);
+        }
+
+        return $this->db->get();
+    }
 }
 
 /* End of file ModelName.php */
