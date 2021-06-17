@@ -148,6 +148,7 @@ class ServicesV2 extends MY_Controller
 
     public function get_data_harian()
     {
+        error_reporting(0);
         $model = $this->M_services;
         $awal = $model->get_first_date();
         $akhir = $model->get_last_date();
