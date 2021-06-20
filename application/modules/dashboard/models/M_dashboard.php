@@ -93,10 +93,34 @@ class M_dashboard extends CI_Model
             ),
         );
 
+        $data["rumah_isolasi"] = $this->_cek_rumah_isolasi();
+
         $data['updated_at'] = $this->cek_last_update();
 
         return $data;
     }
+
+    // cek rumah isolasi
+    private function _cek_rumah_isolasi()
+    {
+        $hsl["total"] = $this->db->get_where("tb_isolasi", ["aktif" => 1])->num_rows();
+        $rumah = $this->db->get_where("tb_rumah_isolasi", ["aktif" => 1])->result();
+        $hari_ini = date("Y-m-d");
+        foreach ($rumah as $key) {
+            $jumlah = $this->db->get_where("tb_isolasi", ["aktif" => 1, "id_rumah_isolasi" => $key->id_rumah_isolasi])->num_rows();
+            $baru = $this->db->get_where("tb_isolasi", ["aktif" => 1, "id_rumah_isolasi" => $key->id_rumah_isolasi, "DATE(created_at)" => $hari_ini])->num_rows();
+            $hsl["lokasi"][$key->id_rumah_isolasi] = array(
+                "nama" => $key->nama_rumah_isolasi,
+                "jumlah" => $jumlah,
+                "baru" => $baru,
+            );
+        }
+        $data = $this->db->query("SELECT updated_at FROM tb_isolasi ORDER BY updated_at DESC LIMIT 1")->row();
+        $hsl["update"] = date($data->updated_at);
+
+        return $hsl;
+    }
+
     // cek suspek
     private function cek_suspek($kondisi)
     {

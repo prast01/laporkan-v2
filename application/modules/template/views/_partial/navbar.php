@@ -363,11 +363,11 @@
 					<?php
 					}
 
-					if ($level == "2") {
+					if ($level == "8") {
 					?>
-						<!-- <li class="nav-item">
-							<a href="<?php echo site_url('../home/faskes_luar'); ?>" class="nav-link">Faskes Luar Daerah</a>
-						</li> -->
+						<li class="nav-item">
+							<a href="<?php echo site_url('../rumah-isolasi'); ?>" class="nav-link">Data Rumah Isolasi</a>
+						</li>
 					<?php
 					}
 					?>

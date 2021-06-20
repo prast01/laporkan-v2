@@ -745,9 +745,14 @@ class Home extends MY_Controller
     $model = $this->M_home;
     $id_laporan = $_POST['id_laporan'];
     $id_karantina = $_POST['id_karantina'];
-    $model->save_pasienKarantina($id_laporan, $id_karantina);
+    $hasil = $model->save_pasienKarantina($id_laporan, $id_karantina);
 
-    redirect('../tempatKarantina', 'location');
+    if ($hasil['res']) {
+      $this->session->set_flashdata('success', $hasil['msg']);
+    } else {
+      $this->session->set_flashdata('gagal', $hasil['msg']);
+    }
+    redirect('../rumah-isolasi');
   }
 
   public function modalKarantina2($id)
@@ -785,7 +790,7 @@ class Home extends MY_Controller
     } else {
       $this->session->set_flashdata('gagal', $hasil['msg']);
     }
-    redirect('../tempatKarantina', 'location');
+    redirect('../rumah-isolasi', 'location');
   }
 
   public function modal_swab($id, $id_lap)

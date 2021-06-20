@@ -705,6 +705,14 @@ class M_kasus extends CI_Model
     {
         if ($kode == '1') {
             $status = 3;
+            $wh = array(
+                "id_laporan" => $id,
+            );
+            $dt = array(
+                "aktif" => 0,
+                "updated_at" => date("Y-m-d H:i:s"),
+            );
+            $this->db->update("tb_isolasi", $dt, $wh);
         } elseif ($kode == '2') {
             $status = 9;
         } elseif ($kode == '3') {

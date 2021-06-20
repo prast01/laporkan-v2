@@ -26,6 +26,7 @@ class Dashboard extends MY_Controller
             $data['probable'] = $api['probable'];
             $data['konfirmasi'] = $api['konfirmasi'];
             $data['konfirmasi_nakes'] = $api['konfirmasi_nakes'];
+            $data['rumah_isolasi'] = $api['rumah_isolasi'];
 
             $data['update_at_cutoff'] = $api2['updated_at'];
             $data['suspek_cut'] = $api2['suspek'];
@@ -33,9 +34,10 @@ class Dashboard extends MY_Controller
             $data['konfirmasi_cut'] = $api2['konfirmasi'];
 
             if ($data['level'] == '5') {
-                redirect('../data', 'refresh');
+                redirect('../', 'refresh');
             } else {
                 $this->template('dashboard', $data);
+                // echo json_encode($data["rumah_isolasi"]);
             }
 
             // echo json_encode($api);

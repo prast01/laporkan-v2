@@ -351,6 +351,27 @@ class M_services extends CI_Model
 
         return $data;
     }
+
+    public function get_data_rumah_isolasi()
+    {
+        // $hsl["total"] = $this->db->get_where("tb_isolasi", ["aktif" => 1])->num_rows();
+        $rumah = $this->db->get_where("tb_rumah_isolasi", ["aktif" => 1])->result();
+        $hari_ini = date("Y-m-d");
+        foreach ($rumah as $key) {
+            $jumlah = $this->db->get_where("tb_isolasi", ["aktif" => 1, "id_rumah_isolasi" => $key->id_rumah_isolasi])->num_rows();
+            $baru = $this->db->get_where("tb_isolasi", ["aktif" => 1, "id_rumah_isolasi" => $key->id_rumah_isolasi, "DATE(created_at)" => $hari_ini])->num_rows();
+            $hsl["lokasi"][$key->id_rumah_isolasi] = array(
+                "nama" => $key->nama_rumah_isolasi,
+                "jumlah" => $jumlah,
+                "baru" => $baru,
+                "gmaps" => $key->gmaps,
+            );
+        }
+        $data = $this->db->query("SELECT updated_at FROM tb_isolasi ORDER BY updated_at DESC LIMIT 1")->row();
+        $hsl["update"] = date($data->updated_at);
+
+        return $hsl;
+    }
 }
 
 /* End of file M_services.php */

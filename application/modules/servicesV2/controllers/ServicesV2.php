@@ -312,6 +312,15 @@ class ServicesV2 extends MY_Controller
         curl_close($curl);
         echo $response;
     }
+
+    public function get_data_rumah_isolasi()
+    {
+        $model = $this->M_services;
+
+        $data = $model->get_data_rumah_isolasi();
+
+        echo json_encode($data);
+    }
 }
 
 /* End of file ServicesV2.php */

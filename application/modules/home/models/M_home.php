@@ -2288,15 +2288,14 @@ class M_home extends CI_Model
 
     public function getKarantina()
     {
-        $data = $this->db->get("tb_karantina");
+        $data = $this->db->get_where("tb_rumah_isolasi", ["aktif" => 1]);
 
         return $data;
     }
 
     public function getCovid2()
     {
-        $this->db->order_by("nama", "ASC");
-        $data = $this->db->get("v_covid_karantina");
+        $data = $this->db->query("SELECT * FROM view_data_laporan WHERE status_baru >= 1 AND status_baru <= 2 AND id_laporan NOT IN (SELECT id_laporan FROM tb_isolasi WHERE aktif='1') AND id_kecamatan != 17 ORDER BY kasus DESC");
 
         return $data;
     }
@@ -2310,18 +2309,33 @@ class M_home extends CI_Model
     }
 
 
-    public function save_pasienKarantina($id_laporan, $id_karantina)
+    public function save_pasienKarantina($id_laporan, $id_rumah_isolasi)
     {
+        if ($id_laporan == "") {
+            return array('res' => 0, 'msg' => 'Data Gagal Disimpan. Pasien Tidak Boleh Kosong');
+        }
+        if ($id_rumah_isolasi == "") {
+            return array('res' => 0, 'msg' => 'Data Gagal Disimpan. Rumah Isolasi Tidak Boleh Kosong');
+        }
+
         $data = array(
             'id_laporan' => $id_laporan,
-            'id_karantina' => $id_karantina
+            'id_rumah_isolasi' => $id_rumah_isolasi
         );
 
         if ($this->session->userdata("id_user") != "") {
-            $cek = $this->db->insert('tb_pasien_karantina', $data);
+            $cek = $this->db->insert('tb_isolasi', $data);
         } else {
             $cek = 0;
         }
+
+        if ($cek) {
+            $msg = array('res' => 1, 'msg' => 'Data Berhasil Disimpan');
+        } else {
+            $msg = array('res' => 0, 'msg' => 'Data Gagal Disimpan');
+        }
+
+        return $msg;
     }
 
     public function getPasienKarantinaBy($id)
@@ -2355,10 +2369,10 @@ class M_home extends CI_Model
     public function delete_karantina($id)
     {
         $where = array(
-            'id_pasien_karantina' => $id
+            'id_isolasi' => $id
         );
 
-        $cek = $this->db->delete('tb_pasien_karantina', $where);
+        $cek = $this->db->delete('tb_isolasi', $where);
 
         if ($cek) {
             $msg = array('res' => 1, 'msg' => 'Data Berhasil Dihapus');
