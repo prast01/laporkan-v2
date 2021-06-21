@@ -82,7 +82,8 @@
                                                                     <td><?= $val["alamat_domisili"]; ?></td>
                                                                     <td>
                                                                         <div class="btn-group">
-                                                                            <a href="<?= site_url("../home/hapus_karantina/" . $val["id_isolasi"]); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus?')"><i class="fas fa-trash"></i></a>
+                                                                            <a href="<?= site_url("../rumah-isolasi/hapus/" . $val["id_isolasi"]); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus?')"><i class="fas fa-trash"></i></a>
+                                                                            <a href="<?= site_url("../rumah-isolasi/keluar_isolasi/" . $val["id_isolasi"]); ?>" class="btn btn-success btn-sm" onclick="return confirm('Yakin Keluar dari Rumah Isolasi?')"><i class="fa fa-check"></i></a>
                                                                         </div>
                                                                     </td>
                                                                 </tr>

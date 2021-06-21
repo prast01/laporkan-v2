@@ -103,20 +103,37 @@ class M_dashboard extends CI_Model
     // cek rumah isolasi
     private function _cek_rumah_isolasi()
     {
-        $hsl["total"] = $this->db->get_where("tb_isolasi", ["aktif" => 1])->num_rows();
-        $rumah = $this->db->get_where("tb_rumah_isolasi", ["aktif" => 1])->result();
-        $hari_ini = date("Y-m-d");
-        foreach ($rumah as $key) {
-            $jumlah = $this->db->get_where("tb_isolasi", ["aktif" => 1, "id_rumah_isolasi" => $key->id_rumah_isolasi])->num_rows();
-            $baru = $this->db->get_where("tb_isolasi", ["aktif" => 1, "id_rumah_isolasi" => $key->id_rumah_isolasi, "DATE(created_at)" => $hari_ini])->num_rows();
-            $hsl["lokasi"][$key->id_rumah_isolasi] = array(
-                "nama" => $key->nama_rumah_isolasi,
-                "jumlah" => $jumlah,
-                "baru" => $baru,
-            );
+        $hsl = array();
+        $data = $this->db->get_where("tb_rumah_isolasi", ["aktif" => 1]);
+        if ($data->num_rows() > 0) {
+            // CEK JUMLAH PASIEN
+            $hsl["total"] = $this->db->get_where("tb_isolasi", ["aktif" => 1])->num_rows();
+            $rumah = $data->result();
+            $hari_ini = date("Y-m-d");
+            foreach ($rumah as $key) {
+                $jumlah = $this->db->get_where("tb_isolasi", ["aktif" => 1, "id_rumah_isolasi" => $key->id_rumah_isolasi])->num_rows();
+                $baru = $this->db->get_where("tb_isolasi", ["aktif" => 1, "id_rumah_isolasi" => $key->id_rumah_isolasi, "DATE(created_at)" => $hari_ini])->num_rows();
+                $hsl["lokasi"][$key->id_rumah_isolasi] = array(
+                    "nama" => $key->nama_rumah_isolasi,
+                    "jumlah" => $jumlah,
+                    "baru" => $baru,
+                    "gmaps" => $key->gmaps,
+                );
+            }
+
+            // CEK UPDATE AT
+            $dt = $this->db->query("SELECT updated_at FROM tb_isolasi ORDER BY updated_at DESC LIMIT 1");
+            if ($dt->num_rows() > 0) {
+                $d = $dt->row();
+                $hsl["update"] = date("Y-m-d H:i:s", strtotime($d->updated_at));
+            } else {
+                $hsl["update"] = date("Y-m-d H:i:s");
+            }
+
+            $hsl["show"] = 1;
+        } else {
+            $hsl["show"] = 0;
         }
-        $data = $this->db->query("SELECT updated_at FROM tb_isolasi ORDER BY updated_at DESC LIMIT 1")->row();
-        $hsl["update"] = date($data->updated_at);
 
         return $hsl;
     }

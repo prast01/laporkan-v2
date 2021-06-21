@@ -41,11 +41,11 @@ class tempatKarantina extends MY_Controller
     {
         $model = $this->M_tempatKarantina;
         if ($model->keluar($id)) {
-            $this->session->set_flashdata('success', 'Data Berhasil Diubah');
+            $this->session->set_flashdata('success', 'Data Berhasil Diubah. Pasien Keluar dari Rumah Isolasi');
         } else {
             $this->session->set_flashdata('gagal', 'Data Gagal Diubah');
         }
-        redirect('../', 'refresh');
+        redirect('../rumah-isolasi', 'refresh');
     }
 
     public function rumah_isolasi()

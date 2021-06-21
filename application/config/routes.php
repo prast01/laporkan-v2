@@ -53,3 +53,5 @@ $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['rumah-isolasi'] = 'tempatKarantina/rumah_isolasi';
+$route['rumah-isolasi/keluar_isolasi/(:any)'] = 'tempatKarantina/keluar/$1';
+$route['rumah-isolasi/hapus/(:any)'] = 'home/hapus_karantina/$1';

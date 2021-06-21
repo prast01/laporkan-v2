@@ -354,42 +354,44 @@ $bln = array(01 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli"
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-2">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <p class="mb-0">DATA RUMAH ISOLASI</p>
-                                    <p class="mb-3">update terakhir : <br><?= tgl_ind($rumah_isolasi["update"]); ?></p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="card card-outline card-danger">
-                                        <div class="card-header" style="background-color: #ffeded;">
-                                            <p class="text-center text-danger mb-0">Jumlah Penghuni</p>
-                                            <h1 class="text-center text-danger mb-0"><?= $rumah_isolasi['total']; ?></h1>
-                                            <p class="text-center text-danger mb-0">Total</p>
-                                            <!-- /.card-tools -->
-                                        </div>
-                                        <!-- /.card-header -->
-                                        <div class="pt-2 pb-2">
-                                            <?php foreach ($rumah_isolasi["lokasi"] as $row => $val) : ?>
-                                                <p class="text-center mb-0"><?= strtoupper($val["nama"]); ?></p>
-                                                <h3 class="text-center mb-0 text-danger">
-                                                    <?= $val['jumlah']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $val['baru']; ?></span>
-                                                </h3>
-                                                <hr class="my-md-0">
-                                            <?php endforeach; ?>
-                                        </div>
-                                        <!-- /.card-body -->
+                <?php if ($rumah_isolasi["show"]) : ?>
+                    <div class="col-lg-2">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <p class="mb-0">DATA RUMAH ISOLASI</p>
+                                        <p class="mb-3">update terakhir : <br><?= tgl_ind($rumah_isolasi["update"]); ?></p>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="card card-outline card-danger">
+                                            <div class="card-header" style="background-color: #ffeded;">
+                                                <p class="text-center text-danger mb-0">Jumlah Penghuni</p>
+                                                <h1 class="text-center text-danger mb-0"><?= $rumah_isolasi['total']; ?></h1>
+                                                <p class="text-center text-danger mb-0">Total</p>
+                                                <!-- /.card-tools -->
+                                            </div>
+                                            <!-- /.card-header -->
+                                            <div class="pt-2 pb-2">
+                                                <?php foreach ($rumah_isolasi["lokasi"] as $row => $val) : ?>
+                                                    <p class="text-center mb-0"><?= strtoupper($val["nama"]); ?></p>
+                                                    <h3 class="text-center mb-0 text-danger">
+                                                        <?= $val['jumlah']; ?> <span class="additional" style="font-size: 16px;"><i class="fa fa-angle-double-up"></i> <?= $val['baru']; ?></span>
+                                                    </h3>
+                                                    <hr class="my-md-0">
+                                                <?php endforeach; ?>
+                                            </div>
+                                            <!-- /.card-body -->
+                                        </div>
+                                    </div>
+                                </div>
 
+                            </div>
                         </div>
                     </div>
-                </div>
+                <?php endif; ?>
                 <div class="col-lg-8">
                     <div class="card">
                         <div class="card-header">

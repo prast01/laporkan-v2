@@ -2295,7 +2295,8 @@ class M_home extends CI_Model
 
     public function getCovid2()
     {
-        $data = $this->db->query("SELECT * FROM view_data_laporan WHERE status_baru >= 1 AND status_baru <= 2 AND id_laporan NOT IN (SELECT id_laporan FROM tb_isolasi WHERE aktif='1') AND id_kecamatan != 17 ORDER BY kasus DESC");
+        // $data = $this->db->query("SELECT * FROM view_data_laporan WHERE status_baru >= 1 AND status_baru <= 2 AND id_laporan NOT IN (SELECT id_laporan FROM tb_isolasi WHERE aktif='1') AND id_kecamatan != 17 ORDER BY kasus DESC");
+        $data = $this->db->query("SELECT * FROM view_data_laporan WHERE status_baru = 2 AND id_laporan NOT IN (SELECT id_laporan FROM tb_isolasi WHERE aktif='1') AND id_kecamatan != 17 ORDER BY kasus DESC");
 
         return $data;
     }

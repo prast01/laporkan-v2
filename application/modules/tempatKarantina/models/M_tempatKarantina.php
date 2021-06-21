@@ -28,13 +28,14 @@ class M_tempatKarantina extends CI_Model
     public function keluar($id)
     {
         $data = array(
-            "st" => 1
+            "aktif" => 0,
+            "updated_at" => date("Y-m-d H:i:s"),
         );
         $where = array(
-            "id_pasien_karantina" => $id
+            "id_isolasi" => $id
         );
 
-        $cek = $this->db->update("tb_pasien_karantina", $data, $where);
+        $cek = $this->db->update("tb_isolasi", $data, $where);
 
         return $cek;
     }
