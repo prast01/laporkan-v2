@@ -453,18 +453,6 @@ function modalRDT(id) {
     },
   });
 }
-function modalKarantina() {
-  $("#modalku").modal();
-  $(".modal-title").html("Tambah Pasien Karantina");
-  var origin = window.location.origin + "/laporkan-v2/home/modalKarantina";
-  $.ajax({
-    type: "POST",
-    url: origin,
-    success: function (data) {
-      $(".modal-body").html(data);
-    },
-  });
-}
 function modalKarantina2(id) {
   $("#modalku").modal();
   $(".modal-title").html("Ubah Data");
@@ -573,6 +561,19 @@ base_url =
     ? ""
     : base_url.split("/")[1] + "/";
 var url = window.location.origin + "/" + base_url;
+
+function modalKarantina() {
+  $("#modalku").modal();
+  $(".modal-title").html("Tambah Pasien Karantina");
+  var origin = url + "/home/modalKarantina";
+  $.ajax({
+    type: "POST",
+    url: origin,
+    success: function (data) {
+      $(".modal-body").html(data);
+    },
+  });
+}
 
 function tambah_kasus() {
   $("#modalku").modal();
